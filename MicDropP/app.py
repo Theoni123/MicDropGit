@@ -56,16 +56,16 @@ def main():
     if page == "🏠 Home":
         show_home()
     elif page == "🎙️ Voice Analysis":
-        from pages import voice_analysis
+        from page_modules import voice_analysis
         voice_analysis.show()
     elif page == "📝 Language Analysis":
-        from pages import language_analysis
+        from page_modules import language_analysis
         language_analysis.show()
     elif page == "👤 Body Language Analysis":
-        from pages import body_language_analysis
+        from page_modules import body_language_analysis
         body_language_analysis.show()
     elif page == "📊 Comprehensive Report":
-        from pages import comprehensive_report
+        from page_modules import comprehensive_report
         comprehensive_report.show()
 
 def show_home():
