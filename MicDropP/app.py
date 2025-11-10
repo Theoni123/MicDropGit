@@ -161,15 +161,36 @@ st.markdown(f"""
     .main-header::after {{
         content: '';
         position: absolute;
-        top: 0;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
         width: 200px;
         height: 200px;
-        background: radial-gradient(circle, rgba(42, 0, 64, 0.3) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255, 140, 0, 0.8) 0%, rgba(255, 200, 0, 0.6) 30%, rgba(255, 140, 0, 0.3) 60%, transparent 100%);
         border-radius: 50%;
-        filter: blur(60px);
+        filter: blur(40px);
         z-index: -1;
+        opacity: 0;
+        animation: gradientGlow 2s ease-out forwards;
+        animation-delay: 1s;
+    }}
+    
+    @keyframes gradientGlow {{
+        0% {{
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+        }}
+        50% {{
+            opacity: 1;
+        }}
+        100% {{
+            width: 600px;
+            height: 600px;
+            opacity: 0.8;
+            transform: translate(-50%, -50%) scale(1);
+        }}
     }}
     
     .sub-header {{
@@ -744,7 +765,7 @@ st.markdown(f"""
     
     .main-content {{
         animation: fadeInContent 1.5s ease-out forwards;
-        animation-delay: 2.5s;
+        animation-delay: 1s;
         opacity: 0;
     }}
     
@@ -787,14 +808,14 @@ def main():
                     }}
                 }}, 4000);
                 
-                // Show content after curtains start opening (0.5s delay + 2s into animation)
+                // Show content as curtains start opening (0.5s delay + 0.5s into animation)
                 setTimeout(function() {{
                     var contentElements = document.querySelectorAll('.main-content');
                     contentElements.forEach(function(el) {{
                         el.style.opacity = '1';
                         el.style.transform = 'translateY(0)';
                     }});
-                }}, 2500);
+                }}, 1000);
             }})();
         </script>
         """, unsafe_allow_html=True)
