@@ -1083,6 +1083,11 @@ def show_home():
     <div style='text-align: center; padding: 0.5rem 0 1.5rem 0; margin: 0;'>
         <p style='font-size: 1.2rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 0 auto; font-style: italic;'>
             <span style='color: #c0a0ff; font-weight: 700;'>75% of people</span> are afraid of public speaking.
+            <a href='https://www.healthcentral.com/condition/anxiety/glossophobia-fear-of-public-' target='_blank' rel='noopener noreferrer' style='color: rgba(192, 160, 255, 0.7); text-decoration: none; margin-left: 0.5rem; display: inline-block; vertical-align: middle;' title='Source'>
+                <svg style='width: 1em; height: 1em; fill: currentColor;' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z'/>
+                </svg>
+            </a>
         </p>
         <p style='font-size: 1.2rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 1.5rem auto 0 auto; font-style: italic;'>
             Let's change that! With your personal AI coach, master the art of confident communication.
