@@ -502,8 +502,32 @@ st.markdown(f"""
     
     /* Hide Streamlit branding */
     #MainMenu {{visibility: hidden;}}
-    footer {{visibility: hidden;}}
+    footer {{visibility: hidden; display: none !important;}}
     header {{visibility: hidden;}}
+    
+    /* Hide Streamlit footer completely */
+    footer[data-testid="stFooter"],
+    .stApp footer,
+    footer.stApp footer,
+    [data-testid="stFooter"] {{
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+    }}
+    
+    /* Hide any bottom border or line */
+    .stApp > footer,
+    .main footer,
+    footer {{
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+    }}
     
     /* Custom scrollbar - Dark Purple */
     ::-webkit-scrollbar {{
@@ -735,9 +759,9 @@ st.markdown(f"""
         right: 0;
     }}
     
-    /* Stage/platform at bottom */
+    /* Stage/platform at bottom - Hidden from the start */
     .stage-platform {{
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
@@ -748,6 +772,12 @@ st.markdown(f"""
             rgba(42, 0, 64, 0.4) 100%);
         z-index: 1;
         box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+        pointer-events: none;
+        /* Hide stage platform completely - never show it */
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
     }}
     
     /* Curtain opening animation */
@@ -782,6 +812,20 @@ st.markdown(f"""
     /* Hide curtains after animation */
     .curtain-container.hidden {{
         display: none;
+    }}
+    
+    /* Hide stage platform after animation */
+    .curtain-container.hidden .stage-platform {{
+        display: none !important;
+    }}
+    
+    @keyframes hideStage {{
+        to {{
+            opacity: 0;
+            visibility: hidden;
+            display: none;
+            height: 0;
+        }}
     }}
     
     /* Content fade-in after curtains open */
@@ -882,11 +926,48 @@ def main():
                 // Position on resize
                 window.addEventListener('resize', positionCurtains);
                 
+                // Hide stage platform immediately (it should never be visible)
+                (function() {{
+                    var container = document.getElementById('curtainContainer');
+                    if (container) {{
+                        var stagePlatform = container.querySelector('.stage-platform');
+                        if (stagePlatform) {{
+                            // Hide immediately
+                            stagePlatform.style.display = 'none';
+                            stagePlatform.style.visibility = 'hidden';
+                            stagePlatform.style.opacity = '0';
+                            stagePlatform.style.height = '0';
+                            stagePlatform.style.width = '0';
+                            stagePlatform.style.pointerEvents = 'none';
+                            // Remove from DOM completely
+                            stagePlatform.remove();
+                        }}
+                    }}
+                }})();
+                
+                // Also hide after a short delay to catch any late rendering
+                setTimeout(function() {{
+                    var container = document.getElementById('curtainContainer');
+                    if (container) {{
+                        var stagePlatform = container.querySelector('.stage-platform');
+                        if (stagePlatform) {{
+                            stagePlatform.style.display = 'none';
+                            stagePlatform.style.visibility = 'hidden';
+                            stagePlatform.remove();
+                        }}
+                    }}
+                }}, 100);
+                
                 // Hide curtains after animation completes (3.5s animation + 0.5s delay + 0.5s buffer)
                 setTimeout(function() {{
                     var container = document.getElementById('curtainContainer');
                     if (container) {{
                         container.style.display = 'none';
+                        // Also explicitly hide stage platform (redundant but safe)
+                        var stagePlatform = container.querySelector('.stage-platform');
+                        if (stagePlatform) {{
+                            stagePlatform.style.display = 'none';
+                        }}
                     }}
                 }}, 4500);
                 
