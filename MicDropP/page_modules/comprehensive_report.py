@@ -163,6 +163,25 @@ def show():
     """, unsafe_allow_html=True)
     st.markdown("Get a complete analysis combining voice, language, and body language from a single upload")
     
+    # Tips for best results
+    with st.expander("💡 Tips for Best Results", expanded=False):
+        st.markdown("""
+        **For Video Uploads (Full Analysis):**
+        - **Video Quality**: Ensure good lighting so your face and body are clearly visible
+        - **Full Body View**: Keep your full body visible in the frame for best analysis
+        - **Lighting**: Use natural or bright lighting - avoid backlighting or shadows
+        - **Audio Quality**: Use a quiet environment with minimal background noise
+        - **Format**: MP4, WebM, MOV, or AVI formats are supported
+        
+        **For Audio Uploads (Voice & Language Only):**
+        - **Audio Quality**: Use a quiet environment with minimal background noise
+        - **Speak Clearly**: Enunciate your words and speak at a natural pace
+        - **Format**: MP3, WAV, M4A, OGG, or FLAC formats are supported
+        
+        **General:**
+        - **Duration**: 30 seconds to 5 minutes works best for analysis
+        """)
+    
     # Check if video dependencies are available
     if not HAS_VIDEO_DEPS:
         st.warning("⚠️ **Video processing dependencies not available.** Body language analysis will be skipped. Install with: `pip install opencv-python mediapipe`")

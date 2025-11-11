@@ -28,6 +28,16 @@ def show():
     """, unsafe_allow_html=True)
     st.markdown("Analyze your speaking pace, pitch, pauses, and volume")
     
+    # Tips for best results
+    with st.expander("💡 Tips for Best Results", expanded=False):
+        st.markdown("""
+        - **Audio Quality**: Use a quiet environment with minimal background noise
+        - **Speak Clearly**: Enunciate your words and speak at a natural pace
+        - **Duration**: 30 seconds to 5 minutes works best for analysis
+        - **Format**: MP3, WAV, M4A, OGG, or FLAC formats are supported
+        - **Microphone**: Use a good quality microphone if possible for clearer audio
+        """)
+    
     # File upload section
     st.header("Upload Audio")
     

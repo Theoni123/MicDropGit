@@ -24,6 +24,17 @@ def show():
     """, unsafe_allow_html=True)
     st.markdown("Analyze your speech for clarity, word choice, filler words, structure, and tone")
     
+    # Tips for best results
+    with st.expander("💡 Tips for Best Results", expanded=False):
+        st.markdown("""
+        - **Audio Quality**: Use a quiet environment with minimal background noise for better transcription
+        - **Text Input**: If transcription fails, you can paste your speech text directly
+        - **Duration**: 30 seconds to 5 minutes of speech works best
+        - **Format**: MP3, WAV, M4A, OGG, or FLAC formats are supported
+        - **Clarity**: Speak clearly and at a natural pace for accurate transcription
+        - **Content**: Natural speech works best - avoid reading from scripts if possible
+        """)
+    
     # File upload section
     st.header("Upload Audio or Enter Text")
     

@@ -34,6 +34,18 @@ def show():
     """, unsafe_allow_html=True)
     st.markdown("Analyze your posture, gestures, eye contact, facial expressions, and movement")
     
+    # Tips for best results
+    with st.expander("💡 Tips for Best Results", expanded=False):
+        st.markdown("""
+        - **Video Quality**: Ensure good lighting so your face and body are clearly visible
+        - **Full Body View**: Keep your full body visible in the frame for best analysis
+        - **Lighting**: Use natural or bright lighting - avoid backlighting or shadows
+        - **Duration**: 30 seconds to 5 minutes works best
+        - **Format**: MP4, WebM, MOV, or AVI formats are supported
+        - **Positioning**: Stand or sit straight, facing the camera for optimal analysis
+        - **Stability**: Keep the camera stable or use a tripod for clearer video
+        """)
+    
     # Check if dependencies are installed
     if not HAS_VIDEO_DEPS:
         st.error("⚠️ **Missing Dependencies**")

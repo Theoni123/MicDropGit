@@ -1158,10 +1158,7 @@ def show_home():
     st.markdown("---")
     
     # Getting Started Section
-    col1, col2 = st.columns([1, 1])
-    
-    with col1:
-        st.markdown("""
+    st.markdown("""
     ### 🚀 Getting Started
     
     1. **Choose an analysis type** from the sidebar
@@ -1169,16 +1166,6 @@ def show_home():
     3. **Wait for processing** (usually < 30 seconds)
     4. **Review your feedback** and recommendations
     5. **Practice and improve!**
-        """)
-    
-    with col2:
-        st.markdown("""
-    ### 💡 Tips for Best Results
-    
-    - **Audio Quality**: Use a quiet environment with minimal background noise
-    - **Video Quality**: Ensure good lighting and clear view of your body
-    - **Duration**: 30 seconds to 5 minutes works best
-    - **Format**: MP3, WAV, MP4, or WebM formats are supported
     """)
     
     st.markdown("---")
