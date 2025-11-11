@@ -17,7 +17,15 @@ from utils.feedback_generator import generate_voice_feedback
 def show():
     """Display voice analysis page"""
     
-    st.title("🎙️ Voice Analysis")
+    st.markdown("""
+    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #ffffff;'>
+        <svg style="width: 2rem; height: 2rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
+            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+        </svg>
+        Voice Analysis
+    </h1>
+    """, unsafe_allow_html=True)
     st.markdown("Analyze your speaking pace, pitch, pauses, and volume")
     
     # File upload section
@@ -34,7 +42,7 @@ def show():
     
     with col2:
         st.markdown("### Or")
-        record_audio = st.button("🎤 Record Audio", use_container_width=True)
+        record_audio = st.button("Record Audio", use_container_width=True)
     
     if record_audio:
         st.info("Audio recording feature coming soon! Please upload an audio file for now.")

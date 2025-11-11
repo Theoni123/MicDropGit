@@ -11,7 +11,7 @@ from pathlib import Path
 # Page configuration
 st.set_page_config(
     page_title="MicDrop - AI Public Speaking Coach",
-    page_icon="🎤",
+    page_icon="🎙️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -72,9 +72,39 @@ st.markdown(f"""
     /* Import Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
     
+    /* Import Material Icons */
+    @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+    
     /* Global Styles */
     * {{
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }}
+    
+    /* Modern Icon Styles */
+    .icon {{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.2em;
+        height: 1.2em;
+        vertical-align: middle;
+        margin-right: 0.3em;
+    }}
+    
+    .icon svg {{
+        width: 100%;
+        height: 100%;
+        fill: currentColor;
+    }}
+    
+    .icon-large {{
+        width: 1.5em;
+        height: 1.5em;
+    }}
+    
+    .icon-xl {{
+        width: 2em;
+        height: 2em;
     }}
     
     /* Animated Background Gradient */
@@ -882,14 +912,28 @@ def main():
         st.session_state.curtains_shown = True
     
     # Header with curtain reveal effect
-    st.markdown('<div class="main-content"><h1 class="main-header">🎤 MicDrop</h1></div>', unsafe_allow_html=True)
+    st.markdown('''
+    <div class="main-content">
+        <h1 class="main-header">
+            <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+            </svg>
+            MicDrop
+        </h1>
+    </div>
+    ''', unsafe_allow_html=True)
     st.markdown('<div class="main-content"><p class="sub-header">AI-Powered Public Speaking Coach</p></div>', unsafe_allow_html=True)
     
     # Sidebar navigation with modern header
     st.sidebar.markdown("""
     <div style='text-align: center; padding: 1.5rem 0 2rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 1.5rem;'>
-        <h2 style='color: white; font-size: 1.5rem; font-weight: 700; margin: 0; letter-spacing: -0.02em;'>
-            🎤 MicDrop
+        <h2 style='color: white; font-size: 1.5rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
+            <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+            </svg>
+            MicDrop
         </h2>
         <p style='color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; margin: 0.5rem 0 0 0;'>
             Navigation
@@ -897,25 +941,136 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    page = st.sidebar.radio(
-        "Choose Analysis Type",
-        ["🏠 Home", "🎙️ Voice Analysis", "📝 Language Analysis", "👤 Body Language Analysis", "📊 Comprehensive Report"],
-        label_visibility="collapsed"
-    )
+    # Initialize page state
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = "Home"
+    
+    # Navigation with SVG icons using CSS data URIs
+    st.sidebar.markdown("""
+    <style>
+    /* Base button styles */
+    [data-testid="stSidebar"] .stButton > button {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem 0.75rem 3rem !important;
+        background: transparent !important;
+        border: 1px solid transparent !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        border-radius: 0.5rem !important;
+        transition: all 0.3s ease !important;
+        margin-bottom: 0.5rem !important;
+        box-shadow: none !important;
+        font-weight: 500 !important;
+        position: relative !important;
+    }
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        transform: translateX(4px) !important;
+    }
+    [data-testid="stSidebar"] .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, rgba(74, 0, 100, 0.9) 0%, rgba(106, 0, 136, 0.9) 100%) !important;
+        border-color: rgba(74, 0, 100, 0.8) !important;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(42, 0, 64, 0.7) !important;
+    }
+    
+    /* Add icons using ::before pseudo-elements with SVG data URIs */
+    [data-testid="stSidebar"] .stButton > button::before {
+        content: '';
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.2rem;
+        height: 1.2rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.9;
+    }
+    
+    /* Home icon */
+    [data-testid="stSidebar"] button[data-testid*="nav_Home"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="rgba(255,255,255,0.9)"/></svg>');
+    }
+    
+    /* Voice Analysis icon */
+    [data-testid="stSidebar"] button[data-testid*="nav_Voice"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="rgba(255,255,255,0.9)"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="rgba(255,255,255,0.9)"/></svg>');
+    }
+    
+    /* Language Analysis icon */
+    [data-testid="stSidebar"] button[data-testid*="nav_Language"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="rgba(255,255,255,0.9)"/></svg>');
+    }
+    
+    /* Body Language Analysis icon */
+    [data-testid="stSidebar"] button[data-testid*="nav_Body"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="rgba(255,255,255,0.9)"/></svg>');
+    }
+    
+    /* Comprehensive Report icon */
+    [data-testid="stSidebar"] button[data-testid*="nav_Comprehensive"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="rgba(255,255,255,0.9)"/></svg>');
+    }
+    
+    /* Make icons white on active buttons */
+    [data-testid="stSidebar"] button[kind="primary"]::before {
+        opacity: 1;
+    }
+    [data-testid="stSidebar"] button[kind="primary"][data-testid*="nav_Home"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="white"/></svg>');
+    }
+    [data-testid="stSidebar"] button[kind="primary"][data-testid*="nav_Voice"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="white"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="white"/></svg>');
+    }
+    [data-testid="stSidebar"] button[kind="primary"][data-testid*="nav_Language"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="white"/></svg>');
+    }
+    [data-testid="stSidebar"] button[kind="primary"][data-testid*="nav_Body"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="white"/></svg>');
+    }
+    [data-testid="stSidebar"] button[kind="primary"][data-testid*="nav_Comprehensive"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="white"/></svg>');
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Define navigation items (button keys must match CSS selectors)
+    nav_items = {
+        "Home": "Home",
+        "Voice Analysis": "Voice Analysis",
+        "Language Analysis": "Language Analysis",
+        "Body Language Analysis": "Body Language Analysis",
+        "Comprehensive Report": "Comprehensive Report"
+    }
+    
+    # Create navigation buttons
+    for page_name, label in nav_items.items():
+        is_active = st.session_state.current_page == page_name
+        
+        # Create button - CSS will add the icon
+        if st.sidebar.button(label, key=f"nav_{page_name}", use_container_width=True, type="primary" if is_active else "secondary"):
+            st.session_state.current_page = page_name
+            st.rerun()
+    
+    # Use the current page from session state
+    page = st.session_state.current_page
     
     # Route to appropriate page
-    if page == "🏠 Home":
+    if page == "Home":
         show_home()
-    elif page == "🎙️ Voice Analysis":
+    elif page == "Voice Analysis":
         from page_modules import voice_analysis
         voice_analysis.show()
-    elif page == "📝 Language Analysis":
+    elif page == "Language Analysis":
         from page_modules import language_analysis
         language_analysis.show()
-    elif page == "👤 Body Language Analysis":
+    elif page == "Body Language Analysis":
         from page_modules import body_language_analysis
         body_language_analysis.show()
-    elif page == "📊 Comprehensive Report":
+    elif page == "Comprehensive Report":
         from page_modules import comprehensive_report
         comprehensive_report.show()
 
@@ -959,7 +1114,13 @@ def show_home():
     with col1:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>🎙️ Voice Analysis</h3>
+            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: 0.5rem;'>
+                <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+                </svg>
+                Voice Analysis
+            </h3>
             <ul style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
                 <li><strong>Pace:</strong> Words per minute, speaking rate</li>
                 <li><strong>Pitch:</strong> Average pitch and variation</li>
@@ -973,7 +1134,12 @@ def show_home():
     with col2:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>📝 Language Analysis</h3>
+            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: 0.5rem;'>
+                <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
+                </svg>
+                Language Analysis
+            </h3>
             <ul style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
                 <li><strong>Clarity:</strong> Sentence structure and complexity</li>
                 <li><strong>Word Choice:</strong> Vocabulary diversity</li>
@@ -987,7 +1153,12 @@ def show_home():
     with col3:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>👤 Body Language Analysis</h3>
+            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: 0.5rem;'>
+                <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+                </svg>
+                Body Language Analysis
+            </h3>
             <ul style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
                 <li><strong>Posture:</strong> Body alignment and stance</li>
                 <li><strong>Gestures:</strong> Hand movements and frequency</li>
