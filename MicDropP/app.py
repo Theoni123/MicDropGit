@@ -80,6 +80,76 @@ st.markdown(f"""
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }}
     
+    /* Standardize all body text to same size */
+    body, p, span, div, li, td, th, label, input, textarea, select, button, a {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Keep titles at their sizes */
+    h1 {{
+        font-size: 2.5rem !important;
+    }}
+    
+    h2 {{
+        font-size: 2rem !important;
+    }}
+    
+    h3 {{
+        font-size: 1.5rem !important;
+    }}
+    
+    h4 {{
+        font-size: 1.25rem !important;
+    }}
+    
+    h5, h6 {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Override Streamlit default text sizes */
+    .stMarkdown p, .stMarkdown span, .stMarkdown div, .stMarkdown li {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Override metric labels but keep values */
+    [data-testid="stMetricLabel"] {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Caption text slightly smaller */
+    .stCaption, caption {{
+        font-size: 0.875rem !important;
+    }}
+    
+    /* Override Streamlit component text sizes */
+    .stText, .stTextInput > div > div > input, .stTextArea > div > div > textarea {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Info, success, warning, error messages */
+    .stAlert, .stSuccess, .stInfo, .stWarning, .stError {{
+        font-size: 1.125rem !important;
+    }}
+    
+    .stAlert p, .stSuccess p, .stInfo p, .stWarning p, .stError p {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Expander headers */
+    [data-testid="stExpander"] summary {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Sidebar text */
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] div {{
+        font-size: 1.125rem !important;
+    }}
+    
+    /* Table text */
+    table, table td, table th {{
+        font-size: 1.125rem !important;
+    }}
+    
     /* Modern Icon Styles */
     .icon {{
         display: inline-flex;
@@ -227,7 +297,7 @@ st.markdown(f"""
         text-align: center;
         color: #2a0040;
         margin-bottom: 3rem;
-        font-size: 1.3rem;
+        font-size: 1.125rem !important;
         font-weight: 500;
         letter-spacing: 0.01em;
     }}
@@ -332,11 +402,16 @@ st.markdown(f"""
         color: #ffffff;
         margin-bottom: 1rem;
         font-weight: 700;
-        font-size: 1.5rem;
+        font-size: 1.5rem !important;
         background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+    }}
+    
+    /* Ensure all text in feature cards is consistent */
+    .feature-card p, .feature-card li, .feature-card span {{
+        font-size: 1.125rem !important;
     }}
     
     /* Buttons - Dark Purple with Glow Effect */
@@ -347,7 +422,7 @@ st.markdown(f"""
         border-radius: 0.75rem;
         padding: 0.75rem 2.5rem;
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 1.125rem !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 4px 14px rgba(42, 0, 64, 0.6);
         position: relative;
@@ -427,7 +502,7 @@ st.markdown(f"""
     h2 {{
         margin-top: 2.5rem;
         margin-bottom: 1.5rem;
-        font-size: 2rem;
+        font-size: 2rem !important;
         background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -435,7 +510,7 @@ st.markdown(f"""
     }}
     
     h3 {{
-        font-size: 1.5rem;
+        font-size: 1.5rem !important;
         font-weight: 600;
     }}
     
@@ -469,7 +544,7 @@ st.markdown(f"""
     
     /* Metrics - Dark Purple Theme */
     [data-testid="stMetricValue"] {{
-        font-size: 2.25rem;
+        font-size: 2.25rem !important;
         font-weight: 800;
         background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
         -webkit-background-clip: text;
@@ -480,6 +555,7 @@ st.markdown(f"""
     [data-testid="stMetricLabel"] {{
         font-weight: 600;
         color: #2a0040;
+        font-size: 1.125rem !important;
     }}
     
     /* Expanders - Dark Purple Design */
@@ -1001,7 +1077,7 @@ def main():
     # Sidebar navigation with modern header
     st.sidebar.markdown("""
     <div style='text-align: center; padding: 1.5rem 0 2rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 1.5rem;'>
-        <h2 style='color: white; font-size: 1.5rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
+        <h2 style='color: white; font-size: 1.5rem !important; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
             <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
                 <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
@@ -1155,14 +1231,14 @@ def show_home():
     # Introduction
     st.markdown("""
     <div style='text-align: center; padding: 2rem 0 0.5rem 0;'>
-        <h2 style='color: #ffffff; margin-bottom: 0.5rem; font-size: 2rem; font-weight: 700;'>Transform Your Public Speaking Skills</h2>
+        <h2 style='color: #ffffff; margin-bottom: 0.5rem; font-size: 2rem !important; font-weight: 700;'>Transform Your Public Speaking Skills</h2>
     </div>
     """, unsafe_allow_html=True)
     
     # Statistic callout
     st.markdown("""
     <div style='text-align: center; padding: 0.5rem 0 1.5rem 0; margin: 0;'>
-        <p style='font-size: 1.2rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 0 auto; font-style: italic;'>
+        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 0 auto; font-style: italic;'>
             <span style='color: #c0a0ff; font-weight: 700;'>75% of people</span> are afraid of public speaking.
             <a href='https://www.healthcentral.com/condition/anxiety/glossophobia-fear-of-public-' target='_blank' rel='noopener noreferrer' style='color: rgba(192, 160, 255, 0.7); text-decoration: none; margin-left: 0.5rem; display: inline-block; vertical-align: middle;' title='Source'>
                 <svg style='width: 1em; height: 1em; fill: currentColor;' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
@@ -1170,7 +1246,7 @@ def show_home():
                 </svg>
             </a>
         </p>
-        <p style='font-size: 1.2rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 1.5rem auto 0 auto; font-style: italic;'>
+        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 1.5rem auto 0 auto; font-style: italic;'>
             Let's change that! With your personal AI coach, master the art of confident communication.
         </p>
     </div>
@@ -1180,7 +1256,7 @@ def show_home():
     
     # Feature Cards
     st.markdown("""
-    <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem; font-weight: 700;'>Analysis Features</h2>
+    <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700;'>Analysis Features</h2>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
@@ -1248,7 +1324,7 @@ def show_home():
     # Getting Started Section
     st.markdown("""
     <div style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
-        <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem; font-weight: 700;'>Getting Started</h2>
+        <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700;'>Getting Started</h2>
         <ol style='color: rgba(255, 255, 255, 0.9); line-height: 1.8; padding-left: 1.5rem;'>
             <li><strong>Choose an analysis type</strong> from the sidebar</li>
             <li><strong>Upload</strong> audio/video</li>
@@ -1263,8 +1339,8 @@ def show_home():
     # Call to Action - Dark Purple Glassmorphism Card
     st.markdown("""
     <div class='feature-card modern-card' style='text-align: center; margin-top: 3rem; background: linear-gradient(135deg, rgba(42, 0, 64, 0.3) 0%, rgba(74, 0, 100, 0.3) 100%); border: 1px solid rgba(74, 0, 100, 0.5);'>
-        <h3 style='margin-bottom: 1rem; font-size: 2rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>Ready to Transform Your Speaking Skills? 🚀</h3>
-        <p style='color: #ffffff; margin-bottom: 1.5rem; font-size: 1.1rem;'>Select an analysis type from the sidebar to get started with AI-powered feedback!</p>
+        <h3 style='margin-bottom: 1rem; font-size: 1.5rem !important; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>Ready to Transform Your Speaking Skills? 🚀</h3>
+        <p style='color: #ffffff; margin-bottom: 1.5rem; font-size: 1.125rem !important;'>Select an analysis type from the sidebar to get started with AI-powered feedback!</p>
         <div style='display: inline-block; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, rgba(42, 0, 64, 0.3) 0%, rgba(74, 0, 100, 0.3) 100%); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.6);'>
             <span style='color: #ffffff; font-weight: 600;'>✨ Free • Fast • AI-Powered ✨</span>
         </div>
