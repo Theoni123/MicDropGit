@@ -161,10 +161,10 @@ def show():
         Comprehensive Report
     </h1>
     """, unsafe_allow_html=True)
-    st.markdown("Get a complete analysis combining voice, language, and body language from a single upload")
+    st.markdown("Get a complete analysis combining voice, language, and body language from a single upload.")
     
     # Tips for best results
-    with st.expander("💡 Tips for Best Results", expanded=False):
+    with st.expander("Tips for Best Results", expanded=False):
         st.markdown("""
         **For Video Uploads (Full Analysis):**
         - **Video Quality**: Ensure good lighting so your face and body are clearly visible
@@ -502,7 +502,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             st.info("Body language analysis requires a video file with MediaPipe dependencies installed.")
     
     # Combined Recommendations
-    st.header("💡 Comprehensive Recommendations")
+    st.header("Comprehensive Recommendations")
     
     all_recommendations = []
     

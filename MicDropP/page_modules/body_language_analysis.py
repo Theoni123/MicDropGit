@@ -32,10 +32,10 @@ def show():
         Body Language Analysis
     </h1>
     """, unsafe_allow_html=True)
-    st.markdown("Analyze your posture, gestures, eye contact, facial expressions, and movement")
+    st.markdown("Analyze your posture, gestures, eye contact, facial expressions, and movement.")
     
     # Tips for best results
-    with st.expander("💡 Tips for Best Results", expanded=False):
+    with st.expander("Tips for Best Results", expanded=False):
         st.markdown("""
         - **Video Quality**: Ensure good lighting so your face and body are clearly visible
         - **Full Body View**: Keep your full body visible in the frame for best analysis
@@ -81,7 +81,7 @@ def show():
     
     with col2:
         st.markdown("### Or")
-        record_video = st.button("📹 Record Video", use_container_width=True)
+        record_video = st.button("Record Video", use_container_width=True)
     
     if record_video:
         st.info("Video recording feature coming soon! Please upload a video file for now.")
@@ -121,7 +121,7 @@ def show():
                 st.error(f"❌ Error processing video: {str(e)}")
                 st.exception(e)
                 st.info(
-                    "💡 **Tips for better results:**\n"
+                    "**Tips for better results:**\n"
                     "- Ensure good lighting\n"
                     "- Keep your full body visible\n"
                     "- Use MP4 format for best compatibility\n"
@@ -304,7 +304,7 @@ def display_results(body_metrics, feedback):
         st.metric("Smile Percentage", f"{expressions.get('smile_percentage', 0)*100:.0f}%")
     
     # Feedback and Recommendations
-    st.header("💡 Feedback & Recommendations")
+    st.header("Feedback & Recommendations")
     
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         st.info(f"{i}. {recommendation}")

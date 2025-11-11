@@ -150,6 +150,63 @@ st.markdown(f"""
         font-size: 1.125rem !important;
     }}
     
+    /* Remove gray text colors - make all text white/light */
+    .stMarkdown, .stMarkdown p, .stMarkdown span, .stMarkdown div, .stMarkdown li {{
+        color: rgba(255, 255, 255, 0.95) !important;
+    }}
+    
+    /* Override Streamlit's default gray text */
+    p, span, div, li, label, .stText, .stMarkdownContainer {{
+        color: rgba(255, 255, 255, 0.95) !important;
+    }}
+    
+    /* Headers and subheaders in pages - but h2 keeps purple color */
+    h1, h3, h4, h5, h6 {{
+        color: rgba(255, 255, 255, 0.95) !important;
+    }}
+    
+    /* h2 already has purple color defined above, so it will use that */
+    
+    /* Streamlit text elements */
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] span,
+    [data-testid="stMarkdownContainer"] div,
+    [data-testid="stMarkdownContainer"] li {{
+        color: rgba(255, 255, 255, 0.95) !important;
+    }}
+    
+    /* Caption text - slightly lighter but still visible */
+    .stCaption, caption {{
+        color: rgba(255, 255, 255, 0.85) !important;
+    }}
+    
+    /* Info boxes and alerts */
+    .stInfo, .stSuccess, .stWarning, .stError {{
+        color: rgba(255, 255, 255, 0.95) !important;
+    }}
+    
+    .stInfo p, .stSuccess p, .stWarning p, .stError p {{
+        color: rgba(255, 255, 255, 0.95) !important;
+    }}
+    
+    /* Expander text */
+    [data-testid="stExpander"] p,
+    [data-testid="stExpander"] span,
+    [data-testid="stExpander"] div,
+    [data-testid="stExpander"] li {{
+        color: rgba(255, 255, 255, 0.95) !important;
+    }}
+    
+    /* Metric labels - keep visible */
+    [data-testid="stMetricLabel"] {{
+        color: rgba(255, 255, 255, 0.9) !important;
+    }}
+    
+    /* Delta values in metrics */
+    [data-testid="stMetricDelta"] {{
+        color: rgba(255, 255, 255, 0.9) !important;
+    }}
+    
     /* Modern Icon Styles */
     .icon {{
         display: inline-flex;
@@ -295,11 +352,16 @@ st.markdown(f"""
     
     .sub-header {{
         text-align: center;
-        color: #2a0040;
+        background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         margin-bottom: 3rem;
         font-size: 1.125rem !important;
         font-weight: 500;
         letter-spacing: 0.01em;
+        animation: gradient 5s ease infinite;
     }}
     
     /* Sidebar Styling - Dark Purple Glassmorphism */
@@ -1057,9 +1119,16 @@ def main():
     st.markdown('''
     <div class="main-content">
         <h1 class="main-header">
-            <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+            <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.25rem; width: 3rem; height: 3rem;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="micGradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" style="stop-color:#2a0040;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#4a0064;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#6a0088;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="url(#micGradient)"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="url(#micGradient)"/>
             </svg>
             MicDrop
         </h1>
@@ -1070,10 +1139,10 @@ def main():
     # Sidebar navigation with modern header
     st.sidebar.markdown("""
     <div style='text-align: center; padding: 1.5rem 0 2rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 1.5rem;'>
-        <h2 style='color: white; font-size: 1.5rem !important; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
-            <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+        <h2 style='color: white !important; font-size: 1.5rem !important; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
+            <svg style="width: 1.5rem; height: 1.5rem; fill: #c0a0ff;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="#c0a0ff"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="#c0a0ff"/>
             </svg>
             MicDrop
         </h2>

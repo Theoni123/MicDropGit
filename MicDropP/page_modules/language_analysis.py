@@ -22,10 +22,10 @@ def show():
         Language Analysis
     </h1>
     """, unsafe_allow_html=True)
-    st.markdown("Analyze your speech for clarity, word choice, filler words, structure, and tone")
+    st.markdown("Analyze your speech for clarity, word choice, filler words, structure, and tone.")
     
     # Tips for best results
-    with st.expander("💡 Tips for Best Results", expanded=False):
+    with st.expander("Tips for Best Results", expanded=False):
         st.markdown("""
         - **Audio Quality**: Use a quiet environment with minimal background noise for better transcription
         - **Text Input**: If transcription fails, you can paste your speech text directly
@@ -73,7 +73,7 @@ def show():
                     process_language_analysis(text)
                 else:
                     st.error(f"❌ Could not transcribe audio: {text}")
-                    st.info("💡 Try uploading a clearer audio file or use the text input option instead.")
+                    st.info("Try uploading a clearer audio file or use the text input option instead.")
             except Exception as e:
                 st.error(f"❌ Error transcribing audio: {str(e)}")
                 st.exception(e)
@@ -266,7 +266,7 @@ def display_results(language_metrics, feedback, text):
         st.metric("Exclamations", tone_stats.get('exclamation_count', 0))
     
     # Feedback and Recommendations
-    st.header("💡 Feedback & Recommendations")
+    st.header("Feedback & Recommendations")
     
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         st.info(f"{i}. {recommendation}")

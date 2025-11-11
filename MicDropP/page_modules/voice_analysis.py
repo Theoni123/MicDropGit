@@ -26,10 +26,10 @@ def show():
         Voice Analysis
     </h1>
     """, unsafe_allow_html=True)
-    st.markdown("Analyze your speaking pace, pitch, pauses, and volume")
+    st.markdown("Analyze your speaking pace, pitch, pauses, and volume.")
     
     # Tips for best results
-    with st.expander("💡 Tips for Best Results", expanded=False):
+    with st.expander("Tips for Best Results", expanded=False):
         st.markdown("""
         - **Audio Quality**: Use a quiet environment with minimal background noise
         - **Speak Clearly**: Enunciate your words and speak at a natural pace
@@ -248,7 +248,7 @@ def display_results(voice_metrics, feedback, y, sr):
     st.plotly_chart(fig_volume, use_container_width=True)
     
     # Feedback and Recommendations
-    st.header("💡 Feedback & Recommendations")
+    st.header("Feedback & Recommendations")
     
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         st.info(f"{i}. {recommendation}")
