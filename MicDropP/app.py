@@ -811,14 +811,6 @@ st.markdown(f"""
 def main():
     """Main application function"""
     
-    # Debug: Show if background image was loaded (only on first run)
-    if 'bg_debug_shown' not in st.session_state:
-        if background_image:
-            st.sidebar.success("✅ Background image loaded!")
-        else:
-            st.sidebar.info("ℹ️ Using gradient background (image not found)")
-        st.session_state.bg_debug_shown = True
-    
     # Curtain animation - only show on first load
     if 'curtains_shown' not in st.session_state:
         st.markdown("""
@@ -935,9 +927,6 @@ def main():
             </svg>
             MicDrop
         </h2>
-        <p style='color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; margin: 0.5rem 0 0 0;'>
-            Navigation
-        </p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1079,17 +1068,6 @@ def show_home():
     
     # Wrap content in main-content div for fade-in effect
     st.markdown('<div class="main-content">', unsafe_allow_html=True)
-    
-    # Quick stats
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("Analysis Types", "3", help="Voice, Language, and Body Language")
-    with col2:
-        st.metric("Supported Formats", "8+", help="MP3, WAV, MP4, WebM, and more")
-    with col3:
-        st.metric("Processing Time", "< 30s", help="Fast AI-powered analysis")
-    with col4:
-        st.metric("Free & Open", "100%", help="No API keys or subscriptions needed")
     
     st.markdown("---")
     
