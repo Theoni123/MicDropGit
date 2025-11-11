@@ -380,6 +380,16 @@ st.markdown(f"""
         border-right: 1px solid rgba(255, 255, 255, 0.2);
         box-shadow: 4px 0 24px rgba(42, 0, 64, 0.5);
         z-index: 9999 !important;
+        /* Ensure sidebar is always visible */
+        visibility: visible !important;
+        display: block !important;
+    }}
+    
+    /* Prevent sidebar from being collapsed */
+    [data-testid="stSidebar"][aria-expanded="false"] {{
+        visibility: visible !important;
+        display: block !important;
+        transform: translateX(0) !important;
     }}
     
     [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{
@@ -643,6 +653,22 @@ st.markdown(f"""
     #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden; display: none !important;}}
     header {{visibility: hidden;}}
+    
+    /* Hide sidebar toggle button - keep sidebar always visible */
+    button[data-testid="baseButton-header"] {{
+        display: none !important;
+    }}
+    [data-testid="stHeader"] button {{
+        display: none !important;
+    }}
+    /* Hide the collapse/expand sidebar button */
+    .stApp > header button[kind="header"] {{
+        display: none !important;
+    }}
+    /* Alternative selector for sidebar toggle */
+    [data-testid="collapsedControl"] {{
+        display: none !important;
+    }}
     
     /* Hide Streamlit footer completely */
     footer[data-testid="stFooter"],
