@@ -153,7 +153,7 @@ st.markdown(f"""
         background-clip: text;
         margin-bottom: 0.5rem;
         letter-spacing: -0.03em;
-        animation: gradient 3s ease infinite;
+        animation: gradient 5s ease infinite;
         text-shadow: 0 0 40px rgba(42, 0, 64, 0.6);
         position: relative;
     }}
@@ -589,10 +589,10 @@ st.markdown(f"""
         overflow: hidden;
     }}
     
+    /* Position curtains to account for sidebar */
     .curtain-left, .curtain-right {{
         position: absolute;
         top: 0;
-        width: 50%;
         height: 100%;
         background: linear-gradient(90deg, 
             #1a0026 0%, 
@@ -618,13 +618,16 @@ st.markdown(f"""
         overflow: hidden;
     }}
     
+    /* Curtain positioning - Initial CSS positioning, JavaScript will refine */
     .curtain-left {{
-        left: 0;
+        left: calc(21rem - 150px);  /* Start well before sidebar edge to cover gap */
+        width: calc((100vw - 21rem) * 0.47 + 150px);  /* 47% of main content + extra to cover gap */
         border-right: 3px solid rgba(0, 0, 0, 0.5);
     }}
     
     .curtain-right {{
-        right: 0;
+        left: calc(21rem + (100vw - 21rem) * 0.47);  /* Start from 47% point (slightly right) */
+        width: calc((100vw - 21rem) * 0.53);  /* 53% of main content */
         border-left: 3px solid rgba(0, 0, 0, 0.5);
     }}
     
@@ -723,7 +726,7 @@ st.markdown(f"""
             transform: translateX(0);
         }}
         100% {{
-            transform: translateX(-100%);
+            transform: translateX(-110%);  /* Slightly more than 100% to ensure hiding, closer to right speed */
         }}
     }}
     
@@ -737,12 +740,12 @@ st.markdown(f"""
     }}
     
     .curtain-left.open {{
-        animation: openCurtains 3s ease-in-out forwards;
+        animation: openCurtains 3.5s ease-in-out forwards;
         animation-delay: 0.5s;
     }}
     
     .curtain-right.open {{
-        animation: openCurtainsRight 3s ease-in-out forwards;
+        animation: openCurtainsRight 3.5s ease-in-out forwards;
         animation-delay: 0.5s;
     }}
     
@@ -800,13 +803,70 @@ def main():
         </div>
         <script>
             (function() {{
-                // Hide curtains after animation completes (3s animation + 0.5s delay + 0.5s buffer)
+                // Function to position curtains based on sidebar width
+                function positionCurtains() {{
+                    var sidebar = document.querySelector('[data-testid="stSidebar"]');
+                    var curtainLeft = document.querySelector('.curtain-left');
+                    var curtainRight = document.querySelector('.curtain-right');
+                    
+                    if (!curtainLeft || !curtainRight) {{
+                        // Retry if elements not found yet
+                        setTimeout(positionCurtains, 50);
+                        return;
+                    }}
+                    
+                    // Get sidebar width (default to 21rem if not found)
+                    var sidebarWidth = 21 * 16; // 21rem in pixels (assuming 16px base)
+                    if (sidebar) {{
+                        var sidebarRect = sidebar.getBoundingClientRect();
+                        sidebarWidth = sidebarRect.width || sidebarWidth;
+                    }}
+                    
+                    // Calculate main content area width
+                    var viewportWidth = window.innerWidth;
+                    var mainContentWidth = viewportWidth - sidebarWidth;
+                    var leftCurtainBaseWidth = mainContentWidth * 0.47;  // 47% - center slightly to the right
+                    var extraWidthLeft = 150;  // Extra to extend left and cover gap
+                    var leftCurtainWidth = leftCurtainBaseWidth + extraWidthLeft;
+                    var rightCurtainWidth = mainContentWidth * 0.53;  // 53% - slightly narrower
+                    
+                    // Ensure we have valid dimensions
+                    if (mainContentWidth > 0 && leftCurtainWidth > 0 && rightCurtainWidth > 0) {{
+                        // Position left curtain: starts well before sidebar edge to cover gap,
+                        // covers 47% of main content + extra (center slightly to the right)
+                        curtainLeft.style.left = (sidebarWidth - extraWidthLeft) + 'px';
+                        curtainLeft.style.width = leftCurtainWidth + 'px';
+                        
+                        // Position right curtain: starts from 47% point (center slightly to the right),
+                        // covers 53% of main content area
+                        curtainRight.style.left = (sidebarWidth + leftCurtainBaseWidth) + 'px';
+                        curtainRight.style.width = rightCurtainWidth + 'px';
+                    }}
+                }}
+                
+                // Wait for DOM to be ready, then position curtains
+                if (document.readyState === 'loading') {{
+                    document.addEventListener('DOMContentLoaded', function() {{
+                        positionCurtains();
+                        // Also position after a short delay to ensure everything is rendered
+                        setTimeout(positionCurtains, 100);
+                    }});
+                }} else {{
+                    // DOM already ready
+                    positionCurtains();
+                    setTimeout(positionCurtains, 100);
+                }}
+                
+                // Position on resize
+                window.addEventListener('resize', positionCurtains);
+                
+                // Hide curtains after animation completes (3.5s animation + 0.5s delay + 0.5s buffer)
                 setTimeout(function() {{
                     var container = document.getElementById('curtainContainer');
                     if (container) {{
                         container.style.display = 'none';
                     }}
-                }}, 4000);
+                }}, 4500);
                 
                 // Show content as curtains start opening (0.5s delay + 0.5s into animation)
                 setTimeout(function() {{
