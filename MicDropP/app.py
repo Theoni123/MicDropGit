@@ -1095,11 +1095,19 @@ def show_home():
     
     # Introduction
     st.markdown("""
-    <div style='text-align: center; padding: 2rem 0;'>
-        <h2 style='color: #ffffff; margin-bottom: 1rem;'>Transform Your Public Speaking Skills</h2>
-        <p style='font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto;'>
-            Get comprehensive, AI-powered feedback on your voice, language, and body language. 
-            Practice, improve, and become a confident speaker.
+    <div style='text-align: center; padding: 2rem 0 0.5rem 0;'>
+        <h2 style='color: #ffffff; margin-bottom: 0.5rem;'>Transform Your Public Speaking Skills</h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Statistic callout
+    st.markdown("""
+    <div style='text-align: center; padding: 0.5rem 0 1.5rem 0; margin: 0;'>
+        <p style='font-size: 1.2rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 0 auto; font-style: italic;'>
+            <span style='color: #c0a0ff; font-weight: 700;'>75% of people</span> are afraid of public speaking.
+        </p>
+        <p style='font-size: 1.2rem; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 1.5rem auto 0 auto; font-style: italic;'>
+            Let's change that! With your personal AI coach, master the art of confident communication.
         </p>
     </div>
     """, unsafe_allow_html=True)
