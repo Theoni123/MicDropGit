@@ -156,12 +156,12 @@ def show():
     st.markdown("""
     <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #ffffff;'>
         <svg style="width: 2rem; height: 2rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"/>
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
         </svg>
-        Comprehensive Report
+        AI Coach
     </h1>
     """, unsafe_allow_html=True)
-    st.markdown("Get a complete analysis combining voice, language, and body language from a single upload.")
+    st.markdown("**Your complete speaking coach** - Get comprehensive analysis of voice, language, and body language with personalized recommendations from a single upload.")
     
     # Tips for best results
     with st.expander("Tips for Best Results", expanded=False):
