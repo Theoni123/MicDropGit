@@ -1074,7 +1074,7 @@ def show_home():
     # Introduction
     st.markdown("""
     <div style='text-align: center; padding: 2rem 0 0.5rem 0;'>
-        <h2 style='color: #ffffff; margin-bottom: 0.5rem;'>Transform Your Public Speaking Skills</h2>
+        <h2 style='color: #ffffff; margin-bottom: 0.5rem; font-size: 2rem; font-weight: 700;'>Transform Your Public Speaking Skills</h2>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1098,7 +1098,9 @@ def show_home():
     st.markdown("---")
     
     # Feature Cards
-    st.markdown("### 🎯 Analysis Features")
+    st.markdown("""
+    <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem; font-weight: 700;'>Analysis Features</h2>
+    """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
@@ -1164,14 +1166,16 @@ def show_home():
     
     # Getting Started Section
     st.markdown("""
-    ### 🚀 Getting Started
-    
-    1. **Choose an analysis type** from the sidebar
-    2. **Upload or record** your audio/video
-    3. **Wait for processing** (usually < 30 seconds)
-    4. **Review your feedback** and recommendations
-    5. **Practice and improve!**
-    """)
+    <div style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
+        <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem; font-weight: 700;'>Getting Started</h2>
+        <ol style='color: rgba(255, 255, 255, 0.9); line-height: 1.8; padding-left: 1.5rem;'>
+            <li><strong>Choose an analysis type</strong> from the sidebar</li>
+            <li><strong>Upload</strong> audio/video</li>
+            <li><strong>Review</strong> your feedback and recommendations</li>
+            <li><strong>Practice and improve!</strong></li>
+        </ol>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("---")
     
