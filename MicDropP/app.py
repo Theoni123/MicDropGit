@@ -399,14 +399,10 @@ st.markdown(f"""
     }}
     
     .feature-card h3 {{
-        color: #ffffff;
+        color: #c0a0ff !important;
         margin-bottom: 1rem;
         font-weight: 700;
         font-size: 1.5rem !important;
-        background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
     }}
     
     /* Ensure all text in feature cards is consistent */
@@ -503,10 +499,7 @@ st.markdown(f"""
         margin-top: 2.5rem;
         margin-bottom: 1.5rem;
         font-size: 2rem !important;
-        background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #c0a0ff !important;
     }}
     
     h3 {{
@@ -1231,14 +1224,14 @@ def show_home():
     # Introduction
     st.markdown("""
     <div style='text-align: center; padding: 2rem 0 0.5rem 0;'>
-        <h2 style='color: #ffffff; margin-bottom: 0.5rem; font-size: 2rem !important; font-weight: 700;'>Transform Your Public Speaking Skills</h2>
+        <h2 style='margin-bottom: 0.5rem; font-size: 2rem !important; font-weight: 700; color: #c0a0ff !important;'>Transform Your Public Speaking Skills</h2>
     </div>
     """, unsafe_allow_html=True)
     
     # Statistic callout
     st.markdown("""
     <div style='text-align: center; padding: 0.5rem 0 1.5rem 0; margin: 0;'>
-        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 0 auto; font-style: italic;'>
+        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 400; max-width: 700px; margin: 0 auto; font-style: italic;'>
             <span style='color: #c0a0ff; font-weight: 700;'>75% of people</span> are afraid of public speaking.
             <a href='https://www.healthcentral.com/condition/anxiety/glossophobia-fear-of-public-' target='_blank' rel='noopener noreferrer' style='color: rgba(192, 160, 255, 0.7); text-decoration: none; margin-left: 0.5rem; display: inline-block; vertical-align: middle;' title='Source'>
                 <svg style='width: 1em; height: 1em; fill: currentColor;' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
@@ -1246,7 +1239,7 @@ def show_home():
                 </svg>
             </a>
         </p>
-        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 600; max-width: 700px; margin: 1.5rem auto 0 auto; font-style: italic;'>
+        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 400; max-width: 700px; margin: 1.5rem auto 0 auto; font-style: italic;'>
             Let's change that! With your personal AI coach, master the art of confident communication.
         </p>
     </div>
@@ -1256,7 +1249,7 @@ def show_home():
     
     # Feature Cards
     st.markdown("""
-    <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700;'>Analysis Features</h2>
+    <h2 style='margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700; color: #c0a0ff !important;'>Analysis Features</h2>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
@@ -1324,7 +1317,7 @@ def show_home():
     # Getting Started Section
     st.markdown("""
     <div style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
-        <h2 style='color: #ffffff; margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700;'>Getting Started</h2>
+        <h2 style='margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700; color: #c0a0ff !important;'>Getting Started</h2>
         <ol style='color: rgba(255, 255, 255, 0.9); line-height: 1.8; padding-left: 1.5rem;'>
             <li><strong>Choose an analysis type</strong> from the sidebar</li>
             <li><strong>Upload</strong> audio/video</li>
@@ -1339,10 +1332,10 @@ def show_home():
     # Call to Action - Dark Purple Glassmorphism Card
     st.markdown("""
     <div class='feature-card modern-card' style='text-align: center; margin-top: 3rem; background: linear-gradient(135deg, rgba(42, 0, 64, 0.3) 0%, rgba(74, 0, 100, 0.3) 100%); border: 1px solid rgba(74, 0, 100, 0.5);'>
-        <h3 style='margin-bottom: 1rem; font-size: 1.5rem !important; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>Ready to Transform Your Speaking Skills? 🚀</h3>
+        <h3 style='margin-bottom: 1rem; font-size: 1.5rem !important; color: #c0a0ff !important;'>Ready to Transform Your Speaking Skills?</h3>
         <p style='color: #ffffff; margin-bottom: 1.5rem; font-size: 1.125rem !important;'>Select an analysis type from the sidebar to get started with AI-powered feedback!</p>
         <div style='display: inline-block; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, rgba(42, 0, 64, 0.3) 0%, rgba(74, 0, 100, 0.3) 100%); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.6);'>
-            <span style='color: #ffffff; font-weight: 600;'>✨ Free • Fast • AI-Powered ✨</span>
+            <span style='color: #ffffff; font-weight: 600;'>Free • Fast • AI-Powered</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
