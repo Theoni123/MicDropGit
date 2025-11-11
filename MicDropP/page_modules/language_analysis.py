@@ -111,47 +111,93 @@ def process_language_analysis(text):
 def display_results(language_metrics, feedback, text):
     """Display language analysis results"""
     
-    st.header("📊 Analysis Results")
+    st.markdown("---")
+    st.markdown("## 📊 Analysis Results")
+    st.markdown("")
     
-    # Key Metrics
-    st.subheader("Key Metrics")
+    # Key Metrics with modern cards
+    st.markdown("### 🎯 Key Metrics")
+    st.markdown("")
+    
     col1, col2, col3, col4 = st.columns(4)
     
+    filler_rate = language_metrics.get('filler_words', {}).get('filler_rate', 0.0)
+    diversity = language_metrics.get('vocabulary', {}).get('diversity_ratio', 0.0)
+    flesch = language_metrics.get('readability', {}).get('flesch_reading_ease', 0)
+    avg_sentence = language_metrics.get('sentence_structure', {}).get('avg_words_per_sentence', 0)
+    
+    # Determine status colors
+    filler_color = "#10b981" if filler_rate < 1.5 else ("#f59e0b" if filler_rate < 3.0 else "#ef4444")
+    vocab_color = "#ef4444" if diversity < 0.4 else ("#10b981" if diversity > 0.7 else "#f59e0b")
+    readability_color = "#10b981" if flesch > 70 else ("#ef4444" if flesch < 30 else "#f59e0b") if flesch > 0 else "#6b7280"
+    sentence_color = "#10b981" if 10 <= avg_sentence <= 20 else "#f59e0b"
+    
     with col1:
-        filler_rate = language_metrics.get('filler_words', {}).get('filler_rate', 0.0)
-        filler_score = "Low" if filler_rate < 1.5 else ("Moderate" if filler_rate < 3.0 else "High")
-        st.metric("Filler Words", f"{filler_rate:.1f} per 100 words", 
-                 delta=filler_score)
+        filler_label = "Low" if filler_rate < 1.5 else ("Moderate" if filler_rate < 3.0 else "High")
+        st.markdown(f"""
+        <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {filler_color};'>
+            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>FILLER WORDS</div>
+            <div style='font-size: 2.5rem; font-weight: 800; color: {filler_color}; margin-bottom: 0.25rem;'>{filler_rate:.1f}</div>
+            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>per 100 words</div>
+            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>{filler_label} usage</div>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col2:
-        diversity = language_metrics.get('vocabulary', {}).get('diversity_ratio', 0.0)
-        vocab_score = "Low" if diversity < 0.4 else ("High" if diversity > 0.7 else "Good")
-        st.metric("Vocabulary Diversity", f"{diversity*100:.1f}%", 
-                 delta=vocab_score)
+        vocab_label = "Low" if diversity < 0.4 else ("High" if diversity > 0.7 else "Good")
+        st.markdown(f"""
+        <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {vocab_color};'>
+            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>VOCABULARY</div>
+            <div style='font-size: 2.5rem; font-weight: 800; color: {vocab_color}; margin-bottom: 0.25rem;'>{diversity*100:.0f}%</div>
+            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>diversity</div>
+            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>{vocab_label} variety</div>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col3:
-        flesch = language_metrics.get('readability', {}).get('flesch_reading_ease', 0)
         if flesch > 0:
             readability_label = "Easy" if flesch > 70 else ("Difficult" if flesch < 30 else "Moderate")
-            st.metric("Readability", f"{flesch:.0f}", 
-                     delta=readability_label)
+            st.markdown(f"""
+            <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {readability_color};'>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>READABILITY</div>
+                <div style='font-size: 2.5rem; font-weight: 800; color: {readability_color}; margin-bottom: 0.25rem;'>{flesch:.0f}</div>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>Flesch score</div>
+                <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>{readability_label} to read</div>
+            </div>
+            """, unsafe_allow_html=True)
         else:
-            st.metric("Readability", "N/A")
+            st.markdown(f"""
+            <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {readability_color};'>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>READABILITY</div>
+                <div style='font-size: 2.5rem; font-weight: 800; color: {readability_color}; margin-bottom: 0.25rem;'>N/A</div>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>score</div>
+                <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Not available</div>
+            </div>
+            """, unsafe_allow_html=True)
     
     with col4:
-        avg_sentence = language_metrics.get('sentence_structure', {}).get('avg_words_per_sentence', 0)
-        sentence_score = "Good" if 10 <= avg_sentence <= 20 else ("Complex" if avg_sentence > 20 else "Simple")
-        st.metric("Avg Sentence Length", f"{avg_sentence:.1f} words", 
-                 delta=sentence_score)
+        sentence_label = "Good" if 10 <= avg_sentence <= 20 else ("Complex" if avg_sentence > 20 else "Simple")
+        st.markdown(f"""
+        <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {sentence_color};'>
+            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>SENTENCE LENGTH</div>
+            <div style='font-size: 2.5rem; font-weight: 800; color: {sentence_color}; margin-bottom: 0.25rem;'>{avg_sentence:.1f}</div>
+            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>words average</div>
+            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>{sentence_label} length</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("")
+    st.markdown("")
     
     # Detailed Visualizations
-    st.subheader("📈 Detailed Analysis")
+    st.markdown("### 📈 Detailed Analysis")
+    st.markdown("")
     
     # Filler words visualization
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("**Filler Words Breakdown**")
+        st.markdown("#### 🗣️ Filler Words Breakdown")
         filler_words_dict = language_metrics.get('filler_words', {}).get('filler_words', {})
         if filler_words_dict:
             fillers = list(filler_words_dict.keys())
@@ -161,21 +207,45 @@ def display_results(language_metrics, feedback, text):
             fig_fillers.add_trace(go.Bar(
                 x=fillers,
                 y=counts,
-                marker_color='coral',
-                name='Filler Count'
+                marker_color=filler_color,
+                marker_line_color='rgba(255,255,255,0.2)',
+                marker_line_width=1,
+                name='Filler Count',
+                hovertemplate='<b>%{x}</b><br>Count: %{y}<extra></extra>'
             ))
             fig_fillers.update_layout(
-                title="Filler Words Detected",
+                title={'text': "Filler Words Detected", 'font': {'color': 'white', 'size': 16}},
                 xaxis_title="Filler Word",
                 yaxis_title="Count",
-                height=300
+                height=300,
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(42, 0, 64, 0.2)',
+                font={'color': 'white', 'size': 12},
+                xaxis={
+                    'gridcolor': 'rgba(255,255,255,0.1)',
+                    'color': 'white',
+                    'title': {'font': {'color': 'white'}},
+                    'tickfont': {'color': 'white'}
+                },
+                yaxis={
+                    'gridcolor': 'rgba(255,255,255,0.1)',
+                    'color': 'white',
+                    'title': {'font': {'color': 'white'}},
+                    'tickfont': {'color': 'white'}
+                }
             )
             st.plotly_chart(fig_fillers, use_container_width=True)
         else:
-            st.info("✅ No filler words detected!")
+            st.markdown("""
+            <div style='padding: 2rem; text-align: center; background: rgba(16, 185, 129, 0.1); border-radius: 0.75rem; border: 1px solid rgba(16, 185, 129, 0.3);'>
+                <div style='font-size: 2rem; margin-bottom: 0.5rem;'>✅</div>
+                <div style='font-size: 1rem; color: #10b981; font-weight: 600;'>No filler words detected!</div>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;'>Great job keeping your speech clean</div>
+            </div>
+            """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("**Vocabulary Diversity**")
+        st.markdown("#### 📚 Vocabulary Diversity")
         vocab_stats = language_metrics.get('vocabulary', {})
         unique_words = vocab_stats.get('unique_words', 0)
         total_words = vocab_stats.get('total_words', 0)
@@ -185,131 +255,247 @@ def display_results(language_metrics, feedback, text):
             mode="gauge+number",
             value=vocab_stats.get('diversity_ratio', 0) * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Diversity %"},
+            title={'text': "Diversity %", 'font': {'size': 16, 'color': 'white'}},
             gauge={
-                'axis': {'range': [None, 100]},
-                'bar': {'color': "darkgreen"},
+                'axis': {
+                    'range': [None, 100], 
+                    'tickcolor': 'white',
+                    'tickfont': {'color': 'white'}
+                },
+                'bar': {'color': vocab_color},
+                'bgcolor': 'rgba(42, 0, 64, 0.3)',
                 'steps': [
-                    {'range': [0, 40], 'color': "lightgray"},
-                    {'range': [40, 70], 'color': "gray"}
+                    {'range': [0, 40], 'color': "rgba(239, 68, 68, 0.2)"},
+                    {'range': [40, 70], 'color': "rgba(245, 158, 11, 0.2)"},
+                    {'range': [70, 100], 'color': "rgba(16, 185, 129, 0.2)"}
                 ],
                 'threshold': {
-                    'line': {'color': "red", 'width': 4},
+                    'line': {'color': "white", 'width': 2},
                     'thickness': 0.75,
                     'value': 70
                 }
-            }
+            },
+            number={'font': {'size': 32, 'color': vocab_color}}
         ))
-        fig_vocab.update_layout(height=300)
+        fig_vocab.update_layout(
+            height=300,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            font={'color': 'white', 'size': 12}
+        )
         st.plotly_chart(fig_vocab, use_container_width=True)
         
-        st.caption(f"Unique words: {unique_words} / Total words: {total_words}")
+        st.markdown(f"""
+        <div style='text-align: center; font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>
+            {unique_words} unique words / {total_words} total words
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("")
     
     # Readability metrics
-    st.markdown("**Readability Metrics**")
+    st.markdown("#### 📖 Readability Metrics")
     readability = language_metrics.get('readability', {})
     if readability.get('flesch_reading_ease', 0) > 0:
         col1, col2, col3, col4 = st.columns(4)
         
-        with col1:
-            st.metric("Flesch Reading Ease", f"{readability.get('flesch_reading_ease', 0):.0f}")
-        with col2:
-            st.metric("Flesch-Kincaid Grade", f"{readability.get('flesch_kincaid_grade', 0):.1f}")
-        with col3:
-            st.metric("SMOG Index", f"{readability.get('smog_index', 0):.1f}")
-        with col4:
-            st.metric("ARI", f"{readability.get('automated_readability_index', 0):.1f}")
+        metrics_data = [
+            ("Flesch Reading Ease", readability.get('flesch_reading_ease', 0), "0f", "Higher = easier"),
+            ("Flesch-Kincaid Grade", readability.get('flesch_kincaid_grade', 0), "1f", "Grade level"),
+            ("SMOG Index", readability.get('smog_index', 0), "1f", "Years of education"),
+            ("ARI", readability.get('automated_readability_index', 0), "1f", "Grade level")
+        ]
+        
+        for col, (label, value, fmt, desc) in zip([col1, col2, col3, col4], metrics_data):
+            with col:
+                st.markdown(f"""
+                <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                    <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>{label}</div>
+                    <div style='font-size: 2rem; font-weight: 700; color: #c0a0ff; margin-bottom: 0.25rem;'>{value:.{fmt}}</div>
+                    <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);'>{desc}</div>
+                </div>
+                """, unsafe_allow_html=True)
     else:
-        st.info("Readability metrics require textstat library. Install with: pip install textstat")
+        st.markdown("""
+        <div style='padding: 1.5rem; text-align: center; background: rgba(99, 102, 241, 0.1); border-radius: 0.75rem; border: 1px solid rgba(99, 102, 241, 0.3);'>
+            <div style='font-size: 1rem; color: #6366f1; font-weight: 600;'>ℹ️ Readability metrics require textstat library</div>
+            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;'>Install with: pip install textstat</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("")
     
     # Sentence structure
-    st.markdown("**Sentence Structure**")
+    st.markdown("#### 📝 Sentence Structure")
     sentence_stats = language_metrics.get('sentence_structure', {})
     col1, col2, col3 = st.columns(3)
     
-    with col1:
-        st.metric("Total Sentences", sentence_stats.get('sentence_count', 0))
-    with col2:
-        st.metric("Long Sentences (>25 words)", sentence_stats.get('long_sentences_count', 0))
-    with col3:
-        st.metric("Short Sentences (<10 words)", sentence_stats.get('short_sentences_count', 0))
+    structure_data = [
+        ("Total Sentences", sentence_stats.get('sentence_count', 0), "Count"),
+        ("Long Sentences", sentence_stats.get('long_sentences_count', 0), ">25 words"),
+        ("Short Sentences", sentence_stats.get('short_sentences_count', 0), "<10 words")
+    ]
+    
+    for col, (label, value, desc) in zip([col1, col2, col3], structure_data):
+        with col:
+            st.markdown(f"""
+            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>{label}</div>
+                <div style='font-size: 2.5rem; font-weight: 700; color: #c0a0ff; margin-bottom: 0.25rem;'>{value}</div>
+                <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);'>{desc}</div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    st.markdown("")
     
     # Repetition analysis
     repetition_stats = language_metrics.get('repetition', {})
     most_repeated = repetition_stats.get('most_repeated', [])
     
     if most_repeated:
-        st.markdown("**Word Repetition**")
+        st.markdown("#### 🔁 Word Repetition")
         col1, col2 = st.columns([1, 2])
         
         with col1:
             repetition_score = repetition_stats.get('repetition_score', 0.0)
-            st.metric("Repetition Score", f"{repetition_score:.1f}%")
+            rep_color = "#10b981" if repetition_score < 8 else ("#f59e0b" if repetition_score < 15 else "#ef4444")
+            st.markdown(f"""
+            <div style='text-align: center; padding: 1.5rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>Repetition Score</div>
+                <div style='font-size: 2.5rem; font-weight: 700; color: {rep_color}; margin-bottom: 0.25rem;'>{repetition_score:.1f}%</div>
+                <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);'>Lower is better</div>
+            </div>
+            """, unsafe_allow_html=True)
         
         with col2:
-            st.markdown("**Most Repeated Words:**")
-            repeated_text = ", ".join([f"**{word}** ({count}x)" for word, count in most_repeated[:10]])
-            st.markdown(repeated_text)
+            repeated_words_html = " ".join([f"<span style='display: inline-block; padding: 0.5rem 0.75rem; margin: 0.25rem; background: rgba(192, 160, 255, 0.2); border-radius: 0.5rem; border: 1px solid rgba(192, 160, 255, 0.3);'><strong>{word}</strong> <span style='color: #c0a0ff;'>({count}x)</span></span>" for word, count in most_repeated[:10]])
+            st.markdown(f"""
+            <div style='padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; font-weight: 600;'>Most Repeated Words:</div>
+                <div style='display: flex; flex-wrap: wrap; gap: 0.5rem;'>
+                    {repeated_words_html}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    st.markdown("")
     
     # Tone analysis
-    st.markdown("**Tone & Engagement**")
+    st.markdown("#### 🎭 Tone & Engagement")
     tone_stats = language_metrics.get('tone', {})
     col1, col2, col3, col4 = st.columns(4)
     
-    with col1:
-        st.metric("Engagement Score", f"{tone_stats.get('engagement_score', 0):.1f}%")
-    with col2:
-        st.metric("Confidence Indicators", tone_stats.get('confidence_indicators', 0))
-    with col3:
-        st.metric("Questions", tone_stats.get('question_count', 0))
-    with col4:
-        st.metric("Exclamations", tone_stats.get('exclamation_count', 0))
+    tone_data = [
+        ("Engagement Score", tone_stats.get('engagement_score', 0), "%", "1f"),
+        ("Confidence Indicators", tone_stats.get('confidence_indicators', 0), "", "0f"),
+        ("Questions", tone_stats.get('question_count', 0), "", "0f"),
+        ("Exclamations", tone_stats.get('exclamation_count', 0), "", "0f")
+    ]
+    
+    for col, (label, value, unit, fmt) in zip([col1, col2, col3, col4], tone_data):
+        with col:
+            st.markdown(f"""
+            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>{label}</div>
+                <div style='font-size: 2.25rem; font-weight: 700; color: #c0a0ff; margin-bottom: 0.25rem;'>{value:.{fmt}}{unit}</div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    st.markdown("")
+    st.markdown("")
     
     # Feedback and Recommendations
-    st.header("Feedback & Recommendations")
+    st.markdown("---")
+    st.markdown("## 💡 Feedback & Recommendations")
+    st.markdown("")
     
+    # Display recommendations in organized cards
     for i, recommendation in enumerate(feedback['recommendations'], 1):
-        st.info(f"{i}. {recommendation}")
+        # Determine recommendation type based on content
+        if any(word in recommendation.lower() for word in ['great', 'excellent', 'good']):
+            rec_color = "#10b981"
+            rec_icon = "✅"
+        elif any(word in recommendation.lower() for word in ['try', 'consider', 'could']):
+            rec_color = "#f59e0b"
+            rec_icon = "💡"
+        else:
+            rec_color = "#6366f1"
+            rec_icon = "📌"
+        
+        st.markdown(f"""
+        <div class='feature-card' style='padding: 1.25rem; margin-bottom: 1rem; border-left: 4px solid {rec_color};'>
+            <div style='display: flex; align-items: start; gap: 1rem;'>
+                <div style='font-size: 1.5rem; line-height: 1;'>{rec_icon}</div>
+                <div style='flex: 1;'>
+                    <div style='font-size: 1rem; color: rgba(255, 255, 255, 0.95); line-height: 1.6;'>
+                        {recommendation}
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
-    # Summary scores
-    st.subheader("Summary Scores")
+    st.markdown("")
+    st.markdown("---")
+    
+    # Summary scores with improved layout
+    st.markdown("### 📋 Quick Summary")
+    st.markdown("")
     scores = feedback['scores']
     
-    score_colors = {
-        'high': '🔴',
-        'moderate': '🟡',
-        'low': '🟢',
-        'low_engagement': '🟡',
-        'engaging': '🟢',
-        'good': '🟢',
-        'difficult': '🔴',
-        'easy': '🟢',
-        'complex': '🟡',
-        'simple': '🟡',
-        'issues': '🟡'
+    score_info = {
+        'high': {'emoji': '🔴', 'label': 'High', 'color': '#ef4444'},
+        'moderate': {'emoji': '🟡', 'label': 'Moderate', 'color': '#f59e0b'},
+        'low': {'emoji': '🟢', 'label': 'Low', 'color': '#10b981'},
+        'low_engagement': {'emoji': '🟡', 'label': 'Low', 'color': '#f59e0b'},
+        'engaging': {'emoji': '🟢', 'label': 'Engaging', 'color': '#10b981'},
+        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#10b981'},
+        'difficult': {'emoji': '🔴', 'label': 'Difficult', 'color': '#ef4444'},
+        'easy': {'emoji': '🟢', 'label': 'Easy', 'color': '#10b981'},
+        'complex': {'emoji': '🟡', 'label': 'Complex', 'color': '#f59e0b'},
+        'simple': {'emoji': '🟡', 'label': 'Simple', 'color': '#f59e0b'},
+        'issues': {'emoji': '🟡', 'label': 'Issues', 'color': '#f59e0b'}
     }
     
+    # First row - main metrics
     col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        score_key = scores.get('filler_words', 'N/A')
-        st.markdown(f"**Filler Words:** {score_colors.get(score_key, '⚪')} {score_key.title() if score_key != 'N/A' else 'N/A'}")
-    with col2:
-        score_key = scores.get('vocabulary', 'N/A')
-        st.markdown(f"**Vocabulary:** {score_colors.get(score_key, '⚪')} {score_key.title() if score_key != 'N/A' else 'N/A'}")
-    with col3:
-        score_key = scores.get('readability', 'N/A')
-        st.markdown(f"**Readability:** {score_colors.get(score_key, '⚪')} {score_key.title() if score_key != 'N/A' else 'N/A'}")
-    with col4:
-        score_key = scores.get('sentence_structure', 'N/A')
-        st.markdown(f"**Structure:** {score_colors.get(score_key, '⚪')} {score_key.title() if score_key != 'N/A' else 'N/A'}")
     
+    metrics_row1 = [
+        ('Filler Words', scores.get('filler_words', 'good')),
+        ('Vocabulary', scores.get('vocabulary', 'good')),
+        ('Readability', scores.get('readability', 'good')),
+        ('Structure', scores.get('sentence_structure', 'good'))
+    ]
+    
+    for col, (metric_name, score_key) in zip([col1, col2, col3, col4], metrics_row1):
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#6b7280'})
+        with col:
+            st.markdown(f"""
+            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
+                <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
+                <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label']}</div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    st.markdown("")
+    
+    # Second row - additional metrics
     col1, col2, col3 = st.columns(3)
-    with col1:
-        score_key = scores.get('repetition', 'N/A')
-        st.markdown(f"**Repetition:** {score_colors.get(score_key, '⚪')} {score_key.title() if score_key != 'N/A' else 'N/A'}")
-    with col2:
-        score_key = scores.get('tone', 'N/A')
-        st.markdown(f"**Tone:** {score_colors.get(score_key, '⚪')} {score_key.title().replace('_', ' ') if score_key != 'N/A' else 'N/A'}")
-    with col3:
-        score_key = scores.get('grammar', 'N/A')
-        st.markdown(f"**Grammar:** {score_colors.get(score_key, '⚪')} {score_key.title() if score_key != 'N/A' else 'N/A'}")
+    
+    metrics_row2 = [
+        ('Repetition', scores.get('repetition', 'low')),
+        ('Tone', scores.get('tone', 'engaging')),
+        ('Grammar', scores.get('grammar', 'good'))
+    ]
+    
+    for col, (metric_name, score_key) in zip([col1, col2, col3], metrics_row2):
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#6b7280'})
+        with col:
+            st.markdown(f"""
+            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
+                <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
+                <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label'].replace('_', ' ').title()}</div>
+            </div>
+            """, unsafe_allow_html=True)
