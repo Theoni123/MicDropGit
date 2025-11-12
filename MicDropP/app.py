@@ -380,16 +380,46 @@ st.markdown(f"""
         border-right: 1px solid rgba(255, 255, 255, 0.2);
         box-shadow: 4px 0 24px rgba(42, 0, 64, 0.5);
         z-index: 9999 !important;
-        /* Ensure sidebar is always visible */
-        visibility: visible !important;
+        /* Lock sidebar - always visible */
         display: block !important;
+        visibility: visible !important;
+        transform: translateX(0) !important;
+        opacity: 1 !important;
     }}
     
-    /* Prevent sidebar from being collapsed */
-    [data-testid="stSidebar"][aria-expanded="false"] {{
-        visibility: visible !important;
+    /* Hide sidebar toggle button completely */
+    button[data-testid="baseButton-header"] {{
+        display: none !important;
+        visibility: hidden !important;
+    }}
+    
+    /* Hide any sidebar toggle controls */
+    [data-testid="stSidebar"] button[aria-label*="close"],
+    [data-testid="stSidebar"] button[aria-label*="toggle"],
+    [data-testid="stSidebar"] button[aria-label*="menu"],
+    button[kind="header"] {{
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }}
+    
+    /* Force sidebar to always be expanded - override Streamlit's collapsed state */
+    .stApp[data-sidebar-state="collapsed"] [data-testid="stSidebar"],
+    .stApp [data-testid="stSidebar"][aria-expanded="false"] {{
         display: block !important;
+        visibility: visible !important;
         transform: translateX(0) !important;
+        opacity: 1 !important;
+        width: auto !important;
+        min-width: 21rem !important;
+    }}
+    
+    /* Prevent sidebar from being hidden */
+    [data-testid="stSidebar"] {{
+        position: relative !important;
+        left: 0 !important;
+        margin-left: 0 !important;
     }}
     
     [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{
@@ -653,22 +683,6 @@ st.markdown(f"""
     #MainMenu {{visibility: hidden;}}
     footer {{visibility: hidden; display: none !important;}}
     header {{visibility: hidden;}}
-    
-    /* Hide sidebar toggle button - keep sidebar always visible */
-    button[data-testid="baseButton-header"] {{
-        display: none !important;
-    }}
-    [data-testid="stHeader"] button {{
-        display: none !important;
-    }}
-    /* Hide the collapse/expand sidebar button */
-    .stApp > header button[kind="header"] {{
-        display: none !important;
-    }}
-    /* Alternative selector for sidebar toggle */
-    [data-testid="collapsedControl"] {{
-        display: none !important;
-    }}
     
     /* Hide Streamlit footer completely */
     footer[data-testid="stFooter"],
@@ -1148,6 +1162,109 @@ def main():
         </script>
         """, unsafe_allow_html=True)
         st.session_state.curtains_shown = True
+    
+    # Lock sidebar - prevent toggling
+    st.markdown("""
+    <script>
+    (function() {{
+        // Function to lock sidebar and prevent toggling
+        function lockSidebar() {{
+            var sidebar = document.querySelector('[data-testid="stSidebar"]');
+            if (sidebar) {{
+                // Force sidebar to be visible
+                sidebar.style.display = 'block';
+                sidebar.style.visibility = 'visible';
+                sidebar.style.transform = 'translateX(0)';
+                sidebar.style.opacity = '1';
+                sidebar.setAttribute('aria-expanded', 'true');
+                
+                // Remove any collapsed classes
+                sidebar.classList.remove('collapsed');
+                document.body.classList.remove('sidebar-collapsed');
+                
+                // Hide toggle buttons
+                var toggleButtons = document.querySelectorAll(
+                    'button[data-testid*="header"], ' +
+                    'button[aria-label*="close"], ' +
+                    'button[aria-label*="toggle"], ' +
+                    'button[aria-label*="menu"], ' +
+                    'button[kind="header"]'
+                );
+                toggleButtons.forEach(function(btn) {{
+                    btn.style.display = 'none';
+                    btn.style.visibility = 'hidden';
+                    btn.style.opacity = '0';
+                    btn.style.pointerEvents = 'none';
+                }});
+            }}
+        }}
+        
+        // Lock sidebar immediately
+        lockSidebar();
+        
+        // Lock sidebar on DOM ready
+        if (document.readyState === 'loading') {{
+            document.addEventListener('DOMContentLoaded', lockSidebar);
+        }}
+        
+        // Lock sidebar after a short delay to catch late-rendered elements
+        setTimeout(lockSidebar, 100);
+        setTimeout(lockSidebar, 500);
+        setTimeout(lockSidebar, 1000);
+        
+        // Continuously monitor and lock sidebar
+        var lockInterval = setInterval(function() {{
+            lockSidebar();
+        }}, 500);
+        
+        // Stop monitoring after 5 seconds (sidebar should be locked by then)
+        setTimeout(function() {{
+            clearInterval(lockInterval);
+        }}, 5000);
+        
+        // Prevent keyboard shortcuts from toggling sidebar
+        document.addEventListener('keydown', function(e) {{
+            // Block bracket keys that toggle sidebar in Streamlit
+            if (e.key === '[' || e.key === ']') {{
+                e.preventDefault();
+                e.stopPropagation();
+                lockSidebar();
+                return false;
+            }}
+        }}, true);
+        
+        // Watch for sidebar state changes and force it back to expanded
+        var observer = new MutationObserver(function(mutations) {{
+            mutations.forEach(function(mutation) {{
+                if (mutation.type === 'attributes' || mutation.type === 'childList') {{
+                    lockSidebar();
+                }}
+            }});
+        }});
+        
+        // Observe sidebar and app container for changes
+        setTimeout(function() {{
+            var sidebar = document.querySelector('[data-testid="stSidebar"]');
+            var app = document.querySelector('.stApp');
+            if (sidebar) {{
+                observer.observe(sidebar, {{
+                    attributes: true,
+                    attributeFilter: ['class', 'style', 'aria-expanded'],
+                    childList: true,
+                    subtree: true
+                }});
+            }}
+            if (app) {{
+                observer.observe(app, {{
+                    attributes: true,
+                    attributeFilter: ['data-sidebar-state'],
+                    childList: false
+                }});
+            }}
+        }}, 500);
+    }})();
+    </script>
+    """, unsafe_allow_html=True)
     
     # Header with curtain reveal effect
     st.markdown('''
