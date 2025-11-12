@@ -1,0 +1,6 @@
+# System packages required for audio/video processing
+# Streamlit Cloud will install these automatically
+
+# FFmpeg - Required for M4A, AAC, MP4 audio conversion
+ffmpeg
+
