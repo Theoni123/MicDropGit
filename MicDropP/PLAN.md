@@ -170,3 +170,6 @@ app.py (main entry point)
 - User-friendly interface
 - Fast processing (< 30 seconds for 1-minute video)
 
+STARTING IT: 
+cd /Users/theonic/Documents/GitHub/Aalto/MicDropGit/MicDropP && source venv312/bin/activate && streamlit run app.py
+

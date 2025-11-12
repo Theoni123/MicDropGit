@@ -27,7 +27,9 @@ ENV/
 .venv
 
 # Streamlit
-.streamlit/
+.streamlit/secrets.toml
+.streamlit/credentials.json
+# Keep config.toml for deployment settings
 
 # IDE
 .vscode/

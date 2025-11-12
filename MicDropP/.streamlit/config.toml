@@ -1,0 +1,27 @@
+# Streamlit Configuration
+# This file configures Streamlit settings for deployment
+
+[server]
+# Maximum upload size (in MB) - adjust based on your needs
+maxUploadSize = 200
+
+# Maximum message size (in MB)
+maxMessageSize = 200
+
+# Enable CORS for cross-origin requests
+enableCORS = true
+
+# Enable XSRF protection
+enableXsrfProtection = true
+
+[browser]
+# Automatically open browser on startup (disabled for cloud)
+gatherUsageStats = false
+
+[theme]
+# Theme is handled in app.py via CSS, but you can set defaults here
+primaryColor = "#4a0064"
+backgroundColor = "#0f0c29"
+secondaryBackgroundColor = "#2a0040"
+textColor = "#ffffff"
+font = "Inter"
