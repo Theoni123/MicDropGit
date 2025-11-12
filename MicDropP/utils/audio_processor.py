@@ -66,10 +66,10 @@ def load_audio(audio_file, target_sr=22050):
                     y, sr = librosa.load(wav_path, sr=target_sr)
                 except Exception as e2:
                     error_msg = str(e2)
-                    if "ffmpeg" in error_msg.lower() or "codec" in error_msg.lower():
+                    if "ffmpeg" in error_msg.lower() or "ffprobe" in error_msg.lower() or "codec" in error_msg.lower():
                         raise Exception(
                             f"Could not process {file_ext} file. This format requires ffmpeg to be installed. "
-                            f"Please install ffmpeg: 'brew install ffmpeg' (macOS) or 'sudo apt-get install ffmpeg' (Linux). "
+                            f"If deploying on Streamlit Cloud, ensure packages.txt includes 'ffmpeg'. "
                             f"Original error: {error_msg}"
                         )
                     else:
@@ -113,10 +113,10 @@ def load_audio(audio_file, target_sr=22050):
                     y, sr = librosa.load(wav_path, sr=target_sr)
                 except Exception as e2:
                     error_msg = str(e2)
-                    if "ffmpeg" in error_msg.lower() or "codec" in error_msg.lower():
+                    if "ffmpeg" in error_msg.lower() or "ffprobe" in error_msg.lower() or "codec" in error_msg.lower():
                         raise Exception(
                             f"Could not process {file_ext} file. This format requires ffmpeg to be installed. "
-                            f"Please install ffmpeg: 'brew install ffmpeg' (macOS) or 'sudo apt-get install ffmpeg' (Linux). "
+                            f"If deploying on Streamlit Cloud, ensure packages.txt includes 'ffmpeg'. "
                             f"Original error: {error_msg}"
                         )
                     else:
