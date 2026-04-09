@@ -5,7 +5,6 @@ Main Streamlit application entry point
 
 import streamlit as st
 import os
-import base64
 from pathlib import Path
 
 # Page configuration
@@ -16,55 +15,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Function to get background image as base64
-@st.cache_data
-def get_background_image_base64():
-    """Load background image and convert to base64 for CSS"""
-    # Try multiple path resolutions for Streamlit
-    possible_paths = [
-        Path(__file__).parent / "assets",
-        Path.cwd() / "assets",
-        Path("assets"),
-    ]
-    
-    # Try different image formats
-    for ext in ['.jpg', '.jpeg', '.png', '.webp']:
-        for filename in ['background', 'bg', 'background-image']:
-            for assets_dir in possible_paths:
-                img_path = assets_dir / f"{filename}{ext}"
-                if img_path.exists():
-                    try:
-                        with open(img_path, "rb") as img_file:
-                            encoded = base64.b64encode(img_file.read()).decode()
-                            return f"data:image/{ext[1:]};base64,{encoded}"
-                    except Exception as e:
-                        # Silently continue to next path
-                        continue
-    return None
-
-# Get background image
-background_image = get_background_image_base64()
-
-# Store in session state for debugging
-if 'bg_image_loaded' not in st.session_state:
-    st.session_state.bg_image_loaded = background_image is not None
-
-# Debug: Check if image was found
-if background_image:
-    # Image found - use it
-    background_css = f"""
-        background-image: url('{background_image}');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-"""
-else:
-    # Fallback gradient
-    background_css = """
-        background: linear-gradient(-45deg, #f3f4f6, #ede9fe, #faf5ff, #f3e8ff, #e9d5ff);
-        background-size: 400% 400%;
-        animation: gradient 15s ease infinite;
+# Page background — cool off-white (pairs with coral + powder blue surfaces)
+background_css = """
+        background-color: #f5f8fc;
 """
 
 st.markdown(f"""
@@ -150,69 +103,87 @@ st.markdown(f"""
         font-size: 1.125rem !important;
     }}
     
-    /* Remove gray text colors - make all text white/light */
-    .stMarkdown, .stMarkdown p, .stMarkdown span, .stMarkdown div, .stMarkdown li {{
-        color: rgba(255, 255, 255, 0.95) !important;
+    /* Main column: dark text on light background */
+    .main .stMarkdown, .main .stMarkdown p, .main .stMarkdown span, .main .stMarkdown div, .main .stMarkdown li,
+    .main p, .main span, .main li, .main label, .main .stText, .main [data-testid="stMarkdownContainer"] p,
+    .main [data-testid="stMarkdownContainer"] span, .main [data-testid="stMarkdownContainer"] div,
+    .main [data-testid="stMarkdownContainer"] li {{
+        color: rgba(0, 0, 0, 0.9) !important;
     }}
     
-    /* Override Streamlit's default gray text */
-    p, span, div, li, label, .stText, .stMarkdownContainer {{
-        color: rgba(255, 255, 255, 0.95) !important;
+    .main h1, .main h3, .main h4, .main h5, .main h6 {{
+        color: rgba(0, 0, 0, 0.92) !important;
     }}
     
-    /* Headers and subheaders in pages - but h2 keeps purple color */
-    h1, h3, h4, h5, h6 {{
-        color: rgba(255, 255, 255, 0.95) !important;
+    .main .stCaption, .main caption {{
+        color: rgba(0, 0, 0, 0.65) !important;
     }}
     
-    /* h2 already has purple color defined above, so it will use that */
-    
-    /* Streamlit text elements */
-    [data-testid="stMarkdownContainer"] p,
-    [data-testid="stMarkdownContainer"] span,
-    [data-testid="stMarkdownContainer"] div,
-    [data-testid="stMarkdownContainer"] li {{
-        color: rgba(255, 255, 255, 0.95) !important;
+    .main [data-testid="stExpander"] p,
+    .main [data-testid="stExpander"] span,
+    .main [data-testid="stExpander"] div,
+    .main [data-testid="stExpander"] li {{
+        color: rgba(0, 0, 0, 0.9) !important;
     }}
     
-    /* Exception for purple highlighted text */
-    .purple-highlight,
-    .stMarkdown .purple-highlight,
-    [data-testid="stMarkdownContainer"] .purple-highlight {{
-        color: #d4b5ff !important;
-        font-weight: 700 !important;
+    .main [data-testid="stMetricLabel"] {{
+        color: rgba(0, 0, 0, 0.85) !important;
     }}
     
-    /* Caption text - slightly lighter but still visible */
-    .stCaption, caption {{
-        color: rgba(255, 255, 255, 0.85) !important;
+    .main [data-testid="stMetricDelta"] {{
+        color: rgba(0, 0, 0, 0.85) !important;
     }}
     
-    /* Info boxes and alerts */
-    .stInfo, .stSuccess, .stWarning, .stError {{
-        color: rgba(255, 255, 255, 0.95) !important;
+    .main .stInfo, .main .stSuccess, .main .stWarning, .main .stError,
+    .main .stInfo p, .main .stSuccess p, .main .stWarning p, .main .stError p {{
+        color: rgba(0, 0, 0, 0.9) !important;
     }}
     
-    .stInfo p, .stSuccess p, .stWarning p, .stError p {{
-        color: rgba(255, 255, 255, 0.95) !important;
+    /* Sidebar: dark text on white background */
+    [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] div, [data-testid="stSidebar"] li {{
+        color: rgba(0, 0, 0, 0.88) !important;
     }}
     
-    /* Expander text */
-    [data-testid="stExpander"] p,
-    [data-testid="stExpander"] span,
-    [data-testid="stExpander"] div,
-    [data-testid="stExpander"] li {{
-        color: rgba(255, 255, 255, 0.95) !important;
+    /* Home stat — marker sweep (matches header diffusion orange) */
+    @keyframes homeStatHighlighterSweep {{
+        from {{
+            background-size: 0% 1.12em;
+        }}
+        to {{
+            background-size: 100% 1.12em;
+        }}
     }}
-    
-    /* Metric labels - keep visible */
-    [data-testid="stMetricLabel"] {{
-        color: rgba(255, 255, 255, 0.9) !important;
+
+    .home-stat-highlighter,
+    .stMarkdown .home-stat-highlighter,
+    [data-testid="stMarkdownContainer"] .home-stat-highlighter {{
+        font-weight: 600 !important;
+        color: rgba(0, 0, 0, 0.9) !important;
+        background-image: linear-gradient(
+            120deg,
+            rgba(255, 145, 70, 0.55) 0%,
+            rgba(255, 130, 65, 0.5) 45%,
+            rgba(250, 145, 85, 0.48) 100%
+        );
+        background-repeat: no-repeat;
+        /* Tall marker band behind full line height */
+        background-position: 0 58%;
+        background-size: 0% 1.12em;
+        padding: 0.08em 0.1em 0.06em 0.1em;
+        margin: 0 -0.06em;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        animation: homeStatHighlighterSweep 1.05s cubic-bezier(0.25, 0.8, 0.25, 1) 1.85s forwards;
     }}
-    
-    /* Delta values in metrics */
-    [data-testid="stMetricDelta"] {{
-        color: rgba(255, 255, 255, 0.9) !important;
+
+    @media (prefers-reduced-motion: reduce) {{
+        .home-stat-highlighter,
+        .stMarkdown .home-stat-highlighter,
+        [data-testid="stMarkdownContainer"] .home-stat-highlighter {{
+            animation: none;
+            background-size: 100% 1.12em;
+        }}
     }}
     
     /* Modern Icon Styles */
@@ -256,6 +227,7 @@ st.markdown(f"""
         padding: 0;
         min-height: 100vh;
         width: 100%;
+        overflow-x: hidden;
     }}
     
     /* Apply background to Streamlit app container */
@@ -264,6 +236,7 @@ st.markdown(f"""
         position: relative;
         min-height: 100vh;
         width: 100%;
+        overflow-x: hidden;
     }}
     
     /* Ensure root is transparent */
@@ -276,26 +249,17 @@ st.markdown(f"""
         background: transparent !important;
     }}
     
-    /* Main content area */
-    .main {{
+    /* Main content area — Streamlit uses .stMain / stMainBlockContainer (not .main) */
+    .main,
+    .stMain,
+    [data-testid="stMain"] {{
         background: transparent !important;
         position: relative;
     }}
     
-    /* Add subtle overlay for better text readability (only if image exists) */
-    .stApp::before {{
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 12, 41, 0.1);
-        pointer-events: none;
-        z-index: 0;
-    }}
-    
-    .main .block-container {{
+    .main .block-container,
+    .stMain .block-container,
+    [data-testid="stMainBlockContainer"] {{
         position: relative;
         z-index: 1;
         background: transparent !important;
@@ -306,34 +270,45 @@ st.markdown(f"""
         background: transparent !important;
     }}
     
-    /* Main Header with Dark Purple Animated Gradient */
+    /* Main header — black to coral wordmark, coral diffusion */
     .main-header {{
         font-size: 4.5rem;
         font-weight: 900;
         text-align: center;
-        background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
-        background-size: 200% 200%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        /* Solid logo color (match subtitle) */
+        color: rgba(0, 0, 0, 0.55) !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        -webkit-text-fill-color: rgba(0, 0, 0, 0.55) !important;
+        background-clip: unset !important;
+        margin-top: 3rem;
         margin-bottom: 0.5rem;
         letter-spacing: -0.03em;
-        animation: gradient 5s ease infinite;
-        text-shadow: 0 0 40px rgba(42, 0, 64, 0.6);
+        animation: none !important;
+        text-shadow: none !important;
         position: relative;
+    }}
+
+    /* Keep the mic icon solid (don’t inherit animated wordmark styling) */
+    .main-header svg {{
+        color: rgba(0, 0, 0, 0.55) !important;
+    }}
+    .main-header svg path {{
+        fill: currentColor !important;
     }}
     
     .main-header::after {{
         content: '';
         position: absolute;
-        top: 50%;
+        top: 78%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(255, 140, 0, 0.8) 0%, rgba(255, 200, 0, 0.6) 30%, rgba(255, 140, 0, 0.3) 60%, transparent 100%);
+        width: 160px;
+        height: 160px;
+        /* Warm the diffusion glow: coral -> orange */
+        background: radial-gradient(circle, rgba(255, 145, 70, 0.95) 0%, rgba(255, 130, 65, 0.72) 28%, rgba(250, 145, 85, 0.45) 52%, rgba(255, 185, 140, 0.18) 72%, transparent 100%);
         border-radius: 50%;
-        filter: blur(40px);
+        filter: blur(28px);
         z-index: -1;
         opacity: 0;
         animation: gradientGlow 2s ease-out forwards;
@@ -342,8 +317,8 @@ st.markdown(f"""
     
     @keyframes gradientGlow {{
         0% {{
-            width: 200px;
-            height: 200px;
+            width: 160px;
+            height: 160px;
             opacity: 0;
             transform: translate(-50%, -50%) scale(0.5);
         }}
@@ -351,34 +326,33 @@ st.markdown(f"""
             opacity: 1;
         }}
         100% {{
-            width: 600px;
-            height: 600px;
-            opacity: 0.8;
+            width: 420px;
+            height: 420px;
+            opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }}
     }}
     
     .sub-header {{
         text-align: center;
-        background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
-        background-size: 200% 200%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 3rem;
+        color: rgba(0, 0, 0, 0.55) !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        -webkit-text-fill-color: rgba(0, 0, 0, 0.55) !important;
+        background-clip: unset !important;
+        margin-bottom: 5.5rem;
         font-size: 1.125rem !important;
         font-weight: 500;
         letter-spacing: 0.01em;
-        animation: gradient 5s ease infinite;
     }}
     
-    /* Sidebar Styling - Dark Purple Glassmorphism */
+    /* Sidebar — same cool off-white as page */
     [data-testid="stSidebar"] {{
-        background: linear-gradient(180deg, rgba(42, 0, 64, 0.95) 0%, rgba(42, 0, 64, 0.98) 100%);
+        background: #f5f8fc;
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-right: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 4px 0 24px rgba(42, 0, 64, 0.5);
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
         z-index: 9999 !important;
         /* Lock sidebar - always visible */
         display: block !important;
@@ -423,11 +397,11 @@ st.markdown(f"""
     }}
     
     [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{
-        color: white;
+        color: rgba(0, 0, 0, 0.88);
     }}
     
     [data-testid="stSidebar"] .stRadio label {{
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba(0, 0, 0, 0.82);
         font-weight: 500;
         padding: 0.875rem 1rem;
         border-radius: 0.75rem;
@@ -437,48 +411,48 @@ st.markdown(f"""
     }}
     
     [data-testid="stSidebar"] .stRadio label:hover {{
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.04);
+        border-color: rgba(0, 0, 0, 0.08);
         transform: translateX(4px);
     }}
     
     [data-testid="stSidebar"] .stRadio input:checked + label {{
-        background: linear-gradient(135deg, rgba(74, 0, 100, 0.9) 0%, rgba(106, 0, 136, 0.9) 100%);
+        background: linear-gradient(135deg, rgba(143, 184, 237, 0.95) 0%, rgba(111, 156, 221, 0.95) 100%);
         color: white;
-        box-shadow: 0 4px 12px rgba(42, 0, 64, 0.7);
-        border-color: rgba(74, 0, 100, 0.8);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+        border-color: rgba(143, 184, 237, 0.9);
     }}
     
-    /* Metric Cards - Dark Purple Glassmorphism */
+    /* Metric Cards — powder blue surface */
     .metric-card {{
-        background: rgba(42, 0, 64, 0.7);
+        background: rgba(232, 242, 251, 0.95);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         padding: 1.5rem;
         border-radius: 1.25rem;
         margin: 0.5rem 0;
-        border: 1px solid rgba(74, 0, 100, 0.5);
-        box-shadow: 0 8px 32px rgba(42, 0, 64, 0.3);
+        border: 1px solid rgba(91, 143, 199, 0.35);
+        box-shadow: 0 8px 28px rgba(91, 143, 199, 0.12);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }}
     
     .metric-card:hover {{
         transform: translateY(-6px) scale(1.02);
-        box-shadow: 0 16px 48px rgba(42, 0, 64, 0.5);
-        border-color: rgba(74, 0, 100, 0.7);
-        background: rgba(42, 0, 64, 0.85);
+        box-shadow: 0 16px 40px rgba(91, 143, 199, 0.2);
+        border-color: rgba(143, 184, 237, 0.5);
+        background: #e0ecf8;
     }}
     
-    /* Feature Cards - Dark Purple Glassmorphism */
+    /* Feature Cards — powder blue surface */
     .feature-card {{
-        background: rgba(42, 0, 64, 0.8);
+        background: rgba(232, 242, 251, 0.98);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         padding: 2.5rem;
         border-radius: 1.5rem;
-        border: 1px solid rgba(74, 0, 100, 0.6);
-        box-shadow: 0 8px 32px rgba(42, 0, 64, 0.4), 
-                    0 0 0 1px rgba(74, 0, 100, 0.4) inset;
+        border: 1px solid rgba(91, 143, 199, 0.38);
+        box-shadow: 0 8px 32px rgba(91, 143, 199, 0.14), 
+                    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         margin-bottom: 1.5rem;
         position: relative;
@@ -492,7 +466,7 @@ st.markdown(f"""
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(74, 0, 100, 0.4), transparent);
+        background: linear-gradient(90deg, transparent, rgba(143, 184, 237, 0.25), transparent);
         transition: left 0.5s;
     }}
     
@@ -501,28 +475,30 @@ st.markdown(f"""
     }}
     
     .feature-card:hover {{
-        box-shadow: 0 20px 60px rgba(42, 0, 64, 0.6),
-                    0 0 0 1px rgba(74, 0, 100, 0.6) inset;
+        box-shadow: 0 20px 48px rgba(91, 143, 199, 0.22),
+                    0 0 0 1px rgba(143, 184, 237, 0.22) inset;
         transform: translateY(-8px) scale(1.01);
-        border-color: rgba(74, 0, 100, 0.8);
-        background: rgba(42, 0, 64, 0.9);
+        border-color: rgba(143, 184, 237, 0.55);
+        background: #dceaf6;
     }}
     
     .feature-card h3 {{
-        color: #c0a0ff !important;
+        color: #8fb8ed !important;
+        -webkit-text-fill-color: #8fb8ed !important;
         margin-bottom: 1rem;
         font-weight: 700;
         font-size: 1.5rem !important;
     }}
     
     /* Ensure all text in feature cards is consistent */
-    .feature-card p, .feature-card li, .feature-card span {{
+    .feature-card p, .feature-card li, .feature-card span, .feature-card ul {{
         font-size: 1.125rem !important;
+        color: rgba(0, 0, 0, 0.88) !important;
     }}
     
-    /* Buttons - Dark Purple with Glow Effect */
+    /* Buttons — pastel emphasis */
     .stButton > button {{
-        background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
+        background: linear-gradient(135deg, #7faee8 0%, #8fb8ed 100%);
         color: white;
         border: none;
         border-radius: 0.75rem;
@@ -530,7 +506,7 @@ st.markdown(f"""
         font-weight: 600;
         font-size: 1.125rem !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 14px rgba(42, 0, 64, 0.6);
+        box-shadow: 0 4px 14px rgba(143, 184, 237, 0.35);
         position: relative;
         overflow: hidden;
     }}
@@ -555,19 +531,19 @@ st.markdown(f"""
     
     .stButton > button:hover {{
         transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 8px 24px rgba(42, 0, 64, 0.8);
+        box-shadow: 0 8px 24px rgba(143, 184, 237, 0.45);
     }}
     
     .stButton > button:active {{
         transform: translateY(-1px) scale(1.02);
     }}
     
-    /* File Uploader - Dark Purple Design */
+    /* File Uploader */
     [data-testid="stFileUploader"] {{
-        border: 2px dashed rgba(74, 0, 100, 0.6);
+        border: 2px dashed rgba(91, 143, 199, 0.45);
         border-radius: 1.25rem;
         padding: 3rem 2rem;
-        background: rgba(42, 0, 64, 0.6);
+        background: rgba(232, 242, 251, 0.9);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -582,15 +558,15 @@ st.markdown(f"""
         left: -50%;
         width: 200%;
         height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(74, 0, 100, 0.3), transparent);
+        background: linear-gradient(45deg, transparent, rgba(143, 184, 237, 0.22), transparent);
         transform: rotate(45deg);
         transition: all 0.6s;
     }}
     
     [data-testid="stFileUploader"]:hover {{
-        border-color: #4a0064;
-        background: rgba(42, 0, 64, 0.8);
-        box-shadow: 0 8px 32px rgba(42, 0, 64, 0.4);
+        border-color: rgba(143, 184, 237, 0.65);
+        background: #dceaf6;
+        box-shadow: 0 8px 32px rgba(91, 143, 199, 0.15);
     }}
     
     [data-testid="stFileUploader"]:hover::before {{
@@ -598,58 +574,78 @@ st.markdown(f"""
         left: 50%;
     }}
     
-    /* Headers - Modern Typography */
-    h1, h2, h3 {{
-        color: #ffffff;
+    /* Main column headings — .main is legacy; Streamlit uses .stMain / stMain */
+    .main h1, .main h2, .main h3,
+    .stMain h1, .stMain h2, .stMain h3,
+    [data-testid="stMain"] h1, [data-testid="stMain"] h2, [data-testid="stMain"] h3 {{
+        color: #111111;
         font-weight: 700;
         letter-spacing: -0.02em;
     }}
     
-    h2 {{
+    .main h2,
+    .stMain h2,
+    [data-testid="stMain"] h2 {{
         margin-top: 2.5rem;
         margin-bottom: 1.5rem;
         font-size: 2rem !important;
-        color: #c0a0ff !important;
+        color: #8fb8ed !important;
+        -webkit-text-fill-color: #8fb8ed !important;
+    }}
+
+    /* Black section title on home (override blue h2 above; wrap + selectors for Streamlit DOM) */
+    .main .home-section-title-black-wrap h2,
+    .stMain .home-section-title-black-wrap h2,
+    [data-testid="stMain"] .home-section-title-black-wrap h2,
+    [data-testid="stMarkdownContainer"] .home-section-title-black-wrap h2,
+    .main h2.home-section-title-black,
+    .stMain h2.home-section-title-black,
+    [data-testid="stMain"] h2.home-section-title-black,
+    [data-testid="stMarkdownContainer"] h2.home-section-title-black {{
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
     }}
     
-    h3 {{
+    .main h3,
+    .stMain h3,
+    [data-testid="stMain"] h3 {{
         font-size: 1.5rem !important;
         font-weight: 600;
     }}
     
-    /* Success/Info/Warning Messages - Modern Cards */
+    /* Alerts — pastel / black accents only */
     .stSuccess {{
-        border-left: 4px solid #10b981;
+        border-left: 4px solid #8fb8ed;
         border-radius: 0.75rem;
-        background: rgba(16, 185, 129, 0.05);
+        background: rgba(143, 184, 237, 0.08);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }}
     
     .stInfo {{
-        border-left: 4px solid #4a0064;
+        border-left: 4px solid #5b8fc7;
         border-radius: 0.75rem;
-        background: rgba(42, 0, 64, 0.2);
+        background: rgba(232, 242, 251, 0.9);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 4px 12px rgba(42, 0, 64, 0.3);
+        box-shadow: 0 4px 12px rgba(91, 143, 199, 0.12);
     }}
     
     .stWarning {{
-        border-left: 4px solid #f59e0b;
+        border-left: 4px solid #8fb8ed;
         border-radius: 0.75rem;
-        background: rgba(245, 158, 11, 0.05);
+        background: rgba(143, 184, 237, 0.06);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }}
     
-    /* Metrics - Dark Purple Theme */
+    /* Metrics */
     [data-testid="stMetricValue"] {{
         font-size: 2.25rem !important;
         font-weight: 800;
-        background: linear-gradient(135deg, #2a0040 0%, #4a0064 50%, #6a0088 100%);
+        background: linear-gradient(135deg, #0a0a0a 0%, #8fb8ed 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -657,26 +653,26 @@ st.markdown(f"""
     
     [data-testid="stMetricLabel"] {{
         font-weight: 600;
-        color: #2a0040;
+        color: #111111;
         font-size: 1.125rem !important;
     }}
     
-    /* Expanders - Dark Purple Design */
+    /* Expanders */
     [data-testid="stExpander"] {{
-        border: 1px solid rgba(74, 0, 100, 0.5);
+        border: 1px solid rgba(91, 143, 199, 0.35);
         border-radius: 1rem;
         margin-bottom: 1.5rem;
-        background: rgba(42, 0, 64, 0.6);
+        background: rgba(232, 242, 251, 0.92);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 4px 16px rgba(42, 0, 64, 0.3);
+        box-shadow: 0 4px 16px rgba(91, 143, 199, 0.12);
         transition: all 0.3s ease;
     }}
     
     [data-testid="stExpander"]:hover {{
-        box-shadow: 0 8px 24px rgba(42, 0, 64, 0.4);
-        border-color: rgba(74, 0, 100, 0.7);
-        background: rgba(42, 0, 64, 0.75);
+        box-shadow: 0 8px 24px rgba(91, 143, 199, 0.18);
+        border-color: rgba(143, 184, 237, 0.5);
+        background: #e8f2fb;
     }}
     
     /* Hide Streamlit branding */
@@ -708,36 +704,41 @@ st.markdown(f"""
         overflow: hidden !important;
     }}
     
-    /* Custom scrollbar - Dark Purple */
+    /* Scrollbar */
     ::-webkit-scrollbar {{
         width: 12px;
     }}
     
     ::-webkit-scrollbar-track {{
-        background: rgba(42, 0, 64, 0.3);
+        background: rgba(91, 143, 199, 0.12);
         border-radius: 10px;
     }}
     
     ::-webkit-scrollbar-thumb {{
-        background: linear-gradient(135deg, #6a0088 0%, #4a0064 100%);
+        background: linear-gradient(135deg, #8fb8ed 0%, #5b8fc7 100%);
         border-radius: 10px;
-        border: 2px solid rgba(42, 0, 64, 0.3);
+        border: 2px solid rgba(91, 143, 199, 0.2);
     }}
     
     ::-webkit-scrollbar-thumb:hover {{
-        background: linear-gradient(135deg, #4a0064 0%, #2a0040 100%);
+        background: linear-gradient(135deg, #5b8fc7 0%, #8fb8ed 100%);
     }}
     
-    /* Main container padding */
-    .main .block-container {{
-        padding-top: 4rem;
-        padding-bottom: 4rem;
+    /* Main container padding — extra top room so header diffusion glow isn’t tight to viewport */
+    .main .block-container,
+    .stMain .block-container,
+    [data-testid="stMainBlockContainer"] {{
+        padding-top: clamp(10.5rem, 20vh, 17rem) !important;
+        padding-bottom: 4rem !important;
+        /* Responsive gutters (used by full-bleed sections) */
+        padding-left: clamp(1rem, 5vw, 5rem) !important;
+        padding-right: clamp(1rem, 5vw, 5rem) !important;
         max-width: 1400px;
     }}
     
     /* Gradient text utility */
     .gradient-text {{
-        background: linear-gradient(135deg, #2a0040 0%, #4a0064 100%);
+        background: linear-gradient(135deg, #0a0a0a 0%, #8fb8ed 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -751,9 +752,9 @@ st.markdown(f"""
     
     .animated-bg {{
         background: linear-gradient(90deg, 
-            rgba(42, 0, 64, 0.2) 0%, 
-            rgba(74, 0, 100, 0.3) 50%, 
-            rgba(42, 0, 64, 0.2) 100%);
+            rgba(143, 184, 237, 0.1) 0%, 
+            rgba(91, 143, 199, 0.1) 50%, 
+            rgba(143, 184, 237, 0.1) 100%);
         background-size: 2000px 100%;
         animation: shimmer 3s infinite;
     }}
@@ -794,7 +795,9 @@ st.markdown(f"""
         }}
     }}
     
-    .main .block-container > div {{
+    .main .block-container > div,
+    .stMain .block-container > div,
+    [data-testid="stMainBlockContainer"] > div {{
         animation: fadeIn 0.6s ease-out;
     }}
     
@@ -806,8 +809,8 @@ st.markdown(f"""
     }}
     
     input:focus, textarea:focus, select:focus {{
-        border-color: #4a0064 !important;
-        box-shadow: 0 0 0 3px rgba(42, 0, 64, 0.3) !important;
+        border-color: #8fb8ed !important;
+        box-shadow: 0 0 0 3px rgba(143, 184, 237, 0.25) !important;
     }}
     
     /* Curtain Animation Styles */
@@ -828,20 +831,20 @@ st.markdown(f"""
         top: 0;
         height: 100%;
         background: linear-gradient(90deg, 
-            #1a0026 0%, 
-            #2a0040 8%, 
-            #1a0026 16%, 
-            #2a0040 24%,
-            #1a0026 32%,
-            #2a0040 40%,
-            #1a0026 48%,
-            #2a0040 56%,
-            #1a0026 64%,
-            #2a0040 72%,
-            #1a0026 80%,
-            #2a0040 88%,
-            #1a0026 96%,
-            #2a0040 100%);
+            #0a0a0a 0%, 
+            #1a1a1a 8%, 
+            #0a0a0a 16%, 
+            #1a1a1a 24%,
+            #0a0a0a 32%,
+            #1a1a1a 40%,
+            #0a0a0a 48%,
+            #1a1a1a 56%,
+            #0a0a0a 64%,
+            #1a1a1a 72%,
+            #0a0a0a 80%,
+            #1a1a1a 88%,
+            #0a0a0a 96%,
+            #1a1a1a 100%);
         background-size: 100% 100%;
         box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8),
                     0 0 30px rgba(0, 0, 0, 0.5);
@@ -920,11 +923,11 @@ st.markdown(f"""
         height: 30px;
         background: repeating-linear-gradient(
             90deg,
-            #1a0026 0px,
-            #2a0040 2px,
-            #1a0026 4px,
-            #2a0040 6px,
-            #1a0026 8px
+            #0a0a0a 0px,
+            #1a1a1a 2px,
+            #0a0a0a 4px,
+            #1a1a1a 6px,
+            #0a0a0a 8px
         );
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         z-index: 2;
@@ -946,9 +949,9 @@ st.markdown(f"""
         width: 100%;
         height: 80px;
         background: linear-gradient(to top, 
-            rgba(0, 0, 0, 0.8) 0%,
-            rgba(20, 0, 30, 0.6) 50%,
-            rgba(42, 0, 64, 0.4) 100%);
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.5) 50%,
+            rgba(0, 0, 0, 0.25) 100%);
         z-index: 1;
         box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
         pointer-events: none;
@@ -1027,6 +1030,24 @@ st.markdown(f"""
     
     .main-content.visible {{
         opacity: 1;
+    }}
+
+    /* Home hero — minimal, spacing only */
+    .home-hero {{
+        background: transparent;
+        border: none;
+        padding: clamp(3.5rem, 9vh, 7rem) 0 1rem 0;
+        margin: clamp(5.5rem, 13vh, 9rem) 0 2rem 0;
+        max-width: none;
+        width: 100%;
+        min-height: 0;
+        box-shadow: none;
+    }}
+
+    .main .home-hero h2 {{
+        margin-top: 0 !important;
+        margin-bottom: 1rem !important;
+        color: #000000 !important;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -1270,30 +1291,23 @@ def main():
     st.markdown('''
     <div class="main-content">
         <h1 class="main-header">
-            <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.25rem; width: 3rem; height: 3rem;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="micGradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" style="stop-color:#2a0040;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#4a0064;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#6a0088;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="url(#micGradient)"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="url(#micGradient)"/>
+            <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.25rem; width: 3rem; height: 3rem; color: rgba(0, 0, 0, 0.55);" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
             </svg>
             MicDrop
         </h1>
     </div>
     ''', unsafe_allow_html=True)
-    st.markdown('<div class="main-content"><p class="sub-header">AI-Powered Public Speaking Coach</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-content"><p class="sub-header">AI Public Speaking Coach</p></div>', unsafe_allow_html=True)
     
     # Sidebar navigation with modern header
     st.sidebar.markdown("""
-    <div style='text-align: center; padding: 1.5rem 0 2rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 1.5rem;'>
-        <h2 style='color: white !important; font-size: 1.5rem !important; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
-            <svg style="width: 1.5rem; height: 1.5rem; fill: #c0a0ff;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="#c0a0ff"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="#c0a0ff"/>
+    <div style='text-align: center; padding: 1.5rem 0 2rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.08); margin-bottom: 1.5rem;'>
+        <h2 style='color: rgba(0, 0, 0, 0.82) !important; font-size: 1.5rem !important; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
+            <svg style="width: 1.5rem; height: 1.5rem; fill: #8fb8ed;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="#8fb8ed"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="#8fb8ed"/>
             </svg>
             MicDrop
         </h2>
@@ -1314,7 +1328,7 @@ def main():
         padding: 0.75rem 1rem 0.75rem 3rem !important;
         background: transparent !important;
         border: 1px solid transparent !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: rgba(0, 0, 0, 0.78) !important;
         border-radius: 0.5rem !important;
         transition: all 0.3s ease !important;
         margin-bottom: 0.5rem !important;
@@ -1323,15 +1337,15 @@ def main():
         position: relative !important;
     }
     [data-testid="stSidebar"] .stButton > button:hover {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border-color: rgba(255, 255, 255, 0.2) !important;
+        background: rgba(0, 0, 0, 0.04) !important;
+        border-color: rgba(0, 0, 0, 0.08) !important;
         transform: translateX(4px) !important;
     }
     [data-testid="stSidebar"] .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, rgba(74, 0, 100, 0.9) 0%, rgba(106, 0, 136, 0.9) 100%) !important;
-        border-color: rgba(74, 0, 100, 0.8) !important;
+        background: linear-gradient(135deg, rgba(143, 184, 237, 0.98) 0%, rgba(111, 156, 221, 0.95) 100%) !important;
+        border-color: rgba(255, 255, 255, 0.25) !important;
         color: white !important;
-        box-shadow: 0 4px 12px rgba(42, 0, 64, 0.7) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
     }
     
     /* Add icons using ::before pseudo-elements with SVG data URIs */
@@ -1351,27 +1365,27 @@ def main():
     
     /* Home icon */
     [data-testid="stSidebar"] button[data-testid*="nav_Home"]::before {
-        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="rgba(255,255,255,0.9)"/></svg>');
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="rgba(0,0,0,0.78)"/></svg>');
     }
     
     /* Voice Analysis icon */
     [data-testid="stSidebar"] button[data-testid*="nav_Voice"]::before {
-        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="rgba(255,255,255,0.9)"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="rgba(255,255,255,0.9)"/></svg>');
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="rgba(0,0,0,0.78)"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="rgba(0,0,0,0.78)"/></svg>');
     }
     
     /* Language Analysis icon */
     [data-testid="stSidebar"] button[data-testid*="nav_Language"]::before {
-        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="rgba(255,255,255,0.9)"/></svg>');
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="rgba(0,0,0,0.78)"/></svg>');
     }
     
     /* Body Language Analysis icon */
     [data-testid="stSidebar"] button[data-testid*="nav_Body"]::before {
-        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="rgba(255,255,255,0.9)"/></svg>');
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="rgba(0,0,0,0.78)"/></svg>');
     }
     
     /* AI Coach icon */
     [data-testid="stSidebar"] button[data-testid*="Coach"]::before {
-        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="rgba(255,255,255,0.9)"/></svg>');
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="rgba(0,0,0,0.78)"/></svg>');
     }
     
     /* Make icons white on active buttons */
@@ -1439,37 +1453,30 @@ def show_home():
     # Wrap content in main-content div for fade-in effect
     st.markdown('<div class="main-content">', unsafe_allow_html=True)
     
-    st.markdown("---")
-    
     # Introduction
     st.markdown("""
-    <div style='text-align: center; padding: 2rem 0 0.5rem 0;'>
-        <h2 style='margin-bottom: 0.5rem; font-size: 2rem !important; font-weight: 700; color: #c0a0ff !important;'>Transform Your Public Speaking Skills</h2>
+    <div class="home-hero">
+        <div style='text-align: center; padding: 0; margin: 0;'>
+            <p style='font-size: 1.125rem !important; color: rgba(0, 0, 0, 0.9); font-weight: 400; max-width: 700px; margin: 0 auto;'>
+                <span class='home-stat-highlighter'>75% of people</span> are afraid of public speaking.
+                <a href='https://www.healthcentral.com/condition/anxiety/glossophobia-fear-of-public-' target='_blank' rel='noopener noreferrer' style='color: rgba(0, 0, 0, 0.65); text-decoration: none; margin-left: 0.5rem; display: inline-block; vertical-align: middle;' title='Source'>
+                    <svg style='width: 1em; height: 1em; fill: currentColor;' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                        <path d='M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z'/>
+                    </svg>
+                </a>
+            </p>
+            <p style='font-size: 1.125rem !important; color: rgba(0, 0, 0, 0.9); font-weight: 400; max-width: 700px; margin: 1.25rem auto 0 auto;'>
+                Let's change that! With your personal AI coach, master the art of confident communication.
+            </p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # Statistic callout
-    st.markdown("""
-    <div style='text-align: center; padding: 0.5rem 0 1.5rem 0; margin: 0;'>
-        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 400; max-width: 700px; margin: 0 auto;'>
-            <span class='purple-highlight'>75% of people</span> are afraid of public speaking.
-            <a href='https://www.healthcentral.com/condition/anxiety/glossophobia-fear-of-public-' target='_blank' rel='noopener noreferrer' style='color: rgba(192, 160, 255, 0.7); text-decoration: none; margin-left: 0.5rem; display: inline-block; vertical-align: middle;' title='Source'>
-                <svg style='width: 1em; height: 1em; fill: currentColor;' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-                    <path d='M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z'/>
-                </svg>
-            </a>
-        </p>
-        <p style='font-size: 1.125rem !important; color: rgba(255, 255, 255, 0.95); font-weight: 400; max-width: 700px; margin: 1.5rem auto 0 auto;'>
-            Let's change that! With your personal AI coach, master the art of confident communication.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
     
     # Feature Cards
     st.markdown("""
-    <h2 style='margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700; color: #c0a0ff !important;'>Analysis Features</h2>
+    <div class='home-section-title-black-wrap'>
+    <h2 class='home-section-title-black' style='margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700;'>Analysis Features</h2>
+    </div>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
@@ -1477,14 +1484,14 @@ def show_home():
     with col1:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: 0.5rem;'>
+            <h3 style='color: #8fb8ed; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;'>
                 <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
                     <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
                 </svg>
                 Voice Analysis
             </h3>
-            <ul style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
+            <ul style='color: rgba(0, 0, 0, 0.88); line-height: 1.8;'>
                 <li><strong>Pace:</strong> Words per minute, speaking rate</li>
                 <li><strong>Pitch:</strong> Average pitch and variation</li>
                 <li><strong>Pauses:</strong> Frequency and duration</li>
@@ -1497,13 +1504,13 @@ def show_home():
     with col2:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: 0.5rem;'>
+            <h3 style='color: #8fb8ed; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;'>
                 <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
                 </svg>
                 Language Analysis
             </h3>
-            <ul style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
+            <ul style='color: rgba(0, 0, 0, 0.88); line-height: 1.8;'>
                 <li><strong>Clarity:</strong> Sentence structure and complexity</li>
                 <li><strong>Word Choice:</strong> Vocabulary diversity</li>
                 <li><strong>Filler Words:</strong> Detection and frequency</li>
@@ -1516,13 +1523,13 @@ def show_home():
     with col3:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #ffffff; margin-bottom: 1rem; background: linear-gradient(135deg, #ffffff 0%, #e0d0ff 50%, #c0a0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: 0.5rem;'>
+            <h3 style='color: #8fb8ed; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;'>
                 <svg style="width: 1.5rem; height: 1.5rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
                 </svg>
                 Body Language Analysis
             </h3>
-            <ul style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
+            <ul style='color: rgba(0, 0, 0, 0.88); line-height: 1.8;'>
                 <li><strong>Posture:</strong> Body alignment and stance</li>
                 <li><strong>Gestures:</strong> Hand movements and frequency</li>
                 <li><strong>Eye Contact:</strong> Gaze direction</li>
@@ -1536,9 +1543,9 @@ def show_home():
     
     # Getting Started Section
     st.markdown("""
-    <div style='color: rgba(255, 255, 255, 0.9); line-height: 1.8;'>
-        <h2 style='margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700; color: #c0a0ff !important;'>Getting Started</h2>
-        <ol style='color: rgba(255, 255, 255, 0.9); line-height: 1.8; padding-left: 1.5rem;'>
+    <div style='color: rgba(0, 0, 0, 0.88); line-height: 1.8;'>
+        <h2 style='margin-bottom: 1rem; font-size: 2rem !important; font-weight: 700; color: #8fb8ed !important;'>Getting Started</h2>
+        <ol style='color: rgba(0, 0, 0, 0.88); line-height: 1.8; padding-left: 1.5rem;'>
             <li><strong>Choose an analysis type</strong> from the sidebar</li>
             <li><strong>Upload</strong> audio/video</li>
             <li><strong>Review</strong> your feedback and recommendations</li>
@@ -1567,22 +1574,22 @@ def show_home():
     @keyframes pulse-glow {
         0%, 100% {
             box-shadow: 
-                0 12px 48px 0 rgba(192, 160, 255, 0.3),
+                0 12px 48px 0 rgba(143, 184, 237, 0.28),
                 inset 0 2px 0 0 rgba(255, 255, 255, 0.3),
                 0 0 0 1px rgba(255, 255, 255, 0.1),
-                0 0 40px rgba(192, 160, 255, 0.2);
+                0 0 40px rgba(143, 184, 237, 0.18);
         }
         50% {
             box-shadow: 
-                0 12px 48px 0 rgba(192, 160, 255, 0.5),
+                0 12px 48px 0 rgba(143, 184, 237, 0.45),
                 inset 0 2px 0 0 rgba(255, 255, 255, 0.4),
                 0 0 0 1px rgba(255, 255, 255, 0.2),
-                0 0 60px rgba(192, 160, 255, 0.4);
+                0 0 60px rgba(143, 184, 237, 0.35);
         }
     }
     
     button[data-testid*="cta_ai_coach"] {
-        background: rgba(192, 160, 255, 0.2) !important;
+        background: rgba(143, 184, 237, 0.18) !important;
         backdrop-filter: blur(30px) saturate(200%) !important;
         -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
         border: 2px solid rgba(255, 255, 255, 0.3) !important;
@@ -1592,10 +1599,10 @@ def show_home():
         cursor: pointer !important;
         transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
         box-shadow: 
-            0 12px 48px 0 rgba(192, 160, 255, 0.3),
+            0 12px 48px 0 rgba(143, 184, 237, 0.28),
             inset 0 2px 0 0 rgba(255, 255, 255, 0.3),
             0 0 0 1px rgba(255, 255, 255, 0.1),
-            0 0 40px rgba(192, 160, 255, 0.2) !important;
+            0 0 40px rgba(143, 184, 237, 0.18) !important;
         height: auto !important;
         min-height: 240px !important;
         position: relative !important;
@@ -1629,12 +1636,12 @@ def show_home():
     button[data-testid*="cta_ai_coach"]:hover {
         transform: translateY(-8px) scale(1.03) !important;
         box-shadow: 
-            0 24px 80px 0 rgba(192, 160, 255, 0.5),
+            0 24px 80px 0 rgba(143, 184, 237, 0.45),
             inset 0 3px 0 0 rgba(255, 255, 255, 0.5),
-            0 0 0 2px rgba(192, 160, 255, 0.4),
-            0 0 80px rgba(192, 160, 255, 0.4) !important;
+            0 0 0 2px rgba(143, 184, 237, 0.4),
+            0 0 80px rgba(143, 184, 237, 0.35) !important;
         border-color: rgba(255, 255, 255, 0.5) !important;
-        background: rgba(192, 160, 255, 0.3) !important;
+        background: rgba(143, 184, 237, 0.28) !important;
         animation: none !important;
     }
     
@@ -1649,18 +1656,18 @@ def show_home():
     button[data-testid*="cta_ai_coach"]:active {
         transform: translateY(-4px) scale(0.98) !important;
         box-shadow: 
-            0 12px 40px 0 rgba(192, 160, 255, 0.6),
+            0 12px 40px 0 rgba(143, 184, 237, 0.5),
             inset 0 4px 0 0 rgba(255, 255, 255, 0.6),
-            0 0 0 3px rgba(192, 160, 255, 0.5),
-            0 0 60px rgba(192, 160, 255, 0.5) !important;
+            0 0 0 3px rgba(143, 184, 237, 0.45),
+            0 0 60px rgba(143, 184, 237, 0.45) !important;
     }
     
     button[data-testid*="cta_ai_coach"]:focus {
         box-shadow: 
-            0 20px 64px 0 rgba(192, 160, 255, 0.5),
+            0 20px 64px 0 rgba(143, 184, 237, 0.45),
             inset 0 2px 0 0 rgba(255, 255, 255, 0.4),
-            0 0 0 3px rgba(192, 160, 255, 0.4),
-            0 0 80px rgba(192, 160, 255, 0.4) !important;
+            0 0 0 3px rgba(143, 184, 237, 0.4),
+            0 0 80px rgba(143, 184, 237, 0.38) !important;
         outline: none !important;
     }
     
@@ -1671,7 +1678,7 @@ def show_home():
         margin: 0 !important;
         text-shadow: 
             0 2px 10px rgba(0, 0, 0, 0.4), 
-            0 0 30px rgba(192, 160, 255, 0.5),
+            0 0 30px rgba(143, 184, 237, 0.45),
             0 0 10px rgba(255, 255, 255, 0.3) !important;
         letter-spacing: 0.8px !important;
         text-transform: uppercase !important;

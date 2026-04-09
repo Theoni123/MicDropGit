@@ -18,7 +18,7 @@ def show():
     """Display voice analysis page"""
     
     st.markdown("""
-    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #ffffff;'>
+    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #111111;'>
         <svg style="width: 2rem; height: 2rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
             <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
@@ -139,10 +139,10 @@ def display_results(voice_metrics, feedback, y, sr):
     consistency = voice_metrics['volume']['volume_consistency']
     
     # Determine status colors
-    pace_color = "#10b981" if 120 <= wpm <= 180 else "#f59e0b"
-    pause_color = "#10b981" if 3 <= pause_count <= 15 else "#f59e0b"
-    pitch_color = "#10b981" if monotony < 0.7 else ("#f59e0b" if monotony < 0.85 else "#ef4444")
-    volume_color = "#10b981" if consistency > 0.5 else "#f59e0b"
+    pace_color = "#111111" if 120 <= wpm <= 180 else "#d96c6c"
+    pause_color = "#111111" if 3 <= pause_count <= 15 else "#d96c6c"
+    pitch_color = "#111111" if monotony < 0.7 else ("#d96c6c" if monotony < 0.85 else "#000000")
+    volume_color = "#111111" if consistency > 0.5 else "#d96c6c"
     
     with col1:
         st.markdown(f"""
@@ -203,22 +203,22 @@ def display_results(voice_metrics, feedback, y, sr):
             mode="gauge+number",
             value=voice_metrics['pace']['wpm'],
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Words Per Minute", 'font': {'size': 16, 'color': 'white'}},
+            title={'text': "Words Per Minute", 'font': {'size': 16, 'color': '#111111'}},
             gauge={
                 'axis': {
                     'range': [None, 200], 
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
+                    'tickcolor': '#94a3b8',
+                    'tickfont': {'color': '#111111'}
                 },
                 'bar': {'color': pace_color},
-                'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                'bgcolor': 'rgba(91, 143, 199, 0.25)',
                 'steps': [
-                    {'range': [0, 120], 'color': "rgba(239, 68, 68, 0.2)"},
-                    {'range': [120, 180], 'color': "rgba(16, 185, 129, 0.2)"},
-                    {'range': [180, 200], 'color': "rgba(239, 68, 68, 0.2)"}
+                    {'range': [0, 120], 'color': "rgba(91, 143, 199, 0.14)"},
+                    {'range': [120, 180], 'color': "rgba(217, 108, 108, 0.2)"},
+                    {'range': [180, 200], 'color': "rgba(91, 143, 199, 0.14)"}
                 ],
                 'threshold': {
-                    'line': {'color': "white", 'width': 2},
+                    'line': {'color': '#111111', 'width': 2},
                     'thickness': 0.75,
                     'value': 150
                 }
@@ -229,7 +229,7 @@ def display_results(voice_metrics, feedback, y, sr):
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white'}
+            font={'color': '#111111'}
         )
         st.plotly_chart(fig_pace, use_container_width=True)
     
@@ -250,24 +250,24 @@ def display_results(voice_metrics, feedback, y, sr):
                 hovertemplate='<b>Time:</b> %{x:.1f}s<br><b>Duration:</b> %{y:.2f}s<extra></extra>'
             ))
             fig_pauses.update_layout(
-                title={'text': "Pauses Over Time", 'font': {'color': 'white', 'size': 16}},
+                title={'text': "Pauses Over Time", 'font': {'color': '#111111', 'size': 16}},
                 xaxis_title="Time (seconds)",
                 yaxis_title="Pause Duration (seconds)",
                 height=300,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(42, 0, 64, 0.2)',
-                font={'color': 'white', 'size': 12},
+                plot_bgcolor='rgba(91, 143, 199, 0.14)',
+                font={'color': '#111111', 'size': 12},
                 xaxis={
                     'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'color': '#111111',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 },
                 yaxis={
                     'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'color': '#111111',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 }
             )
             st.plotly_chart(fig_pauses, use_container_width=True)
@@ -297,24 +297,24 @@ def display_results(voice_metrics, feedback, y, sr):
                 hovertemplate='<b>Time:</b> %{x:.1f}s<br><b>Pitch:</b> %{y:.0f} Hz<extra></extra>'
             ))
             fig_pitch.update_layout(
-                title={'text': "Pitch Over Time", 'font': {'color': 'white', 'size': 16}},
+                title={'text': "Pitch Over Time", 'font': {'color': '#111111', 'size': 16}},
                 xaxis_title="Time (seconds)",
                 yaxis_title="Pitch (Hz)",
                 height=300,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(42, 0, 64, 0.2)',
-                font={'color': 'white', 'size': 12},
+                plot_bgcolor='rgba(91, 143, 199, 0.14)',
+                font={'color': '#111111', 'size': 12},
                 xaxis={
                     'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'color': '#111111',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 },
                 yaxis={
                     'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'color': '#111111',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 }
             )
             st.plotly_chart(fig_pitch, use_container_width=True)
@@ -336,24 +336,24 @@ def display_results(voice_metrics, feedback, y, sr):
             hovertemplate='<b>Time:</b> %{x:.1f}s<br><b>Volume:</b> %{y:.1f} dB<extra></extra>'
         ))
         fig_volume.update_layout(
-            title={'text': "Volume Over Time", 'font': {'color': 'white', 'size': 16}},
+            title={'text': "Volume Over Time", 'font': {'color': '#111111', 'size': 16}},
             xaxis_title="Time (seconds)",
             yaxis_title="Volume (dB)",
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(42, 0, 64, 0.2)',
-            font={'color': 'white', 'size': 12},
+            plot_bgcolor='rgba(91, 143, 199, 0.14)',
+            font={'color': '#111111', 'size': 12},
             xaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#111111',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             },
             yaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#111111',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             }
         )
         st.plotly_chart(fig_volume, use_container_width=True)
@@ -370,10 +370,10 @@ def display_results(voice_metrics, feedback, y, sr):
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         # Determine recommendation type based on content
         if any(word in recommendation.lower() for word in ['great', 'excellent', 'good']):
-            rec_color = "#10b981"
+            rec_color = "#111111"
             rec_icon = "✅"
         elif any(word in recommendation.lower() for word in ['try', 'consider', 'could']):
-            rec_color = "#f59e0b"
+            rec_color = "#d96c6c"
             rec_icon = "💡"
         else:
             rec_color = "#6366f1"
@@ -401,15 +401,15 @@ def display_results(voice_metrics, feedback, y, sr):
     scores = feedback['scores']
     
     score_info = {
-        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#10b981'},
-        'slow': {'emoji': '🟡', 'label': 'Slow', 'color': '#f59e0b'},
-        'fast': {'emoji': '🟡', 'label': 'Fast', 'color': '#f59e0b'},
-        'few': {'emoji': '🟡', 'label': 'Few', 'color': '#f59e0b'},
-        'many': {'emoji': '🟡', 'label': 'Many', 'color': '#f59e0b'},
-        'monotone': {'emoji': '🔴', 'label': 'Monotone', 'color': '#ef4444'},
-        'varied': {'emoji': '🟢', 'label': 'Varied', 'color': '#10b981'},
-        'consistent': {'emoji': '🟢', 'label': 'Consistent', 'color': '#10b981'},
-        'inconsistent': {'emoji': '🟡', 'label': 'Variable', 'color': '#f59e0b'}
+        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#111111'},
+        'slow': {'emoji': '🟡', 'label': 'Slow', 'color': '#d96c6c'},
+        'fast': {'emoji': '🟡', 'label': 'Fast', 'color': '#d96c6c'},
+        'few': {'emoji': '🟡', 'label': 'Few', 'color': '#d96c6c'},
+        'many': {'emoji': '🟡', 'label': 'Many', 'color': '#d96c6c'},
+        'monotone': {'emoji': '🔴', 'label': 'Monotone', 'color': '#000000'},
+        'varied': {'emoji': '🟢', 'label': 'Varied', 'color': '#111111'},
+        'consistent': {'emoji': '🟢', 'label': 'Consistent', 'color': '#111111'},
+        'inconsistent': {'emoji': '🟡', 'label': 'Variable', 'color': '#d96c6c'}
     }
     
     col1, col2, col3, col4 = st.columns(4)
@@ -422,10 +422,10 @@ def display_results(voice_metrics, feedback, y, sr):
     ]
     
     for col, (metric_name, score_key) in zip([col1, col2, col3, col4], score_items):
-        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#6b7280'})
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
                 <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
                 <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label']}</div>

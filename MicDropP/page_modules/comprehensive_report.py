@@ -154,7 +154,7 @@ def show():
     """Display comprehensive report page"""
     
     st.markdown("""
-    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #ffffff;'>
+    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #111111;'>
         <svg style="width: 2rem; height: 2rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
         </svg>
@@ -348,7 +348,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     """Display comprehensive analysis results"""
     
     st.markdown("""
-    <h2 style='color: #ffffff; margin-top: 2rem; margin-bottom: 1.5rem;'>
+    <h2 style='color: #111111; margin-top: 2rem; margin-bottom: 1.5rem;'>
         📊 Comprehensive Analysis Results
     </h2>
     """, unsafe_allow_html=True)
@@ -359,24 +359,24 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     # Score interpretation
     if overall_score >= 80:
         score_label = "Excellent"
-        score_color = "#10b981"
+        score_color = "#111111"
         score_emoji = "🌟"
-        gradient = "linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3))"
+        gradient = "linear-gradient(135deg, rgba(217, 108, 108, 0.35), rgba(255, 255, 255, 0.12))"
     elif overall_score >= 65:
         score_label = "Good"
-        score_color = "#3b82f6"
+        score_color = "#d96c6c"
         score_emoji = "👍"
-        gradient = "linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.3))"
+        gradient = "linear-gradient(135deg, rgba(217, 108, 108, 0.28), rgba(232, 242, 251, 0.95))"
     elif overall_score >= 50:
         score_label = "Fair"
-        score_color = "#f59e0b"
+        score_color = "#d96c6c"
         score_emoji = "📊"
-        gradient = "linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3))"
+        gradient = "linear-gradient(135deg, rgba(91, 143, 199, 0.14), rgba(217, 108, 108, 0.15))"
     else:
         score_label = "Needs Improvement"
-        score_color = "#ef4444"
+        score_color = "#000000"
         score_emoji = "📈"
-        gradient = "linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.3))"
+        gradient = "linear-gradient(135deg, rgba(91, 143, 199, 0.28), rgba(217, 108, 108, 0.1))"
     
     # Overall score card
     st.markdown(f"""
@@ -388,20 +388,20 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         padding: 2rem;
         margin: 1.5rem 0;
         text-align: center;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        box-shadow: 0 8px 32px 0 rgba(91, 143, 199, 0.2);
     '>
         <div style='font-size: 4rem; margin-bottom: 0.5rem;'>{score_emoji}</div>
         <div style='font-size: 3rem; font-weight: bold; color: {score_color}; margin-bottom: 0.5rem;'>
             {overall_score:.1f}
         </div>
-        <div style='font-size: 1.5rem; color: white; margin-bottom: 0.5rem;'>Overall Score</div>
-        <div style='font-size: 1.2rem; color: rgba(255, 255, 255, 0.8);'>{score_label}</div>
+        <div style='font-size: 1.5rem; color: rgba(0, 0, 0, 0.88); margin-bottom: 0.5rem;'>Overall Score</div>
+        <div style='font-size: 1.2rem; color: rgba(0, 0, 0, 0.72);'>{score_label}</div>
     </div>
     """, unsafe_allow_html=True)
     
     # Component Scores with modern cards
     st.markdown("""
-    <h3 style='color: #ffffff; margin-top: 2rem; margin-bottom: 1rem;'>
+    <h3 style='color: #111111; margin-top: 2rem; margin-bottom: 1rem;'>
         📈 Component Scores
     </h3>
     """, unsafe_allow_html=True)
@@ -410,32 +410,32 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     
     def get_score_color(score):
         if score >= 80:
-            return "#10b981", "rgba(16, 185, 129, 0.15)"
+            return "#111111", "rgba(217, 108, 108, 0.25)"
         elif score >= 65:
-            return "#3b82f6", "rgba(59, 130, 246, 0.15)"
+            return "#d96c6c", "rgba(217, 108, 108, 0.18)"
         elif score >= 50:
-            return "#f59e0b", "rgba(245, 158, 11, 0.15)"
+            return "#d96c6c", "rgba(232, 242, 251, 0.95)"
         else:
-            return "#ef4444", "rgba(239, 68, 68, 0.15)"
+            return "#000000", "rgba(91, 143, 199, 0.14)"
     
     with col1:
         voice_color, voice_bg = get_score_color(overall_scores['voice_score'])
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, {voice_bg}, rgba(42, 0, 64, 0.3));
+            background: linear-gradient(135deg, {voice_bg}, rgba(91, 143, 199, 0.25));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-left: 4px solid {voice_color};
             border-radius: 15px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
         '>
             <div style='font-size: 2rem; margin-bottom: 0.5rem;'>🎙️</div>
             <div style='font-size: 1.8rem; font-weight: bold; color: {voice_color};'>
                 {overall_scores['voice_score']:.1f}
             </div>
-            <div style='color: white; font-size: 0.9rem; margin-top: 0.3rem;'>Voice Score</div>
+            <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.9rem; margin-top: 0.3rem;'>Voice Score</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -443,20 +443,20 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         lang_color, lang_bg = get_score_color(overall_scores['language_score'])
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, {lang_bg}, rgba(42, 0, 64, 0.3));
+            background: linear-gradient(135deg, {lang_bg}, rgba(91, 143, 199, 0.25));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-left: 4px solid {lang_color};
             border-radius: 15px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
         '>
             <div style='font-size: 2rem; margin-bottom: 0.5rem;'>📝</div>
             <div style='font-size: 1.8rem; font-weight: bold; color: {lang_color};'>
                 {overall_scores['language_score']:.1f}
             </div>
-            <div style='color: white; font-size: 0.9rem; margin-top: 0.3rem;'>Language Score</div>
+            <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.9rem; margin-top: 0.3rem;'>Language Score</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -465,53 +465,53 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             body_color, body_bg = get_score_color(overall_scores['body_score'])
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, {body_bg}, rgba(42, 0, 64, 0.3));
+                background: linear-gradient(135deg, {body_bg}, rgba(91, 143, 199, 0.25));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {body_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='font-size: 2rem; margin-bottom: 0.5rem;'>👤</div>
                 <div style='font-size: 1.8rem; font-weight: bold; color: {body_color};'>
                     {overall_scores['body_score']:.1f}
                 </div>
-                <div style='color: white; font-size: 0.9rem; margin-top: 0.3rem;'>Body Language Score</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.9rem; margin-top: 0.3rem;'>Body Language Score</div>
             </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown("""
             <div style='
-                background: linear-gradient(135deg, rgba(107, 114, 128, 0.15), rgba(42, 0, 64, 0.3));
+                background: linear-gradient(135deg, rgba(232, 242, 251, 0.95), rgba(91, 143, 199, 0.25));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                border-left: 4px solid #6b7280;
+                border-left: 4px solid #000000;
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='font-size: 2rem; margin-bottom: 0.5rem;'>👤</div>
-                <div style='font-size: 1.5rem; font-weight: bold; color: #6b7280;'>
+                <div style='font-size: 1.5rem; font-weight: bold; color: #000000;'>
                     N/A
                 </div>
-                <div style='color: white; font-size: 0.9rem; margin-top: 0.3rem;'>Body Language Score</div>
-                <div style='color: rgba(255, 255, 255, 0.6); font-size: 0.8rem; margin-top: 0.3rem;'>Video required</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.9rem; margin-top: 0.3rem;'>Body Language Score</div>
+                <div style='color: rgba(0, 0, 0, 0.55); font-size: 0.8rem; margin-top: 0.3rem;'>Video required</div>
             </div>
             """, unsafe_allow_html=True)
     
     # Detailed Analysis Sections
     st.markdown("""
-    <h2 style='color: #ffffff; margin-top: 3rem; margin-bottom: 1.5rem;'>
+    <h2 style='color: #111111; margin-top: 3rem; margin-bottom: 1.5rem;'>
         🔍 Detailed Analysis
     </h2>
     """, unsafe_allow_html=True)
     
     # Voice Analysis Section
     st.markdown("""
-    <h3 style='color: #ffffff; margin-top: 2rem; margin-bottom: 1rem;'>
+    <h3 style='color: #111111; margin-top: 2rem; margin-bottom: 1rem;'>
         🎙️ Voice Analysis
     </h3>
     """, unsafe_allow_html=True)
@@ -523,30 +523,30 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     
     wpm = voice_metrics['pace']['wpm']
     if 120 <= wpm <= 160:
-        pace_color = "#10b981"
+        pace_color = "#111111"
         pace_status = "✓ Good"
     elif 100 <= wpm < 120 or 160 < wpm <= 180:
-        pace_color = "#f59e0b"
+        pace_color = "#d96c6c"
         pace_status = "⚠ Adjust"
     else:
-        pace_color = "#ef4444"
+        pace_color = "#000000"
         pace_status = "✗ Review"
     
     with col1:
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+            background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-left: 4px solid {pace_color};
             border-radius: 15px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
         '>
             <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Pace</div>
             <div style='font-size: 2rem; font-weight: bold; color: {pace_color};'>{wpm:.0f}</div>
-            <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>WPM</div>
+            <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>WPM</div>
             <div style='color: {pace_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{pace_status}</div>
         </div>
         """, unsafe_allow_html=True)
@@ -554,90 +554,90 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     pause_count = voice_metrics['pauses']['count']
     avg_pause = voice_metrics['pauses']['avg_duration']
     if 5 <= pause_count <= 15 and avg_pause < 2.0:
-        pause_color = "#10b981"
+        pause_color = "#111111"
         pause_status = "✓ Good"
     elif pause_count < 5 or (pause_count <= 20 and avg_pause < 3.0):
-        pause_color = "#f59e0b"
+        pause_color = "#d96c6c"
         pause_status = "⚠ Adjust"
     else:
-        pause_color = "#ef4444"
+        pause_color = "#000000"
         pause_status = "✗ Review"
     
     with col2:
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+            background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-left: 4px solid {pause_color};
             border-radius: 15px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
         '>
             <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Pauses</div>
             <div style='font-size: 2rem; font-weight: bold; color: {pause_color};'>{pause_count}</div>
-            <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>{avg_pause:.1f}s avg</div>
+            <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>{avg_pause:.1f}s avg</div>
             <div style='color: {pause_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{pause_status}</div>
         </div>
         """, unsafe_allow_html=True)
     
     monotony = voice_metrics['pitch']['monotony_score']
     if monotony < 0.3:
-        pitch_color = "#10b981"
+        pitch_color = "#111111"
         pitch_status = "✓ Varied"
     elif monotony < 0.5:
-        pitch_color = "#f59e0b"
+        pitch_color = "#d96c6c"
         pitch_status = "⚠ Somewhat"
     else:
-        pitch_color = "#ef4444"
+        pitch_color = "#000000"
         pitch_status = "✗ Monotone"
     
     with col3:
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+            background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-left: 4px solid {pitch_color};
             border-radius: 15px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
         '>
             <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Pitch</div>
             <div style='font-size: 2rem; font-weight: bold; color: {pitch_color};'>{(1-monotony)*100:.0f}</div>
-            <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Variation %</div>
+            <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Variation %</div>
             <div style='color: {pitch_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{pitch_status}</div>
         </div>
         """, unsafe_allow_html=True)
     
     consistency = voice_metrics['volume']['volume_consistency']
     if consistency > 0.5:
-        volume_color = "#10b981"
+        volume_color = "#111111"
         volume_status = "✓ Consistent"
     elif consistency > 0.3:
-        volume_color = "#f59e0b"
+        volume_color = "#d96c6c"
         volume_status = "⚠ Variable"
     else:
-        volume_color = "#ef4444"
+        volume_color = "#000000"
         volume_status = "✗ Inconsistent"
     
     with col4:
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+            background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-left: 4px solid {volume_color};
             border-radius: 15px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
         '>
             <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Volume</div>
             <div style='font-size: 2rem; font-weight: bold; color: {volume_color};'>{consistency*100:.0f}</div>
-            <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Consistency %</div>
+            <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Consistency %</div>
             <div style='color: {volume_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{volume_status}</div>
         </div>
         """, unsafe_allow_html=True)
@@ -651,30 +651,30 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         mode="gauge+number",
         value=wpm,
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Speaking Pace (WPM)", 'font': {'color': 'white', 'size': 16}},
-        number={'font': {'color': 'white', 'size': 32}},
+        title={'text': "Speaking Pace (WPM)", 'font': {'color': '#111111', 'size': 16}},
+        number={'font': {'color': '#111111', 'size': 32}},
         gauge={
             'axis': {
                 'range': [None, 200], 
-                'tickcolor': 'white',
-                'tickfont': {'color': 'white'}
+                'tickcolor': '#94a3b8',
+                'tickfont': {'color': '#111111'}
             },
             'bar': {'color': pace_color},
-            'bgcolor': 'rgba(42, 0, 64, 0.3)',
+            'bgcolor': 'rgba(91, 143, 199, 0.25)',
             'bordercolor': 'rgba(255, 255, 255, 0.1)',
             'steps': [
-                {'range': [0, 100], 'color': 'rgba(239, 68, 68, 0.3)'},
-                {'range': [100, 120], 'color': 'rgba(245, 158, 11, 0.3)'},
-                {'range': [120, 160], 'color': 'rgba(16, 185, 129, 0.3)'},
-                {'range': [160, 180], 'color': 'rgba(245, 158, 11, 0.3)'},
-                {'range': [180, 200], 'color': 'rgba(239, 68, 68, 0.3)'}
+                {'range': [0, 100], 'color': 'rgba(91, 143, 199, 0.25)'},
+                {'range': [100, 120], 'color': 'rgba(217, 108, 108, 0.3)'},
+                {'range': [120, 160], 'color': 'rgba(217, 108, 108, 0.3)'},
+                {'range': [160, 180], 'color': 'rgba(217, 108, 108, 0.3)'},
+                {'range': [180, 200], 'color': 'rgba(91, 143, 199, 0.25)'}
             ],
         }
     ))
     fig_pace.update_layout(
         height=250,
         paper_bgcolor='rgba(0,0,0,0)',
-        font={'color': 'white', 'size': 12}
+        font={'color': '#111111', 'size': 12}
     )
     st.plotly_chart(fig_pace, use_container_width=True)
     
@@ -686,28 +686,28 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             x=[p[0] for p in pauses],
             y=[p[1] - p[0] for p in pauses],
             mode='markers',
-            marker=dict(size=10, color=pause_color, line=dict(width=1, color='white')),
+            marker=dict(size=10, color=pause_color, line=dict(width=1, color='#333333')),
             name='Pauses'
         ))
         fig_pauses.update_layout(
-            title={'text': "Pauses Over Time", 'font': {'color': 'white', 'size': 16}},
+            title={'text': "Pauses Over Time", 'font': {'color': '#111111', 'size': 16}},
             xaxis_title="Time (seconds)",
             yaxis_title="Pause Duration (seconds)",
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(42, 0, 64, 0.2)',
-            font={'color': 'white', 'size': 12},
+            plot_bgcolor='rgba(91, 143, 199, 0.14)',
+            font={'color': '#111111', 'size': 12},
             xaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             },
             yaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             }
         )
         st.plotly_chart(fig_pauses, use_container_width=True)
@@ -738,27 +738,27 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
                 xref="paper", yref="paper",
                 x=0.5, y=0.5,
                 showarrow=False,
-                font=dict(color='white', size=14)
+                font=dict(color='#111111', size=14)
             )
         fig_pitch.update_layout(
-            title={'text': "Pitch Variation", 'font': {'color': 'white', 'size': 16}},
+            title={'text': "Pitch Variation", 'font': {'color': '#111111', 'size': 16}},
             xaxis_title="Time",
             yaxis_title="Pitch (Hz)",
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(42, 0, 64, 0.2)',
-            font={'color': 'white', 'size': 12},
+            plot_bgcolor='rgba(91, 143, 199, 0.14)',
+            font={'color': '#111111', 'size': 12},
             xaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             },
             yaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             }
         )
         st.plotly_chart(fig_pitch, use_container_width=True)
@@ -787,34 +787,34 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
                 xref="paper", yref="paper",
                 x=0.5, y=0.5,
                 showarrow=False,
-                font=dict(color='white', size=14)
+                font=dict(color='#111111', size=14)
             )
         fig_volume.update_layout(
-            title={'text': "Volume Levels", 'font': {'color': 'white', 'size': 16}},
+            title={'text': "Volume Levels", 'font': {'color': '#111111', 'size': 16}},
             xaxis_title="Time",
             yaxis_title="Volume (dB)",
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(42, 0, 64, 0.2)',
-            font={'color': 'white', 'size': 12},
+            plot_bgcolor='rgba(91, 143, 199, 0.14)',
+            font={'color': '#111111', 'size': 12},
             xaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             },
             yaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             }
         )
         st.plotly_chart(fig_volume, use_container_width=True)
     
     # Voice feedback
     st.markdown("""
-    <h4 style='color: #ffffff; margin-top: 1.5rem; margin-bottom: 1rem;'>
+    <h4 style='color: #111111; margin-top: 1.5rem; margin-bottom: 1rem;'>
         💡 Voice Recommendations
     </h4>
     """, unsafe_allow_html=True)
@@ -822,14 +822,14 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     for i, rec in enumerate(voice_feedback['recommendations'], 1):
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(42, 0, 64, 0.3));
+            background: linear-gradient(135deg, rgba(217, 108, 108, 0.1), rgba(91, 143, 199, 0.25));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-left: 3px solid #3b82f6;
+            border-left: 3px solid #d96c6c;
             border-radius: 10px;
             padding: 1rem;
             margin-bottom: 0.75rem;
-            color: white;
+            color: rgba(0, 0, 0, 0.85);
         '>
             <strong>{i}.</strong> {rec}
         </div>
@@ -838,7 +838,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     # Language Analysis Section
     if text:
         st.markdown("""
-        <h3 style='color: #ffffff; margin-top: 2.5rem; margin-bottom: 1rem;'>
+        <h3 style='color: #111111; margin-top: 2.5rem; margin-bottom: 1rem;'>
             📝 Language Analysis
         </h3>
         """, unsafe_allow_html=True)
@@ -850,123 +850,123 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         
         filler_rate = language_metrics.get('filler_words', {}).get('filler_rate', 0.0)
         if filler_rate < 2:
-            filler_color = "#10b981"
+            filler_color = "#111111"
             filler_status = "✓ Excellent"
         elif filler_rate < 5:
-            filler_color = "#f59e0b"
+            filler_color = "#d96c6c"
             filler_status = "⚠ Moderate"
         else:
-            filler_color = "#ef4444"
+            filler_color = "#000000"
             filler_status = "✗ High"
         
         with col1:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {filler_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Filler Words</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {filler_color};'>{filler_rate:.1f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>per 100 words</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>per 100 words</div>
                 <div style='color: {filler_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{filler_status}</div>
             </div>
             """, unsafe_allow_html=True)
         
         diversity = language_metrics.get('vocabulary', {}).get('diversity_ratio', 0.0)
         if diversity >= 0.7:
-            vocab_color = "#10b981"
+            vocab_color = "#111111"
             vocab_status = "✓ Excellent"
         elif diversity >= 0.5:
-            vocab_color = "#f59e0b"
+            vocab_color = "#d96c6c"
             vocab_status = "⚠ Good"
         else:
-            vocab_color = "#ef4444"
+            vocab_color = "#000000"
             vocab_status = "✗ Limited"
         
         with col2:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {vocab_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Vocabulary</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {vocab_color};'>{diversity*100:.0f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Diversity %</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Diversity %</div>
                 <div style='color: {vocab_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{vocab_status}</div>
             </div>
             """, unsafe_allow_html=True)
         
         flesch = language_metrics.get('readability', {}).get('flesch_reading_ease', 0)
         if flesch >= 60:
-            read_color = "#10b981"
+            read_color = "#111111"
             read_status = "✓ Easy"
         elif flesch >= 30:
-            read_color = "#f59e0b"
+            read_color = "#d96c6c"
             read_status = "⚠ Moderate"
         elif flesch > 0:
-            read_color = "#ef4444"
+            read_color = "#000000"
             read_status = "✗ Difficult"
         else:
-            read_color = "#6b7280"
+            read_color = "#000000"
             read_status = "N/A"
         
         with col3:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {read_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Readability</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {read_color};'>{flesch if flesch > 0 else "—"}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Flesch Score</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Flesch Score</div>
                 <div style='color: {read_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{read_status}</div>
             </div>
             """, unsafe_allow_html=True)
         
         avg_sentence = language_metrics.get('sentence_structure', {}).get('avg_words_per_sentence', 0)
         if 15 <= avg_sentence <= 25:
-            sent_color = "#10b981"
+            sent_color = "#111111"
             sent_status = "✓ Good"
         elif 10 <= avg_sentence < 15 or 25 < avg_sentence <= 35:
-            sent_color = "#f59e0b"
+            sent_color = "#d96c6c"
             sent_status = "⚠ Adjust"
         else:
-            sent_color = "#ef4444"
+            sent_color = "#000000"
             sent_status = "✗ Review"
         
         with col4:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {sent_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Sentence Length</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {sent_color};'>{avg_sentence:.0f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>words avg</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>words avg</div>
                 <div style='color: {sent_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{sent_status}</div>
             </div>
             """, unsafe_allow_html=True)
@@ -982,27 +982,27 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
                 x=list(filler_words.keys()),
                 y=list(filler_words.values()),
                 marker_color=filler_color,
-                marker_line=dict(color='white', width=1)
+                marker_line=dict(color='#333333', width=1)
             ))
             fig_fillers.update_layout(
-                title={'text': "Filler Words Detected", 'font': {'color': 'white', 'size': 16}},
+                title={'text': "Filler Words Detected", 'font': {'color': '#111111', 'size': 16}},
                 xaxis_title="Filler Word",
                 yaxis_title="Count",
                 height=300,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(42, 0, 64, 0.2)',
-                font={'color': 'white', 'size': 12},
+                plot_bgcolor='rgba(91, 143, 199, 0.14)',
+                font={'color': '#111111', 'size': 12},
                 xaxis={
-                    'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'gridcolor': 'rgba(0,0,0,0.08)',
+                    'color': '#94a3b8',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 },
                 yaxis={
-                    'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'gridcolor': 'rgba(0,0,0,0.08)',
+                    'color': '#94a3b8',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 }
             )
             st.plotly_chart(fig_fillers, use_container_width=True)
@@ -1013,35 +1013,35 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             mode="gauge+number",
             value=diversity * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Vocabulary Diversity (%)", 'font': {'color': 'white', 'size': 16}},
-            number={'font': {'color': 'white', 'size': 32}, 'suffix': '%'},
+            title={'text': "Vocabulary Diversity (%)", 'font': {'color': '#111111', 'size': 16}},
+            number={'font': {'color': '#111111', 'size': 32}, 'suffix': '%'},
             gauge={
                 'axis': {
                     'range': [None, 100], 
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
+                    'tickcolor': '#94a3b8',
+                    'tickfont': {'color': '#111111'}
                 },
                 'bar': {'color': vocab_color},
-                'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                'bgcolor': 'rgba(91, 143, 199, 0.25)',
                 'bordercolor': 'rgba(255, 255, 255, 0.1)',
                 'steps': [
-                    {'range': [0, 30], 'color': 'rgba(239, 68, 68, 0.3)'},
-                    {'range': [30, 50], 'color': 'rgba(245, 158, 11, 0.3)'},
-                    {'range': [50, 70], 'color': 'rgba(59, 130, 246, 0.3)'},
-                    {'range': [70, 100], 'color': 'rgba(16, 185, 129, 0.3)'}
+                    {'range': [0, 30], 'color': 'rgba(91, 143, 199, 0.25)'},
+                    {'range': [30, 50], 'color': 'rgba(217, 108, 108, 0.3)'},
+                    {'range': [50, 70], 'color': 'rgba(217, 108, 108, 0.3)'},
+                    {'range': [70, 100], 'color': 'rgba(217, 108, 108, 0.3)'}
                 ],
             }
         ))
         fig_vocab.update_layout(
             height=250,
             paper_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white', 'size': 12}
+            font={'color': '#111111', 'size': 12}
         )
         st.plotly_chart(fig_vocab, use_container_width=True)
         
         # Readability metrics
         st.markdown("""
-        <h4 style='color: #ffffff; margin-top: 1.5rem; margin-bottom: 1rem;'>
+        <h4 style='color: #111111; margin-top: 1.5rem; margin-bottom: 1rem;'>
             📖 Readability Metrics
         </h4>
         """, unsafe_allow_html=True)
@@ -1054,17 +1054,17 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             flesch_display = f"{flesch_ease:.1f}" if flesch_ease > 0 else "—"
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(42, 0, 64, 0.3));
+                background: linear-gradient(135deg, rgba(217, 108, 108, 0.15), rgba(91, 143, 199, 0.25));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 10px;
                 padding: 1rem;
                 text-align: center;
             '>
-                <div style='color: #3b82f6; font-size: 1.5rem; font-weight: bold;'>
+                <div style='color: #d96c6c; font-size: 1.5rem; font-weight: bold;'>
                     {flesch_display}
                 </div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Flesch Reading Ease</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Flesch Reading Ease</div>
             </div>
             """, unsafe_allow_html=True)
         
@@ -1073,17 +1073,17 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             grade_display = f"{flesch_grade:.1f}" if flesch_grade > 0 else "—"
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(42, 0, 64, 0.3));
+                background: linear-gradient(135deg, rgba(217, 108, 108, 0.15), rgba(91, 143, 199, 0.25));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 10px;
                 padding: 1rem;
                 text-align: center;
             '>
-                <div style='color: #3b82f6; font-size: 1.5rem; font-weight: bold;'>
+                <div style='color: #d96c6c; font-size: 1.5rem; font-weight: bold;'>
                     {grade_display}
                 </div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Grade Level</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Grade Level</div>
             </div>
             """, unsafe_allow_html=True)
         
@@ -1091,23 +1091,23 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             syllables = readability.get('avg_syllables_per_word', 0)
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(42, 0, 64, 0.3));
+                background: linear-gradient(135deg, rgba(217, 108, 108, 0.15), rgba(91, 143, 199, 0.25));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 10px;
                 padding: 1rem;
                 text-align: center;
             '>
-                <div style='color: #3b82f6; font-size: 1.5rem; font-weight: bold;'>
+                <div style='color: #d96c6c; font-size: 1.5rem; font-weight: bold;'>
                     {syllables:.2f}
                 </div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Avg Syllables/Word</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Avg Syllables/Word</div>
             </div>
             """, unsafe_allow_html=True)
         
         # Language feedback
         st.markdown("""
-        <h4 style='color: #ffffff; margin-top: 1.5rem; margin-bottom: 1rem;'>
+        <h4 style='color: #111111; margin-top: 1.5rem; margin-bottom: 1rem;'>
             💡 Language Recommendations
         </h4>
         """, unsafe_allow_html=True)
@@ -1115,14 +1115,14 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         for i, rec in enumerate(language_feedback['recommendations'], 1):
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(42, 0, 64, 0.3));
+                background: linear-gradient(135deg, rgba(217, 108, 108, 0.1), rgba(91, 143, 199, 0.25));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                border-left: 3px solid #10b981;
+                border-left: 3px solid #111111;
                 border-radius: 10px;
                 padding: 1rem;
                 margin-bottom: 0.75rem;
-                color: white;
+                color: rgba(0, 0, 0, 0.85);
             '>
                 <strong>{i}.</strong> {rec}
             </div>
@@ -1131,7 +1131,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     # Body Language Analysis Section
     if body_metrics:
         st.markdown("""
-        <h3 style='color: #ffffff; margin-top: 2.5rem; margin-bottom: 1rem;'>
+        <h3 style='color: #111111; margin-top: 2.5rem; margin-bottom: 1rem;'>
             👤 Body Language Analysis
         </h3>
         """, unsafe_allow_html=True)
@@ -1143,150 +1143,150 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         
         posture_score = body_metrics.get('posture', {}).get('posture_score', 0.0)
         if posture_score >= 0.75:
-            posture_color = "#10b981"
+            posture_color = "#111111"
             posture_status = "✓ Excellent"
         elif posture_score >= 0.5:
-            posture_color = "#f59e0b"
+            posture_color = "#d96c6c"
             posture_status = "⚠ Fair"
         else:
-            posture_color = "#ef4444"
+            posture_color = "#000000"
             posture_status = "✗ Poor"
         
         with col1:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {posture_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Posture</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {posture_color};'>{posture_score*100:.0f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Score %</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Score %</div>
                 <div style='color: {posture_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{posture_status}</div>
             </div>
             """, unsafe_allow_html=True)
         
         gesture_freq = body_metrics.get('gestures', {}).get('gesture_frequency', 0.0)
         if 2 <= gesture_freq <= 8:
-            gesture_color = "#10b981"
+            gesture_color = "#111111"
             gesture_status = "✓ Good"
         elif 1 <= gesture_freq < 2 or 8 < gesture_freq <= 12:
-            gesture_color = "#f59e0b"
+            gesture_color = "#d96c6c"
             gesture_status = "⚠ Adjust"
         else:
-            gesture_color = "#ef4444"
+            gesture_color = "#000000"
             gesture_status = "✗ Review"
         
         with col2:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {gesture_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Gestures</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {gesture_color};'>{gesture_freq:.1f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>per second</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>per second</div>
                 <div style='color: {gesture_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{gesture_status}</div>
             </div>
             """, unsafe_allow_html=True)
         
         eye_contact = body_metrics.get('eye_contact', {}).get('eye_contact_percentage', 0.0)
         if eye_contact >= 0.7:
-            eye_color = "#10b981"
+            eye_color = "#111111"
             eye_status = "✓ Excellent"
         elif eye_contact >= 0.5:
-            eye_color = "#f59e0b"
+            eye_color = "#d96c6c"
             eye_status = "⚠ Fair"
         else:
-            eye_color = "#ef4444"
+            eye_color = "#000000"
             eye_status = "✗ Low"
         
         with col3:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {eye_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Eye Contact</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {eye_color};'>{eye_contact*100:.0f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Percentage %</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Percentage %</div>
                 <div style='color: {eye_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{eye_status}</div>
             </div>
             """, unsafe_allow_html=True)
         
         engagement = body_metrics.get('facial_expressions', {}).get('engagement_score', 0.0)
         if engagement >= 0.7:
-            engage_color = "#10b981"
+            engage_color = "#111111"
             engage_status = "✓ Engaged"
         elif engagement >= 0.5:
-            engage_color = "#f59e0b"
+            engage_color = "#d96c6c"
             engage_status = "⚠ Moderate"
         else:
-            engage_color = "#ef4444"
+            engage_color = "#000000"
             engage_status = "✗ Low"
         
         with col4:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {engage_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Engagement</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {engage_color};'>{engagement*100:.0f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Score %</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Score %</div>
                 <div style='color: {engage_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{engage_status}</div>
             </div>
             """, unsafe_allow_html=True)
         
         presence = body_metrics.get('presence_score', 0.0)
         if presence >= 0.75:
-            presence_color = "#10b981"
+            presence_color = "#111111"
             presence_status = "✓ Strong"
         elif presence >= 0.55:
-            presence_color = "#f59e0b"
+            presence_color = "#d96c6c"
             presence_status = "⚠ Moderate"
         else:
-            presence_color = "#ef4444"
+            presence_color = "#000000"
             presence_status = "✗ Weak"
         
         with col5:
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+                background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 4px solid {presence_color};
                 border-radius: 15px;
                 padding: 1.5rem;
                 text-align: center;
-                box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 16px 0 rgba(91, 143, 199, 0.18);
             '>
                 <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-bottom: 0.5rem;'>Presence</div>
                 <div style='font-size: 2rem; font-weight: bold; color: {presence_color};'>{presence*100:.0f}</div>
-                <div style='color: white; font-size: 0.85rem; margin-top: 0.3rem;'>Overall %</div>
+                <div style='color: rgba(0, 0, 0, 0.78); font-size: 0.85rem; margin-top: 0.3rem;'>Overall %</div>
                 <div style='color: {presence_color}; font-size: 0.75rem; margin-top: 0.5rem;'>{presence_status}</div>
             </div>
             """, unsafe_allow_html=True)
@@ -1303,28 +1303,28 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
                 mode="gauge+number",
                 value=posture_score * 100,
                 domain={'x': [0, 1], 'y': [0, 1]},
-                title={'text': "Posture Quality (%)", 'font': {'color': 'white', 'size': 16}},
-                number={'font': {'color': 'white', 'size': 32}, 'suffix': '%'},
+                title={'text': "Posture Quality (%)", 'font': {'color': '#111111', 'size': 16}},
+                number={'font': {'color': '#111111', 'size': 32}, 'suffix': '%'},
                 gauge={
                     'axis': {
                         'range': [None, 100], 
-                        'tickcolor': 'white',
-                        'tickfont': {'color': 'white'}
+                        'tickcolor': '#94a3b8',
+                        'tickfont': {'color': '#111111'}
                     },
                     'bar': {'color': posture_color},
-                    'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                    'bgcolor': 'rgba(91, 143, 199, 0.25)',
                     'bordercolor': 'rgba(255, 255, 255, 0.1)',
                     'steps': [
-                        {'range': [0, 50], 'color': 'rgba(239, 68, 68, 0.3)'},
-                        {'range': [50, 75], 'color': 'rgba(245, 158, 11, 0.3)'},
-                        {'range': [75, 100], 'color': 'rgba(16, 185, 129, 0.3)'}
+                        {'range': [0, 50], 'color': 'rgba(91, 143, 199, 0.25)'},
+                        {'range': [50, 75], 'color': 'rgba(217, 108, 108, 0.3)'},
+                        {'range': [75, 100], 'color': 'rgba(217, 108, 108, 0.3)'}
                     ],
                 }
             ))
             fig_posture.update_layout(
                 height=250,
                 paper_bgcolor='rgba(0,0,0,0)',
-                font={'color': 'white', 'size': 12}
+                font={'color': '#111111', 'size': 12}
             )
             st.plotly_chart(fig_posture, use_container_width=True)
         
@@ -1335,28 +1335,28 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
                 mode="gauge+number",
                 value=eye_contact * 100,
                 domain={'x': [0, 1], 'y': [0, 1]},
-                title={'text': "Eye Contact (%)", 'font': {'color': 'white', 'size': 16}},
-                number={'font': {'color': 'white', 'size': 32}, 'suffix': '%'},
+                title={'text': "Eye Contact (%)", 'font': {'color': '#111111', 'size': 16}},
+                number={'font': {'color': '#111111', 'size': 32}, 'suffix': '%'},
                 gauge={
                     'axis': {
                         'range': [None, 100],
-                        'tickcolor': 'white',
-                        'tickfont': {'color': 'white'}
+                        'tickcolor': '#94a3b8',
+                        'tickfont': {'color': '#111111'}
                     },
                     'bar': {'color': eye_color},
-                    'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                    'bgcolor': 'rgba(91, 143, 199, 0.25)',
                     'bordercolor': 'rgba(255, 255, 255, 0.1)',
                     'steps': [
-                        {'range': [0, 50], 'color': 'rgba(239, 68, 68, 0.3)'},
-                        {'range': [50, 70], 'color': 'rgba(245, 158, 11, 0.3)'},
-                        {'range': [70, 100], 'color': 'rgba(16, 185, 129, 0.3)'}
+                        {'range': [0, 50], 'color': 'rgba(91, 143, 199, 0.25)'},
+                        {'range': [50, 70], 'color': 'rgba(217, 108, 108, 0.3)'},
+                        {'range': [70, 100], 'color': 'rgba(217, 108, 108, 0.3)'}
                     ],
                 }
             ))
             fig_eye.update_layout(
                 height=250,
                 paper_bgcolor='rgba(0,0,0,0)',
-                font={'color': 'white', 'size': 12}
+                font={'color': '#111111', 'size': 12}
             )
             st.plotly_chart(fig_eye, use_container_width=True)
         
@@ -1369,26 +1369,26 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             x=['Total Gestures', 'Variety Score', 'Frequency'],
             y=[gesture_count, gesture_variety * 100, gesture_freq],
             marker_color=[gesture_color, gesture_color, gesture_color],
-            marker_line=dict(color='white', width=1)
+            marker_line=dict(color='#333333', width=1)
         ))
         fig_gestures.update_layout(
-            title={'text': "Gesture Metrics", 'font': {'color': 'white', 'size': 16}},
+            title={'text': "Gesture Metrics", 'font': {'color': '#111111', 'size': 16}},
             yaxis_title="Count / Percentage",
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(42, 0, 64, 0.2)',
-            font={'color': 'white', 'size': 12},
+            plot_bgcolor='rgba(91, 143, 199, 0.14)',
+            font={'color': '#111111', 'size': 12},
             xaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             },
             yaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#cbd5e1',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             }
         )
         st.plotly_chart(fig_gestures, use_container_width=True)
@@ -1396,45 +1396,45 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         # Movement gauge
         movement_score = body_metrics.get('movement_score', 0.0)
         if movement_score >= 0.7:
-            move_color = "#10b981"
+            move_color = "#111111"
         elif movement_score >= 0.4:
-            move_color = "#f59e0b"
+            move_color = "#d96c6c"
         else:
-            move_color = "#ef4444"
+            move_color = "#000000"
         
         fig_movement = go.Figure()
         fig_movement.add_trace(go.Indicator(
             mode="gauge+number",
             value=movement_score * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Movement & Energy (%)", 'font': {'color': 'white', 'size': 16}},
-            number={'font': {'color': 'white', 'size': 32}, 'suffix': '%'},
+            title={'text': "Movement & Energy (%)", 'font': {'color': '#111111', 'size': 16}},
+            number={'font': {'color': '#111111', 'size': 32}, 'suffix': '%'},
             gauge={
                 'axis': {
                     'range': [None, 100],
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
+                    'tickcolor': '#94a3b8',
+                    'tickfont': {'color': '#111111'}
                 },
                 'bar': {'color': move_color},
-                'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                'bgcolor': 'rgba(91, 143, 199, 0.25)',
                 'bordercolor': 'rgba(255, 255, 255, 0.1)',
                 'steps': [
-                    {'range': [0, 40], 'color': 'rgba(239, 68, 68, 0.3)'},
-                    {'range': [40, 70], 'color': 'rgba(245, 158, 11, 0.3)'},
-                    {'range': [70, 100], 'color': 'rgba(16, 185, 129, 0.3)'}
+                    {'range': [0, 40], 'color': 'rgba(91, 143, 199, 0.25)'},
+                    {'range': [40, 70], 'color': 'rgba(217, 108, 108, 0.3)'},
+                    {'range': [70, 100], 'color': 'rgba(217, 108, 108, 0.3)'}
                 ],
             }
         ))
         fig_movement.update_layout(
             height=250,
             paper_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white', 'size': 12}
+            font={'color': '#111111', 'size': 12}
         )
         st.plotly_chart(fig_movement, use_container_width=True)
         
         # Body language feedback
         st.markdown("""
-        <h4 style='color: #ffffff; margin-top: 1.5rem; margin-bottom: 1rem;'>
+        <h4 style='color: #111111; margin-top: 1.5rem; margin-bottom: 1rem;'>
             💡 Body Language Recommendations
         </h4>
         """, unsafe_allow_html=True)
@@ -1442,28 +1442,28 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         for i, rec in enumerate(body_feedback['recommendations'], 1):
             st.markdown(f"""
             <div style='
-                background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(42, 0, 64, 0.3));
+                background: linear-gradient(135deg, rgba(217, 108, 108, 0.1), rgba(91, 143, 199, 0.25));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-left: 3px solid #8b5cf6;
                 border-radius: 10px;
                 padding: 1rem;
                 margin-bottom: 0.75rem;
-                color: white;
+                color: rgba(0, 0, 0, 0.85);
             '>
                 <strong>{i}.</strong> {rec}
             </div>
             """, unsafe_allow_html=True)
     else:
         st.markdown("""
-        <h3 style='color: #ffffff; margin-top: 2.5rem; margin-bottom: 1rem;'>
+        <h3 style='color: #111111; margin-top: 2.5rem; margin-bottom: 1rem;'>
             👤 Body Language Analysis
         </h3>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div style='
-            background: linear-gradient(135deg, rgba(107, 114, 128, 0.15), rgba(42, 0, 64, 0.3));
+            background: linear-gradient(135deg, rgba(232, 242, 251, 0.95), rgba(91, 143, 199, 0.25));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
@@ -1471,7 +1471,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             text-align: center;
         '>
             <div style='font-size: 3rem; margin-bottom: 1rem;'>📹</div>
-            <div style='color: white; font-size: 1.2rem; margin-bottom: 0.5rem;'>Video Analysis Not Available</div>
+            <div style='color: rgba(0, 0, 0, 0.85); font-size: 1.2rem; margin-bottom: 0.5rem;'>Video Analysis Not Available</div>
             <div style='color: rgba(255, 255, 255, 0.7); font-size: 0.95rem;'>
                 Body language analysis requires a video file with MediaPipe dependencies installed.
             </div>
@@ -1480,7 +1480,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     
     # Summary Section
     st.markdown("""
-    <h2 style='color: #ffffff; margin-top: 3rem; margin-bottom: 1.5rem;'>
+    <h2 style='color: #111111; margin-top: 3rem; margin-bottom: 1.5rem;'>
         📊 Performance Summary
     </h2>
     """, unsafe_allow_html=True)
@@ -1490,11 +1490,11 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     
     with col1:
         voice_status = "✓ Good" if overall_scores['voice_score'] >= 70 else "⚠ Needs Work"
-        voice_status_color = "#10b981" if overall_scores['voice_score'] >= 70 else "#f59e0b"
+        voice_status_color = "#111111" if overall_scores['voice_score'] >= 70 else "#d96c6c"
         
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+            background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
@@ -1502,8 +1502,8 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             margin-bottom: 1rem;
         '>
             <div style='font-size: 1.5rem; margin-bottom: 0.5rem;'>🎙️</div>
-            <div style='color: white; font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;'>Voice Analysis</div>
-            <div style='color: #3b82f6; font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;'>
+            <div style='color: rgba(0, 0, 0, 0.85); font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;'>Voice Analysis</div>
+            <div style='color: #d96c6c; font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;'>
                 {overall_scores['voice_score']:.1f}
             </div>
             <div style='color: {voice_status_color}; font-size: 0.9rem;'>{voice_status}</div>
@@ -1512,11 +1512,11 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     
     with col2:
         lang_status = "✓ Good" if overall_scores['language_score'] >= 70 else "⚠ Needs Work"
-        lang_status_color = "#10b981" if overall_scores['language_score'] >= 70 else "#f59e0b"
+        lang_status_color = "#111111" if overall_scores['language_score'] >= 70 else "#d96c6c"
         
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+            background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
@@ -1524,8 +1524,8 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             margin-bottom: 1rem;
         '>
             <div style='font-size: 1.5rem; margin-bottom: 0.5rem;'>📝</div>
-            <div style='color: white; font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;'>Language Analysis</div>
-            <div style='color: #10b981; font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;'>
+            <div style='color: rgba(0, 0, 0, 0.85); font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;'>Language Analysis</div>
+            <div style='color: #111111; font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;'>
                 {overall_scores['language_score']:.1f}
             </div>
             <div style='color: {lang_status_color}; font-size: 0.9rem;'>{lang_status}</div>
@@ -1534,11 +1534,11 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
     
     if body_metrics:
         body_status = "✓ Good" if overall_scores['body_score'] >= 70 else "⚠ Needs Work"
-        body_status_color = "#10b981" if overall_scores['body_score'] >= 70 else "#f59e0b"
+        body_status_color = "#111111" if overall_scores['body_score'] >= 70 else "#d96c6c"
         
         st.markdown(f"""
         <div style='
-            background: linear-gradient(135deg, rgba(42, 0, 64, 0.4), rgba(75, 0, 130, 0.3));
+            background: linear-gradient(135deg, rgba(91, 143, 199, 0.22), rgba(217, 108, 108, 0.3));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
@@ -1546,7 +1546,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
             margin-bottom: 1rem;
         '>
             <div style='font-size: 1.5rem; margin-bottom: 0.5rem;'>👤</div>
-            <div style='color: white; font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;'>Body Language Analysis</div>
+            <div style='color: rgba(0, 0, 0, 0.85); font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem;'>Body Language Analysis</div>
             <div style='color: #8b5cf6; font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;'>
                 {overall_scores['body_score']:.1f}
             </div>
@@ -1566,7 +1566,7 @@ def display_comprehensive_results(voice_metrics, language_metrics, body_metrics,
         text-align: center;
     '>
         <div style='font-size: 2rem; margin-bottom: 1rem;'>{score_emoji}</div>
-        <div style='color: white; font-size: 1.3rem; font-weight: bold; margin-bottom: 0.5rem;'>
+        <div style='color: rgba(0, 0, 0, 0.85); font-size: 1.3rem; font-weight: bold; margin-bottom: 0.5rem;'>
             Overall Performance: {score_label}
         </div>
         <div style='color: rgba(255, 255, 255, 0.8); font-size: 1rem; line-height: 1.6;'>

@@ -25,7 +25,7 @@ def show():
     """Display body language analysis page"""
     
     st.markdown("""
-    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #ffffff;'>
+    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #111111;'>
         <svg style="width: 2rem; height: 2rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
         </svg>
@@ -149,11 +149,11 @@ def display_results(body_metrics, feedback):
     presence = body_metrics.get('presence_score', 0.0)
     
     # Determine status colors
-    posture_color = "#10b981" if posture_score > 0.7 else ("#f59e0b" if posture_score > 0.5 else "#ef4444")
-    gesture_color = "#10b981" if 0.5 <= gesture_freq <= 3.0 else ("#f59e0b" if gesture_freq < 0.5 or gesture_freq <= 4.0 else "#ef4444")
-    eye_color = "#10b981" if eye_contact_pct > 0.6 else ("#f59e0b" if eye_contact_pct > 0.3 else "#ef4444")
-    engagement_color = "#10b981" if engagement > 0.6 else ("#f59e0b" if engagement > 0.4 else "#ef4444")
-    presence_color = "#10b981" if presence > 0.7 else ("#f59e0b" if presence > 0.5 else "#ef4444")
+    posture_color = "#111111" if posture_score > 0.7 else ("#d96c6c" if posture_score > 0.5 else "#000000")
+    gesture_color = "#111111" if 0.5 <= gesture_freq <= 3.0 else ("#d96c6c" if gesture_freq < 0.5 or gesture_freq <= 4.0 else "#000000")
+    eye_color = "#111111" if eye_contact_pct > 0.6 else ("#d96c6c" if eye_contact_pct > 0.3 else "#000000")
+    engagement_color = "#111111" if engagement > 0.6 else ("#d96c6c" if engagement > 0.4 else "#000000")
+    presence_color = "#111111" if presence > 0.7 else ("#d96c6c" if presence > 0.5 else "#000000")
     
     with col1:
         posture_label = "Good" if posture_score > 0.7 else ("Fair" if posture_score > 0.5 else "Needs Work")
@@ -231,22 +231,22 @@ def display_results(body_metrics, feedback):
             mode="gauge+number",
             value=posture_score * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Posture Score", 'font': {'size': 16, 'color': 'white'}},
+            title={'text': "Posture Score", 'font': {'size': 16, 'color': '#111111'}},
             gauge={
                 'axis': {
                     'range': [None, 100], 
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
+                    'tickcolor': '#94a3b8',
+                    'tickfont': {'color': '#111111'}
                 },
                 'bar': {'color': posture_color},
-                'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                'bgcolor': 'rgba(91, 143, 199, 0.25)',
                 'steps': [
-                    {'range': [0, 50], 'color': "rgba(239, 68, 68, 0.2)"},
-                    {'range': [50, 70], 'color': "rgba(245, 158, 11, 0.2)"},
-                    {'range': [70, 100], 'color': "rgba(16, 185, 129, 0.2)"}
+                    {'range': [0, 50], 'color': "rgba(91, 143, 199, 0.14)"},
+                    {'range': [50, 70], 'color': "rgba(217, 108, 108, 0.2)"},
+                    {'range': [70, 100], 'color': "rgba(217, 108, 108, 0.2)"}
                 ],
                 'threshold': {
-                    'line': {'color': "white", 'width': 2},
+                    'line': {'color': '#111111', 'width': 2},
                     'thickness': 0.75,
                     'value': 70
                 }
@@ -257,7 +257,7 @@ def display_results(body_metrics, feedback):
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white'}
+            font={'color': '#111111'}
         )
         st.plotly_chart(fig_posture, use_container_width=True)
         
@@ -286,19 +286,19 @@ def display_results(body_metrics, feedback):
             mode="gauge+number",
             value=movement_score * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Movement Score", 'font': {'size': 16, 'color': 'white'}},
+            title={'text': "Movement Score", 'font': {'size': 16, 'color': '#111111'}},
             gauge={
                 'axis': {
                     'range': [None, 100],
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
+                    'tickcolor': '#94a3b8',
+                    'tickfont': {'color': '#111111'}
                 },
                 'bar': {'color': movement_colors.get(movement_type, 'gray')},
-                'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                'bgcolor': 'rgba(91, 143, 199, 0.25)',
                 'steps': [
-                    {'range': [0, 30], 'color': "rgba(239, 68, 68, 0.2)"},
-                    {'range': [30, 70], 'color': "rgba(245, 158, 11, 0.2)"},
-                    {'range': [70, 100], 'color': "rgba(16, 185, 129, 0.2)"}
+                    {'range': [0, 30], 'color': "rgba(91, 143, 199, 0.14)"},
+                    {'range': [30, 70], 'color': "rgba(217, 108, 108, 0.2)"},
+                    {'range': [70, 100], 'color': "rgba(217, 108, 108, 0.2)"}
                 ]
             },
             number={'font': {'size': 32, 'color': movement_colors.get(movement_type, 'gray')}}
@@ -307,7 +307,7 @@ def display_results(body_metrics, feedback):
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white', 'size': 12}
+            font={'color': '#111111', 'size': 12}
         )
         st.plotly_chart(fig_movement, use_container_width=True)
         
@@ -334,23 +334,23 @@ def display_results(body_metrics, feedback):
             name='Metrics'
         ))
         fig_gestures.update_layout(
-            title={'text': "Gesture Metrics", 'font': {'color': 'white', 'size': 16}},
+            title={'text': "Gesture Metrics", 'font': {'color': '#111111', 'size': 16}},
             yaxis_title="Count / Percentage",
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(42, 0, 64, 0.2)',
-            font={'color': 'white', 'size': 12},
+            plot_bgcolor='rgba(91, 143, 199, 0.14)',
+            font={'color': '#111111', 'size': 12},
             xaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#111111',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             },
             yaxis={
                 'gridcolor': 'rgba(255,255,255,0.1)',
-                'color': 'white',
-                'title': {'font': {'color': 'white'}},
-                'tickfont': {'color': 'white'}
+                'color': '#111111',
+                'title': {'font': {'color': '#111111'}},
+                'tickfont': {'color': '#111111'}
             }
         )
         st.plotly_chart(fig_gestures, use_container_width=True)
@@ -373,22 +373,22 @@ def display_results(body_metrics, feedback):
             mode="gauge+number",
             value=eye_contact_pct * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Eye Contact %", 'font': {'size': 16, 'color': 'white'}},
+            title={'text': "Eye Contact %", 'font': {'size': 16, 'color': '#111111'}},
             gauge={
                 'axis': {
                     'range': [None, 100], 
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
+                    'tickcolor': '#94a3b8',
+                    'tickfont': {'color': '#111111'}
                 },
                 'bar': {'color': eye_color},
-                'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                'bgcolor': 'rgba(91, 143, 199, 0.25)',
                 'steps': [
-                    {'range': [0, 30], 'color': "rgba(239, 68, 68, 0.2)"},
-                    {'range': [30, 60], 'color': "rgba(245, 158, 11, 0.2)"},
-                    {'range': [60, 100], 'color': "rgba(16, 185, 129, 0.2)"}
+                    {'range': [0, 30], 'color': "rgba(91, 143, 199, 0.14)"},
+                    {'range': [30, 60], 'color': "rgba(217, 108, 108, 0.2)"},
+                    {'range': [60, 100], 'color': "rgba(217, 108, 108, 0.2)"}
                 ],
                 'threshold': {
-                    'line': {'color': "white", 'width': 2},
+                    'line': {'color': '#111111', 'width': 2},
                     'thickness': 0.75,
                     'value': 60
                 }
@@ -399,7 +399,7 @@ def display_results(body_metrics, feedback):
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white', 'size': 12}
+            font={'color': '#111111', 'size': 12}
         )
         st.plotly_chart(fig_eye, use_container_width=True)
         
@@ -430,10 +430,10 @@ def display_results(body_metrics, feedback):
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         # Determine recommendation type based on content
         if any(word in recommendation.lower() for word in ['great', 'excellent', 'good']):
-            rec_color = "#10b981"
+            rec_color = "#111111"
             rec_icon = "✅"
         elif any(word in recommendation.lower() for word in ['try', 'consider', 'could']):
-            rec_color = "#f59e0b"
+            rec_color = "#d96c6c"
             rec_icon = "💡"
         else:
             rec_color = "#6366f1"
@@ -461,16 +461,16 @@ def display_results(body_metrics, feedback):
     scores = feedback['scores']
     
     score_info = {
-        'poor': {'emoji': '🔴', 'label': 'Poor', 'color': '#ef4444'},
-        'fair': {'emoji': '🟡', 'label': 'Fair', 'color': '#f59e0b'},
-        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#10b981'},
-        'excellent': {'emoji': '🟢', 'label': 'Excellent', 'color': '#10b981'},
-        'low': {'emoji': '🟡', 'label': 'Low', 'color': '#f59e0b'},
-        'moderate': {'emoji': '🟡', 'label': 'Moderate', 'color': '#f59e0b'},
-        'excessive': {'emoji': '🔴', 'label': 'Excessive', 'color': '#ef4444'},
-        'stationary': {'emoji': '🟡', 'label': 'Stationary', 'color': '#f59e0b'},
-        'appropriate': {'emoji': '🟢', 'label': 'Appropriate', 'color': '#10b981'},
-        'needs_improvement': {'emoji': '🔴', 'label': 'Needs Work', 'color': '#ef4444'}
+        'poor': {'emoji': '🔴', 'label': 'Poor', 'color': '#000000'},
+        'fair': {'emoji': '🟡', 'label': 'Fair', 'color': '#d96c6c'},
+        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#111111'},
+        'excellent': {'emoji': '🟢', 'label': 'Excellent', 'color': '#111111'},
+        'low': {'emoji': '🟡', 'label': 'Low', 'color': '#d96c6c'},
+        'moderate': {'emoji': '🟡', 'label': 'Moderate', 'color': '#d96c6c'},
+        'excessive': {'emoji': '🔴', 'label': 'Excessive', 'color': '#000000'},
+        'stationary': {'emoji': '🟡', 'label': 'Stationary', 'color': '#d96c6c'},
+        'appropriate': {'emoji': '🟢', 'label': 'Appropriate', 'color': '#111111'},
+        'needs_improvement': {'emoji': '🔴', 'label': 'Needs Work', 'color': '#000000'}
     }
     
     # First row
@@ -485,10 +485,10 @@ def display_results(body_metrics, feedback):
     ]
     
     for col, (metric_name, score_key) in zip([col1, col2, col3, col4, col5], metrics_row1):
-        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#6b7280'})
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
                 <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
                 <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label']}</div>
@@ -501,9 +501,9 @@ def display_results(body_metrics, feedback):
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         overall_score = scores.get('overall', 'good')
-        overall_data = score_info.get(overall_score, {'emoji': '⚪', 'label': 'N/A', 'color': '#6b7280'})
+        overall_data = score_info.get(overall_score, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
         st.markdown(f"""
-        <div style='text-align: center; padding: 1.5rem; background: rgba(42, 0, 64, 0.5); border-radius: 1rem; border: 2px solid rgba(74, 0, 100, 0.6);'>
+        <div style='text-align: center; padding: 1.5rem; background: rgba(226, 238, 248, 0.98); border-radius: 1rem; border: 2px solid rgba(217, 108, 108, 0.6);'>
             <div style='font-size: 1rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; font-weight: 600;'>OVERALL PRESENCE</div>
             <div style='font-size: 3rem; margin-bottom: 0.5rem;'>{overall_data['emoji']}</div>
             <div style='font-size: 1.25rem; color: {overall_data["color"]}; font-weight: 700;'>{overall_data['label'].replace('_', ' ').title()}</div>

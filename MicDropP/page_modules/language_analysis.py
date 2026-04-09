@@ -15,7 +15,7 @@ def show():
     """Display language analysis page"""
     
     st.markdown("""
-    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #ffffff;'>
+    <h1 style='display: flex; align-items: center; gap: 0.75rem; color: #111111;'>
         <svg style="width: 2rem; height: 2rem; fill: currentColor;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
         </svg>
@@ -127,10 +127,10 @@ def display_results(language_metrics, feedback, text):
     avg_sentence = language_metrics.get('sentence_structure', {}).get('avg_words_per_sentence', 0)
     
     # Determine status colors
-    filler_color = "#10b981" if filler_rate < 1.5 else ("#f59e0b" if filler_rate < 3.0 else "#ef4444")
-    vocab_color = "#ef4444" if diversity < 0.4 else ("#10b981" if diversity > 0.7 else "#f59e0b")
-    readability_color = "#10b981" if flesch > 70 else ("#ef4444" if flesch < 30 else "#f59e0b") if flesch > 0 else "#6b7280"
-    sentence_color = "#10b981" if 10 <= avg_sentence <= 20 else "#f59e0b"
+    filler_color = "#111111" if filler_rate < 1.5 else ("#d96c6c" if filler_rate < 3.0 else "#000000")
+    vocab_color = "#000000" if diversity < 0.4 else ("#111111" if diversity > 0.7 else "#d96c6c")
+    readability_color = "#111111" if flesch > 70 else ("#000000" if flesch < 30 else "#d96c6c") if flesch > 0 else "#000000"
+    sentence_color = "#111111" if 10 <= avg_sentence <= 20 else "#d96c6c"
     
     with col1:
         filler_label = "Low" if filler_rate < 1.5 else ("Moderate" if filler_rate < 3.0 else "High")
@@ -214,32 +214,32 @@ def display_results(language_metrics, feedback, text):
                 hovertemplate='<b>%{x}</b><br>Count: %{y}<extra></extra>'
             ))
             fig_fillers.update_layout(
-                title={'text': "Filler Words Detected", 'font': {'color': 'white', 'size': 16}},
+                title={'text': "Filler Words Detected", 'font': {'color': '#111111', 'size': 16}},
                 xaxis_title="Filler Word",
                 yaxis_title="Count",
                 height=300,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(42, 0, 64, 0.2)',
-                font={'color': 'white', 'size': 12},
+                plot_bgcolor='rgba(91, 143, 199, 0.14)',
+                font={'color': '#111111', 'size': 12},
                 xaxis={
                     'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'color': '#111111',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 },
                 yaxis={
                     'gridcolor': 'rgba(255,255,255,0.1)',
-                    'color': 'white',
-                    'title': {'font': {'color': 'white'}},
-                    'tickfont': {'color': 'white'}
+                    'color': '#111111',
+                    'title': {'font': {'color': '#111111'}},
+                    'tickfont': {'color': '#111111'}
                 }
             )
             st.plotly_chart(fig_fillers, use_container_width=True)
         else:
             st.markdown("""
-            <div style='padding: 2rem; text-align: center; background: rgba(16, 185, 129, 0.1); border-radius: 0.75rem; border: 1px solid rgba(16, 185, 129, 0.3);'>
+            <div style='padding: 2rem; text-align: center; background: rgba(217, 108, 108, 0.1); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.3);'>
                 <div style='font-size: 2rem; margin-bottom: 0.5rem;'>✅</div>
-                <div style='font-size: 1rem; color: #10b981; font-weight: 600;'>No filler words detected!</div>
+                <div style='font-size: 1rem; color: #111111; font-weight: 600;'>No filler words detected!</div>
                 <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;'>Great job keeping your speech clean</div>
             </div>
             """, unsafe_allow_html=True)
@@ -255,22 +255,22 @@ def display_results(language_metrics, feedback, text):
             mode="gauge+number",
             value=vocab_stats.get('diversity_ratio', 0) * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            title={'text': "Diversity %", 'font': {'size': 16, 'color': 'white'}},
+            title={'text': "Diversity %", 'font': {'size': 16, 'color': '#111111'}},
             gauge={
                 'axis': {
                     'range': [None, 100], 
-                    'tickcolor': 'white',
-                    'tickfont': {'color': 'white'}
+                    'tickcolor': '#94a3b8',
+                    'tickfont': {'color': '#111111'}
                 },
                 'bar': {'color': vocab_color},
-                'bgcolor': 'rgba(42, 0, 64, 0.3)',
+                'bgcolor': 'rgba(91, 143, 199, 0.25)',
                 'steps': [
-                    {'range': [0, 40], 'color': "rgba(239, 68, 68, 0.2)"},
-                    {'range': [40, 70], 'color': "rgba(245, 158, 11, 0.2)"},
-                    {'range': [70, 100], 'color': "rgba(16, 185, 129, 0.2)"}
+                    {'range': [0, 40], 'color': "rgba(91, 143, 199, 0.14)"},
+                    {'range': [40, 70], 'color': "rgba(217, 108, 108, 0.2)"},
+                    {'range': [70, 100], 'color': "rgba(217, 108, 108, 0.2)"}
                 ],
                 'threshold': {
-                    'line': {'color': "white", 'width': 2},
+                    'line': {'color': '#111111', 'width': 2},
                     'thickness': 0.75,
                     'value': 70
                 }
@@ -281,7 +281,7 @@ def display_results(language_metrics, feedback, text):
             height=300,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font={'color': 'white', 'size': 12}
+            font={'color': '#111111', 'size': 12}
         )
         st.plotly_chart(fig_vocab, use_container_width=True)
         
@@ -309,9 +309,9 @@ def display_results(language_metrics, feedback, text):
         for col, (label, value, fmt, desc) in zip([col1, col2, col3, col4], metrics_data):
             with col:
                 st.markdown(f"""
-                <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+                <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                     <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>{label}</div>
-                    <div style='font-size: 2rem; font-weight: 700; color: #c0a0ff; margin-bottom: 0.25rem;'>{value:.{fmt}}</div>
+                    <div style='font-size: 2rem; font-weight: 700; color: #d96c6c; margin-bottom: 0.25rem;'>{value:.{fmt}}</div>
                     <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);'>{desc}</div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -339,9 +339,9 @@ def display_results(language_metrics, feedback, text):
     for col, (label, value, desc) in zip([col1, col2, col3], structure_data):
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>{label}</div>
-                <div style='font-size: 2.5rem; font-weight: 700; color: #c0a0ff; margin-bottom: 0.25rem;'>{value}</div>
+                <div style='font-size: 2.5rem; font-weight: 700; color: #d96c6c; margin-bottom: 0.25rem;'>{value}</div>
                 <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);'>{desc}</div>
             </div>
             """, unsafe_allow_html=True)
@@ -358,9 +358,9 @@ def display_results(language_metrics, feedback, text):
         
         with col1:
             repetition_score = repetition_stats.get('repetition_score', 0.0)
-            rep_color = "#10b981" if repetition_score < 8 else ("#f59e0b" if repetition_score < 15 else "#ef4444")
+            rep_color = "#111111" if repetition_score < 8 else ("#d96c6c" if repetition_score < 15 else "#000000")
             st.markdown(f"""
-            <div style='text-align: center; padding: 1.5rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='text-align: center; padding: 1.5rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>Repetition Score</div>
                 <div style='font-size: 2.5rem; font-weight: 700; color: {rep_color}; margin-bottom: 0.25rem;'>{repetition_score:.1f}%</div>
                 <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);'>Lower is better</div>
@@ -368,9 +368,9 @@ def display_results(language_metrics, feedback, text):
             """, unsafe_allow_html=True)
         
         with col2:
-            repeated_words_html = " ".join([f"<span style='display: inline-block; padding: 0.5rem 0.75rem; margin: 0.25rem; background: rgba(192, 160, 255, 0.2); border-radius: 0.5rem; border: 1px solid rgba(192, 160, 255, 0.3);'><strong>{word}</strong> <span style='color: #c0a0ff;'>({count}x)</span></span>" for word, count in most_repeated[:10]])
+            repeated_words_html = " ".join([f"<span style='display: inline-block; padding: 0.5rem 0.75rem; margin: 0.25rem; background: rgba(217, 108, 108, 0.2); border-radius: 0.5rem; border: 1px solid rgba(217, 108, 108, 0.3);'><strong>{word}</strong> <span style='color: #d96c6c;'>({count}x)</span></span>" for word, count in most_repeated[:10]])
             st.markdown(f"""
-            <div style='padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; font-weight: 600;'>Most Repeated Words:</div>
                 <div style='display: flex; flex-wrap: wrap; gap: 0.5rem;'>
                     {repeated_words_html}
@@ -395,9 +395,9 @@ def display_results(language_metrics, feedback, text):
     for col, (label, value, unit, fmt) in zip([col1, col2, col3, col4], tone_data):
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem; text-transform: uppercase;'>{label}</div>
-                <div style='font-size: 2.25rem; font-weight: 700; color: #c0a0ff; margin-bottom: 0.25rem;'>{value:.{fmt}}{unit}</div>
+                <div style='font-size: 2.25rem; font-weight: 700; color: #d96c6c; margin-bottom: 0.25rem;'>{value:.{fmt}}{unit}</div>
             </div>
             """, unsafe_allow_html=True)
     
@@ -413,10 +413,10 @@ def display_results(language_metrics, feedback, text):
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         # Determine recommendation type based on content
         if any(word in recommendation.lower() for word in ['great', 'excellent', 'good']):
-            rec_color = "#10b981"
+            rec_color = "#111111"
             rec_icon = "✅"
         elif any(word in recommendation.lower() for word in ['try', 'consider', 'could']):
-            rec_color = "#f59e0b"
+            rec_color = "#d96c6c"
             rec_icon = "💡"
         else:
             rec_color = "#6366f1"
@@ -444,17 +444,17 @@ def display_results(language_metrics, feedback, text):
     scores = feedback['scores']
     
     score_info = {
-        'high': {'emoji': '🔴', 'label': 'High', 'color': '#ef4444'},
-        'moderate': {'emoji': '🟡', 'label': 'Moderate', 'color': '#f59e0b'},
-        'low': {'emoji': '🟢', 'label': 'Low', 'color': '#10b981'},
-        'low_engagement': {'emoji': '🟡', 'label': 'Low', 'color': '#f59e0b'},
-        'engaging': {'emoji': '🟢', 'label': 'Engaging', 'color': '#10b981'},
-        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#10b981'},
-        'difficult': {'emoji': '🔴', 'label': 'Difficult', 'color': '#ef4444'},
-        'easy': {'emoji': '🟢', 'label': 'Easy', 'color': '#10b981'},
-        'complex': {'emoji': '🟡', 'label': 'Complex', 'color': '#f59e0b'},
-        'simple': {'emoji': '🟡', 'label': 'Simple', 'color': '#f59e0b'},
-        'issues': {'emoji': '🟡', 'label': 'Issues', 'color': '#f59e0b'}
+        'high': {'emoji': '🔴', 'label': 'High', 'color': '#000000'},
+        'moderate': {'emoji': '🟡', 'label': 'Moderate', 'color': '#d96c6c'},
+        'low': {'emoji': '🟢', 'label': 'Low', 'color': '#111111'},
+        'low_engagement': {'emoji': '🟡', 'label': 'Low', 'color': '#d96c6c'},
+        'engaging': {'emoji': '🟢', 'label': 'Engaging', 'color': '#111111'},
+        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#111111'},
+        'difficult': {'emoji': '🔴', 'label': 'Difficult', 'color': '#000000'},
+        'easy': {'emoji': '🟢', 'label': 'Easy', 'color': '#111111'},
+        'complex': {'emoji': '🟡', 'label': 'Complex', 'color': '#d96c6c'},
+        'simple': {'emoji': '🟡', 'label': 'Simple', 'color': '#d96c6c'},
+        'issues': {'emoji': '🟡', 'label': 'Issues', 'color': '#d96c6c'}
     }
     
     # First row - main metrics
@@ -468,10 +468,10 @@ def display_results(language_metrics, feedback, text):
     ]
     
     for col, (metric_name, score_key) in zip([col1, col2, col3, col4], metrics_row1):
-        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#6b7280'})
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
                 <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
                 <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label']}</div>
@@ -490,10 +490,10 @@ def display_results(language_metrics, feedback, text):
     ]
     
     for col, (metric_name, score_key) in zip([col1, col2, col3], metrics_row2):
-        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#6b7280'})
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(42, 0, 64, 0.4); border-radius: 0.75rem; border: 1px solid rgba(74, 0, 100, 0.4);'>
+            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
                 <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
                 <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
                 <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label'].replace('_', ' ').title()}</div>
