@@ -1287,19 +1287,41 @@ def main():
     </script>
     """, unsafe_allow_html=True)
     
-    # Header with curtain reveal effect
-    st.markdown('''
-    <div class="main-content">
-        <h1 class="main-header">
-            <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.25rem; width: 3rem; height: 3rem; color: rgba(0, 0, 0, 0.55);" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
-            </svg>
-            MicDrop
-        </h1>
-    </div>
-    ''', unsafe_allow_html=True)
-    st.markdown('<div class="main-content"><p class="sub-header">AI Public Speaking Coach</p></div>', unsafe_allow_html=True)
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = "Home"
+    
+    # Main wordmark + tagline only on Home (other sections use their own content headers)
+    if st.session_state.current_page == "Home":
+        st.markdown('''
+        <div class="main-content">
+            <h1 class="main-header">
+                <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.25rem; width: 3rem; height: 3rem; color: rgba(0, 0, 0, 0.55);" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+                </svg>
+                MicDrop
+            </h1>
+        </div>
+        ''', unsafe_allow_html=True)
+        st.markdown('<div class="main-content"><p class="sub-header">AI Public Speaking Coach</p></div>', unsafe_allow_html=True)
+    else:
+        # Main column layout: line up with sidebar MicDrop (its block uses 1.5rem top padding + h2).
+        # Global h2 margin-top is for section spacing; ease it on the first main heading only.
+        st.markdown(
+            """
+            <style>
+            .main .block-container,
+            .stMain .block-container,
+            [data-testid="stMainBlockContainer"] {
+                padding-top: clamp(2.5rem, 6.5vh, 4.25rem) !important;
+            }
+            [data-testid="stMainBlockContainer"] h2:first-of-type {
+                margin-top: 1rem !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
     
     # Sidebar navigation with modern header
     st.sidebar.markdown("""
@@ -1313,10 +1335,6 @@ def main():
         </h2>
     </div>
     """, unsafe_allow_html=True)
-    
-    # Initialize page state
-    if 'current_page' not in st.session_state:
-        st.session_state.current_page = "Home"
     
     # Navigation with SVG icons using CSS data URIs
     st.sidebar.markdown("""

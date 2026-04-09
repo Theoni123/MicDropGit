@@ -1,6 +1,7 @@
 """
 Video processing utilities for body language analysis
-Uses MediaPipe for pose, face, and hand detection
+Uses MediaPipe Tasks API for pose, face, and hand detection
+(Python 3.13+ wheels no longer expose the legacy mp.solutions API.)
 """
 
 import cv2
@@ -8,14 +9,85 @@ import numpy as np
 import mediapipe as mp
 import tempfile
 import os
+from pathlib import Path
+from urllib.request import urlretrieve
 from typing import Dict, List, Tuple, Optional
 import math
 
-# Initialize MediaPipe solutions
-mp_pose = mp.solutions.pose
-mp_face_mesh = mp.solutions.face_mesh
-mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils
+BaseOptions = mp.tasks.BaseOptions
+PoseLandmarker = mp.tasks.vision.PoseLandmarker
+PoseLandmarkerOptions = mp.tasks.vision.PoseLandmarkerOptions
+FaceLandmarker = mp.tasks.vision.FaceLandmarker
+FaceLandmarkerOptions = mp.tasks.vision.FaceLandmarkerOptions
+HandLandmarker = mp.tasks.vision.HandLandmarker
+HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
+VisionRunningMode = mp.tasks.vision.RunningMode
+
+_MEDIAPIPE_TASK_MODELS = {
+    "pose_landmarker_lite.task": (
+        "https://storage.googleapis.com/mediapipe-models/pose_landmarker/"
+        "pose_landmarker_lite/float16/1/pose_landmarker_lite.task"
+    ),
+    "face_landmarker.task": (
+        "https://storage.googleapis.com/mediapipe-models/face_landmarker/"
+        "face_landmarker/float16/1/face_landmarker.task"
+    ),
+    "hand_landmarker.task": (
+        "https://storage.googleapis.com/mediapipe-models/hand_landmarker/"
+        "hand_landmarker/float16/1/hand_landmarker.task"
+    ),
+}
+
+
+def _mediapipe_model_cache_dir() -> Path:
+    env = os.environ.get("MICDROP_MEDIAPIPE_CACHE")
+    if env:
+        return Path(env)
+    return Path.home() / ".cache" / "micdrop_mediapipe"
+
+
+def _ensure_task_model(filename: str) -> str:
+    cache = _mediapipe_model_cache_dir()
+    cache.mkdir(parents=True, exist_ok=True)
+    dest = cache / filename
+    if dest.is_file():
+        return str(dest)
+    url = _MEDIAPIPE_TASK_MODELS.get(filename)
+    if not url:
+        raise FileNotFoundError(f"No bundled download URL for MediaPipe model {filename!r}")
+    part = dest.with_suffix(dest.suffix + ".part")
+    try:
+        urlretrieve(url, part)
+        part.replace(dest)
+    except Exception:
+        if part.is_file():
+            part.unlink(missing_ok=True)
+        raise
+    return str(dest)
+
+
+class _NormalizedLandmarkView:
+    __slots__ = ("x", "y", "z")
+
+    def __init__(self, lm):
+        self.x = float(lm.x) if lm.x is not None else 0.0
+        self.y = float(lm.y) if lm.y is not None else 0.0
+        self.z = float(lm.z) if lm.z is not None else 0.0
+
+
+class _LandmarksAsSolution:
+    """Mimics solutions.* `.landmark[i].x` access for downstream analyzers."""
+
+    __slots__ = ("landmark",)
+
+    def __init__(self, normalized_list):
+        self.landmark = [_NormalizedLandmarkView(lm) for lm in normalized_list]
+
+
+def _bgr_frame_to_mp_image(frame):
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    rgb = np.ascontiguousarray(rgb)
+    return mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
 
 # Try to import streamlit for caching (optional)
 try:
@@ -105,58 +177,53 @@ def load_video(video_file, max_frames: Optional[int] = None):
                 pass
 
 
+def _build_mediapipe_landmarkers():
+    pose_path = _ensure_task_model("pose_landmarker_lite.task")
+    face_path = _ensure_task_model("face_landmarker.task")
+    hand_path = _ensure_task_model("hand_landmarker.task")
+
+    pose_options = PoseLandmarkerOptions(
+        base_options=BaseOptions(model_asset_path=pose_path),
+        running_mode=VisionRunningMode.IMAGE,
+        num_poses=1,
+        min_pose_detection_confidence=0.5,
+        min_pose_presence_confidence=0.5,
+        min_tracking_confidence=0.5,
+    )
+    face_options = FaceLandmarkerOptions(
+        base_options=BaseOptions(model_asset_path=face_path),
+        running_mode=VisionRunningMode.IMAGE,
+        num_faces=1,
+        min_face_detection_confidence=0.5,
+        min_face_presence_confidence=0.5,
+        min_tracking_confidence=0.5,
+    )
+    hand_options = HandLandmarkerOptions(
+        base_options=BaseOptions(model_asset_path=hand_path),
+        running_mode=VisionRunningMode.IMAGE,
+        num_hands=2,
+        min_hand_detection_confidence=0.5,
+        min_hand_presence_confidence=0.5,
+        min_tracking_confidence=0.5,
+    )
+
+    return {
+        "pose": PoseLandmarker.create_from_options(pose_options),
+        "face_mesh": FaceLandmarker.create_from_options(face_options),
+        "hands": HandLandmarker.create_from_options(hand_options),
+    }
+
+
 # Cache MediaPipe models if streamlit is available
 if HAS_STREAMLIT:
     @st.cache_resource
     def get_mediapipe_models():
-        """Get MediaPipe models with caching"""
-        return {
-            'pose': mp_pose.Pose(
-                static_image_mode=False,
-                model_complexity=1,
-                enable_segmentation=False,
-                min_detection_confidence=0.5,
-                min_tracking_confidence=0.5
-            ),
-            'face_mesh': mp_face_mesh.FaceMesh(
-                static_image_mode=False,
-                max_num_faces=1,
-                refine_landmarks=True,
-                min_detection_confidence=0.5,
-                min_tracking_confidence=0.5
-            ),
-            'hands': mp_hands.Hands(
-                static_image_mode=False,
-                max_num_hands=2,
-                min_detection_confidence=0.5,
-                min_tracking_confidence=0.5
-            )
-        }
+        """Get MediaPipe Tasks landmarkers with caching (downloads .task models once)."""
+        return _build_mediapipe_landmarkers()
 else:
     def get_mediapipe_models():
-        """Get MediaPipe models without caching"""
-        return {
-            'pose': mp_pose.Pose(
-                static_image_mode=False,
-                model_complexity=1,
-                enable_segmentation=False,
-                min_detection_confidence=0.5,
-                min_tracking_confidence=0.5
-            ),
-            'face_mesh': mp_face_mesh.FaceMesh(
-                static_image_mode=False,
-                max_num_faces=1,
-                refine_landmarks=True,
-                min_detection_confidence=0.5,
-                min_tracking_confidence=0.5
-            ),
-            'hands': mp_hands.Hands(
-                static_image_mode=False,
-                max_num_hands=2,
-                min_detection_confidence=0.5,
-                min_tracking_confidence=0.5
-            )
-        }
+        """Get MediaPipe Tasks landmarkers without caching."""
+        return _build_mediapipe_landmarkers()
 
 
 def detect_pose_landmarks(frame, pose_model):
@@ -165,17 +232,15 @@ def detect_pose_landmarks(frame, pose_model):
     
     Args:
         frame: BGR image frame
-        pose_model: MediaPipe Pose model
+        pose_model: MediaPipe PoseLandmarker
     
     Returns:
         landmarks: Pose landmarks or None
     """
-    # Convert BGR to RGB
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = pose_model.process(rgb_frame)
-    
-    if results.pose_landmarks:
-        return results.pose_landmarks
+    mp_image = _bgr_frame_to_mp_image(frame)
+    result = pose_model.detect(mp_image)
+    if result.pose_landmarks and len(result.pose_landmarks) > 0:
+        return _LandmarksAsSolution(result.pose_landmarks[0])
     return None
 
 
@@ -185,17 +250,15 @@ def detect_face_landmarks(frame, face_model):
     
     Args:
         frame: BGR image frame
-        face_model: MediaPipe Face Mesh model
+        face_model: MediaPipe FaceLandmarker
     
     Returns:
         landmarks: Face landmarks or None
     """
-    # Convert BGR to RGB
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = face_model.process(rgb_frame)
-    
-    if results.multi_face_landmarks:
-        return results.multi_face_landmarks[0]  # Return first face
+    mp_image = _bgr_frame_to_mp_image(frame)
+    result = face_model.detect(mp_image)
+    if result.face_landmarks and len(result.face_landmarks) > 0:
+        return _LandmarksAsSolution(result.face_landmarks[0])
     return None
 
 
@@ -205,17 +268,15 @@ def detect_hand_landmarks(frame, hands_model):
     
     Args:
         frame: BGR image frame
-        hands_model: MediaPipe Hands model
+        hands_model: MediaPipe HandLandmarker
     
     Returns:
         landmarks: List of hand landmarks (up to 2 hands)
     """
-    # Convert BGR to RGB
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = hands_model.process(rgb_frame)
-    
-    if results.multi_hand_landmarks:
-        return results.multi_hand_landmarks
+    mp_image = _bgr_frame_to_mp_image(frame)
+    result = hands_model.detect(mp_image)
+    if result.hand_landmarks:
+        return [_LandmarksAsSolution(h) for h in result.hand_landmarks]
     return []
 
 
