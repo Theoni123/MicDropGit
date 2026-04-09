@@ -81,10 +81,6 @@ def show():
     # Process if text input provided
     elif text_input and text_input.strip():
         process_language_analysis(text_input)
-    
-    # Show instructions if nothing provided
-    elif not audio_file and not text_input:
-        st.info("👆 Upload an audio file or enter text above to begin analysis")
 
 
 def process_language_analysis(text):

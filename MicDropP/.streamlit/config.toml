@@ -19,9 +19,10 @@ enableXsrfProtection = true
 gatherUsageStats = false
 
 [theme]
-# Theme is handled in app.py via CSS, but you can set defaults here
-primaryColor = "#4a0064"
-backgroundColor = "#0f0c29"
-secondaryBackgroundColor = "#2a0040"
-textColor = "#ffffff"
+# Align with app.py light UI — widgets (file uploader, inputs, etc.) use these tokens;
+# a dark theme here caused the upload dropzone and other controls to stay purple while the page looked light.
+primaryColor = "#5b8fc7"
+backgroundColor = "#f5f8fc"
+secondaryBackgroundColor = "#e8f2fb"
+textColor = "#111111"
 font = "Inter"
