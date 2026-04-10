@@ -271,10 +271,12 @@ st.markdown(f"""
     }}
     
     /* Main header — black to coral wordmark, coral diffusion */
-    .main-header {{
-        font-size: 4.5rem;
+    div.main-header, .main-content div.main-header {{
+        font-size: 3rem !important;
         font-weight: 900;
         text-align: center;
+        white-space: nowrap;
+        overflow: visible;
         /* Solid logo color (match subtitle) */
         color: rgba(0, 0, 0, 0.55) !important;
         background: none !important;
@@ -966,13 +968,13 @@ def main():
     if st.session_state.current_page == "Home":
         st.markdown('''
         <div class="main-content">
-            <h1 class="main-header">
-                <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.25rem; width: 3rem; height: 3rem; color: rgba(0, 0, 0, 0.55);" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div class="main-header" role="heading" aria-level="1" style="font-size: 3rem;">
+                <svg class="icon icon-xl" style="display: inline-block; vertical-align: middle; margin-right: 0.4rem; width: 2.75rem; height: 2.75rem; color: rgba(0, 0, 0, 0.55); position: relative; top: -3px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
                     <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
                 </svg>
                 MicDrop
-            </h1>
+            </div>
         </div>
         ''', unsafe_allow_html=True)
         st.markdown('<div class="main-content"><p class="sub-header">AI Public Speaking Coach</p></div>', unsafe_allow_html=True)
@@ -999,7 +1001,7 @@ def main():
     st.sidebar.markdown("""
     <div style='text-align: center; padding: 1.5rem 0 2rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.08); margin-bottom: 1.5rem;'>
         <h2 style='color: rgba(0, 0, 0, 0.82) !important; font-size: 1.5rem !important; font-weight: 700; margin: 0; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;'>
-            <svg style="width: 1.5rem; height: 1.5rem; fill: #8fb8ed;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg style="width: 2rem; height: 2rem; fill: #8fb8ed;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="#8fb8ed"/>
                 <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="#8fb8ed"/>
             </svg>
