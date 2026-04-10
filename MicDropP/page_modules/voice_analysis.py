@@ -138,29 +138,29 @@ def display_results(voice_metrics, feedback, y, sr):
     monotony = voice_metrics['pitch']['monotony_score']
     consistency = voice_metrics['volume']['volume_consistency']
     
-    # Determine status colors
-    pace_color = "#111111" if 120 <= wpm <= 180 else "#d96c6c"
-    pause_color = "#111111" if 3 <= pause_count <= 15 else "#d96c6c"
-    pitch_color = "#111111" if monotony < 0.7 else ("#d96c6c" if monotony < 0.85 else "#000000")
-    volume_color = "#111111" if consistency > 0.5 else "#d96c6c"
+    # Determine status colors — pastel blue = good, orange = warning, coral = needs work
+    pace_color = "#5b8fc7" if 120 <= wpm <= 180 else "#d4883a"
+    pause_color = "#5b8fc7" if 3 <= pause_count <= 15 else "#d4883a"
+    pitch_color = "#5b8fc7" if monotony < 0.7 else ("#d4883a" if monotony < 0.85 else "#c05858")
+    volume_color = "#5b8fc7" if consistency > 0.5 else "#d4883a"
     
     with col1:
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {pace_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>SPEAKING PACE</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>SPEAKING PACE</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {pace_color}; margin-bottom: 0.25rem;'>{wpm:.0f}</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>words per minute</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Ideal: 140-160 WPM</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>words per minute</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Ideal: 140-160 WPM</div>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {pause_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>PAUSES</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>PAUSES</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {pause_color}; margin-bottom: 0.25rem;'>{pause_count}</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>detected</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Ideal: 3-15 pauses</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>detected</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Ideal: 3-15 pauses</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -168,10 +168,10 @@ def display_results(voice_metrics, feedback, y, sr):
         pitch_label = "Varied" if monotony < 0.3 else ("Monotone" if monotony > 0.7 else "Good")
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {pitch_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>PITCH VARIATION</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>PITCH VARIATION</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {pitch_color}; margin-bottom: 0.25rem;'>{pitch_label}</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>{(1-monotony)*100:.0f}% varied</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Lower is more varied</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>{(1-monotony)*100:.0f}% varied</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Lower is more varied</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -179,10 +179,10 @@ def display_results(voice_metrics, feedback, y, sr):
         vol_label = "Consistent" if consistency > 0.5 else "Variable"
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {volume_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>VOLUME</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>VOLUME</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {volume_color}; margin-bottom: 0.25rem;'>{vol_label}</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>{consistency*100:.0f}% consistent</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Higher is better</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>{consistency*100:.0f}% consistent</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Higher is better</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -370,13 +370,13 @@ def display_results(voice_metrics, feedback, y, sr):
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         # Determine recommendation type based on content
         if any(word in recommendation.lower() for word in ['great', 'excellent', 'good']):
-            rec_color = "#111111"
+            rec_color = "#5b8fc7"
             rec_icon = "✅"
         elif any(word in recommendation.lower() for word in ['try', 'consider', 'could']):
-            rec_color = "#d96c6c"
+            rec_color = "#d4883a"
             rec_icon = "💡"
         else:
-            rec_color = "#6366f1"
+            rec_color = "#8fb8ed"
             rec_icon = "📌"
         
         st.markdown(f"""
@@ -384,7 +384,7 @@ def display_results(voice_metrics, feedback, y, sr):
             <div style='display: flex; align-items: start; gap: 1rem;'>
                 <div style='font-size: 1.5rem; line-height: 1;'>{rec_icon}</div>
                 <div style='flex: 1;'>
-                    <div style='font-size: 1rem; color: rgba(255, 255, 255, 0.95); line-height: 1.6;'>
+                    <div style='font-size: 1rem; color: rgba(0, 0, 0, 0.85); line-height: 1.6;'>
                         {recommendation}
                     </div>
                 </div>
@@ -401,15 +401,15 @@ def display_results(voice_metrics, feedback, y, sr):
     scores = feedback['scores']
     
     score_info = {
-        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#111111'},
-        'slow': {'emoji': '🟡', 'label': 'Slow', 'color': '#d96c6c'},
-        'fast': {'emoji': '🟡', 'label': 'Fast', 'color': '#d96c6c'},
-        'few': {'emoji': '🟡', 'label': 'Few', 'color': '#d96c6c'},
-        'many': {'emoji': '🟡', 'label': 'Many', 'color': '#d96c6c'},
-        'monotone': {'emoji': '🔴', 'label': 'Monotone', 'color': '#000000'},
-        'varied': {'emoji': '🟢', 'label': 'Varied', 'color': '#111111'},
-        'consistent': {'emoji': '🟢', 'label': 'Consistent', 'color': '#111111'},
-        'inconsistent': {'emoji': '🟡', 'label': 'Variable', 'color': '#d96c6c'}
+        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#5b8fc7'},
+        'slow': {'emoji': '🟡', 'label': 'Slow', 'color': '#d4883a'},
+        'fast': {'emoji': '🟡', 'label': 'Fast', 'color': '#d4883a'},
+        'few': {'emoji': '🟡', 'label': 'Few', 'color': '#d4883a'},
+        'many': {'emoji': '🟡', 'label': 'Many', 'color': '#d4883a'},
+        'monotone': {'emoji': '🔴', 'label': 'Monotone', 'color': '#c05858'},
+        'varied': {'emoji': '🟢', 'label': 'Varied', 'color': '#5b8fc7'},
+        'consistent': {'emoji': '🟢', 'label': 'Consistent', 'color': '#5b8fc7'},
+        'inconsistent': {'emoji': '🟡', 'label': 'Variable', 'color': '#d4883a'}
     }
     
     col1, col2, col3, col4 = st.columns(4)
@@ -421,12 +421,14 @@ def display_results(voice_metrics, feedback, y, sr):
         ('Volume', scores.get('volume', 'good'))
     ]
     
-    for col, (metric_name, score_key) in zip([col1, col2, col3, col4], score_items):
-        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
+    for i, (col, (metric_name, score_key)) in enumerate(zip([col1, col2, col3, col4], score_items)):
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#c05858'})
+        card_bg = "rgba(232, 242, 251, 0.95)" if i % 2 == 0 else "rgba(255, 240, 224, 0.95)"
+        card_border = "rgba(91, 143, 199, 0.35)" if i % 2 == 0 else "rgba(212, 136, 58, 0.35)"
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
-                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
+            <div style='text-align: center; padding: 1rem; background: {card_bg}; border-radius: 0.75rem; border: 1px solid {card_border};'>
+                <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.65); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.03em;'>{metric_name}</div>
                 <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
                 <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label']}</div>
             </div>

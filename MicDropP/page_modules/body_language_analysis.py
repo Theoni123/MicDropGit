@@ -148,21 +148,21 @@ def display_results(body_metrics, feedback):
     engagement = body_metrics.get('facial_expressions', {}).get('engagement_score', 0.0)
     presence = body_metrics.get('presence_score', 0.0)
     
-    # Determine status colors
-    posture_color = "#111111" if posture_score > 0.7 else ("#d96c6c" if posture_score > 0.5 else "#000000")
-    gesture_color = "#111111" if 0.5 <= gesture_freq <= 3.0 else ("#d96c6c" if gesture_freq < 0.5 or gesture_freq <= 4.0 else "#000000")
-    eye_color = "#111111" if eye_contact_pct > 0.6 else ("#d96c6c" if eye_contact_pct > 0.3 else "#000000")
-    engagement_color = "#111111" if engagement > 0.6 else ("#d96c6c" if engagement > 0.4 else "#000000")
-    presence_color = "#111111" if presence > 0.7 else ("#d96c6c" if presence > 0.5 else "#000000")
+    # Determine status colors — pastel blue = good, orange = warning, coral = needs work
+    posture_color = "#5b8fc7" if posture_score > 0.7 else ("#d4883a" if posture_score > 0.5 else "#c05858")
+    gesture_color = "#5b8fc7" if 0.5 <= gesture_freq <= 3.0 else ("#d4883a" if gesture_freq < 0.5 or gesture_freq <= 4.0 else "#c05858")
+    eye_color = "#5b8fc7" if eye_contact_pct > 0.6 else ("#d4883a" if eye_contact_pct > 0.3 else "#c05858")
+    engagement_color = "#5b8fc7" if engagement > 0.6 else ("#d4883a" if engagement > 0.4 else "#c05858")
+    presence_color = "#5b8fc7" if presence > 0.7 else ("#d4883a" if presence > 0.5 else "#c05858")
     
     with col1:
         posture_label = "Good" if posture_score > 0.7 else ("Fair" if posture_score > 0.5 else "Needs Work")
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {posture_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>POSTURE</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>POSTURE</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {posture_color}; margin-bottom: 0.25rem;'>{posture_score*100:.0f}%</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>{posture_label}</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Alignment & stance</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>{posture_label}</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Alignment & stance</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -170,10 +170,10 @@ def display_results(body_metrics, feedback):
         gesture_label = "Good" if 0.5 <= gesture_freq <= 3.0 else ("Low" if gesture_freq < 0.5 else "Excessive")
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {gesture_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>GESTURES</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>GESTURES</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {gesture_color}; margin-bottom: 0.25rem;'>{gesture_freq:.1f}</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>per second</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>{gesture_label} frequency</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>per second</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>{gesture_label} frequency</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -181,10 +181,10 @@ def display_results(body_metrics, feedback):
         eye_label = "Good" if eye_contact_pct > 0.6 else ("Fair" if eye_contact_pct > 0.3 else "Low")
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {eye_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>EYE CONTACT</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>EYE CONTACT</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {eye_color}; margin-bottom: 0.25rem;'>{eye_contact_pct*100:.0f}%</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>{eye_label} level</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Camera gaze</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>{eye_label} level</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Camera gaze</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -192,10 +192,10 @@ def display_results(body_metrics, feedback):
         engagement_label = "Good" if engagement > 0.6 else ("Moderate" if engagement > 0.4 else "Low")
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {engagement_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>ENGAGEMENT</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>ENGAGEMENT</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {engagement_color}; margin-bottom: 0.25rem;'>{engagement*100:.0f}%</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>{engagement_label} score</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Expressions</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>{engagement_label} score</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Expressions</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -203,10 +203,10 @@ def display_results(body_metrics, feedback):
         presence_label = "Excellent" if presence > 0.7 else ("Good" if presence > 0.5 else "Needs Work")
         st.markdown(f"""
         <div class='metric-card' style='text-align: center; padding: 1.5rem; border-left: 4px solid {presence_color};'>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); font-weight: 500; margin-bottom: 0.5rem;'>PRESENCE</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.04em;'>PRESENCE</div>
             <div style='font-size: 2.5rem; font-weight: 800; color: {presence_color}; margin-bottom: 0.25rem;'>{presence*100:.0f}%</div>
-            <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>{presence_label}</div>
-            <div style='font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;'>Overall</div>
+            <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>{presence_label}</div>
+            <div style='font-size: 0.75rem; color: rgba(0, 0, 0, 0.5); margin-top: 0.5rem;'>Overall</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -262,7 +262,7 @@ def display_results(body_metrics, feedback):
         st.plotly_chart(fig_posture, use_container_width=True)
         
         st.markdown(f"""
-        <div style='text-align: center; font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>
+        <div style='text-align: center; font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>
             Upright: {upright_pct*100:.0f}% | Spine angle: {posture.get('spine_alignment', 0):.1f}°
         </div>
         """, unsafe_allow_html=True)
@@ -312,7 +312,7 @@ def display_results(body_metrics, feedback):
         st.plotly_chart(fig_movement, use_container_width=True)
         
         st.markdown(f"""
-        <div style='text-align: center; font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>
+        <div style='text-align: center; font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>
             Type: {movement_type.title()} | Avg movement: {movement.get('average_movement', 0):.4f}
         </div>
         """, unsafe_allow_html=True)
@@ -356,7 +356,7 @@ def display_results(body_metrics, feedback):
         st.plotly_chart(fig_gestures, use_container_width=True)
         
         st.markdown(f"""
-        <div style='text-align: center; font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>
+        <div style='text-align: center; font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>
             Gesture frequency: {gestures.get('gesture_frequency', 0):.2f} per second
         </div>
         """, unsafe_allow_html=True)
@@ -404,7 +404,7 @@ def display_results(body_metrics, feedback):
         st.plotly_chart(fig_eye, use_container_width=True)
         
         st.markdown(f"""
-        <div style='text-align: center; font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);'>
+        <div style='text-align: center; font-size: 0.875rem; color: rgba(0, 0, 0, 0.6);'>
             Face visible: {face_visible*100:.0f}% | Gaze: {gaze_direction.title()}
         </div>
         """, unsafe_allow_html=True)
@@ -430,13 +430,13 @@ def display_results(body_metrics, feedback):
     for i, recommendation in enumerate(feedback['recommendations'], 1):
         # Determine recommendation type based on content
         if any(word in recommendation.lower() for word in ['great', 'excellent', 'good']):
-            rec_color = "#111111"
+            rec_color = "#5b8fc7"
             rec_icon = "✅"
         elif any(word in recommendation.lower() for word in ['try', 'consider', 'could']):
-            rec_color = "#d96c6c"
+            rec_color = "#d4883a"
             rec_icon = "💡"
         else:
-            rec_color = "#6366f1"
+            rec_color = "#8fb8ed"
             rec_icon = "📌"
         
         st.markdown(f"""
@@ -444,7 +444,7 @@ def display_results(body_metrics, feedback):
             <div style='display: flex; align-items: start; gap: 1rem;'>
                 <div style='font-size: 1.5rem; line-height: 1;'>{rec_icon}</div>
                 <div style='flex: 1;'>
-                    <div style='font-size: 1rem; color: rgba(255, 255, 255, 0.95); line-height: 1.6;'>
+                    <div style='font-size: 1rem; color: rgba(0, 0, 0, 0.85); line-height: 1.6;'>
                         {recommendation}
                     </div>
                 </div>
@@ -461,16 +461,16 @@ def display_results(body_metrics, feedback):
     scores = feedback['scores']
     
     score_info = {
-        'poor': {'emoji': '🔴', 'label': 'Poor', 'color': '#000000'},
-        'fair': {'emoji': '🟡', 'label': 'Fair', 'color': '#d96c6c'},
-        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#111111'},
-        'excellent': {'emoji': '🟢', 'label': 'Excellent', 'color': '#111111'},
-        'low': {'emoji': '🟡', 'label': 'Low', 'color': '#d96c6c'},
-        'moderate': {'emoji': '🟡', 'label': 'Moderate', 'color': '#d96c6c'},
-        'excessive': {'emoji': '🔴', 'label': 'Excessive', 'color': '#000000'},
-        'stationary': {'emoji': '🟡', 'label': 'Stationary', 'color': '#d96c6c'},
-        'appropriate': {'emoji': '🟢', 'label': 'Appropriate', 'color': '#111111'},
-        'needs_improvement': {'emoji': '🔴', 'label': 'Needs Work', 'color': '#000000'}
+        'poor': {'emoji': '🔴', 'label': 'Poor', 'color': '#c05858'},
+        'fair': {'emoji': '🟡', 'label': 'Fair', 'color': '#d4883a'},
+        'good': {'emoji': '🟢', 'label': 'Good', 'color': '#5b8fc7'},
+        'excellent': {'emoji': '🟢', 'label': 'Excellent', 'color': '#5b8fc7'},
+        'low': {'emoji': '🟡', 'label': 'Low', 'color': '#d4883a'},
+        'moderate': {'emoji': '🟡', 'label': 'Moderate', 'color': '#d4883a'},
+        'excessive': {'emoji': '🔴', 'label': 'Excessive', 'color': '#c05858'},
+        'stationary': {'emoji': '🟡', 'label': 'Stationary', 'color': '#d4883a'},
+        'appropriate': {'emoji': '🟢', 'label': 'Appropriate', 'color': '#5b8fc7'},
+        'needs_improvement': {'emoji': '🔴', 'label': 'Needs Work', 'color': '#c05858'}
     }
     
     # First row
@@ -484,12 +484,14 @@ def display_results(body_metrics, feedback):
         ('Movement', scores.get('movement', 'good'))
     ]
     
-    for col, (metric_name, score_key) in zip([col1, col2, col3, col4, col5], metrics_row1):
-        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
+    for i, (col, (metric_name, score_key)) in enumerate(zip([col1, col2, col3, col4, col5], metrics_row1)):
+        score_data = score_info.get(score_key, {'emoji': '⚪', 'label': 'N/A', 'color': '#c05858'})
+        card_bg = "rgba(232, 242, 251, 0.95)" if i % 2 == 0 else "rgba(255, 240, 224, 0.95)"
+        card_border = "rgba(91, 143, 199, 0.35)" if i % 2 == 0 else "rgba(212, 136, 58, 0.35)"
         with col:
             st.markdown(f"""
-            <div style='text-align: center; padding: 1rem; background: rgba(91, 143, 199, 0.22); border-radius: 0.75rem; border: 1px solid rgba(217, 108, 108, 0.4);'>
-                <div style='font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.5rem;'>{metric_name}</div>
+            <div style='text-align: center; padding: 1rem; background: {card_bg}; border-radius: 0.75rem; border: 1px solid {card_border};'>
+                <div style='font-size: 0.875rem; color: rgba(0, 0, 0, 0.65); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0.03em;'>{metric_name}</div>
                 <div style='font-size: 2rem; margin-bottom: 0.25rem;'>{score_data['emoji']}</div>
                 <div style='font-size: 1rem; color: {score_data["color"]}; font-weight: 600;'>{score_data['label']}</div>
             </div>
@@ -503,8 +505,8 @@ def display_results(body_metrics, feedback):
         overall_score = scores.get('overall', 'good')
         overall_data = score_info.get(overall_score, {'emoji': '⚪', 'label': 'N/A', 'color': '#000000'})
         st.markdown(f"""
-        <div style='text-align: center; padding: 1.5rem; background: rgba(226, 238, 248, 0.98); border-radius: 1rem; border: 2px solid rgba(217, 108, 108, 0.6);'>
-            <div style='font-size: 1rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; font-weight: 600;'>OVERALL PRESENCE</div>
+        <div style='text-align: center; padding: 1.5rem; background: rgba(232, 242, 251, 0.98); border-radius: 1rem; border: 2px solid rgba(91, 143, 199, 0.45);'>
+            <div style='font-size: 1rem; color: rgba(0, 0, 0, 0.65); margin-bottom: 0.75rem; font-weight: 700; letter-spacing: 0.04em;'>OVERALL PRESENCE</div>
             <div style='font-size: 3rem; margin-bottom: 0.5rem;'>{overall_data['emoji']}</div>
             <div style='font-size: 1.25rem; color: {overall_data["color"]}; font-weight: 700;'>{overall_data['label'].replace('_', ' ').title()}</div>
         </div>
